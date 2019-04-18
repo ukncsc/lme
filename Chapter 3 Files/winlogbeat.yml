@@ -1,0 +1,7 @@
+winlogbeat.event_logs:
+  - name: ForwardedEvents
+output.logstash:
+  hosts: ["logstash_dns_name:5044"]
+  ssl.certificate_authorities: ["C:\\Program Files\\lme\\root-ca.crt"]
+  ssl.certificate: "C:\\Program Files\\lme\\wlbclient.crt"
+  ssl.key: "C:\\Program Files\\lme\\wlbclient.key"

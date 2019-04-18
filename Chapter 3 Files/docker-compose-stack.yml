@@ -1,0 +1,100 @@
+version: '3.3'
+##########################
+# LME Stack deploy file  #
+# Version 0.1 - 27/03/19 #
+##########################
+services:
+  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.5.1
+    environment:
+      - cluster.name=loggingmadeeasy-es
+        #      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xmsram-countg -Xmxram-countg"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - esnet
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana-oss:6.5.1
+    environment:
+      SERVER_NAME: kibana
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    networks:
+      - esnet
+        #    ports:
+        #      - 5601:5601
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash-oss:6.5.1
+    ports:
+      - 5044:5044 
+    networks:
+      - esnet
+    configs:
+      - source: logstash.conf
+        target: /usr/share/logstash/pipeline/logstash.conf
+        mode: 0444
+    secrets:
+      - ca.crt
+      - logstash.crt
+      - logstash.key
+
+  curator:
+    image:  lme/curator:latest
+    networks:
+      - esnet
+    environment:
+      RETENTION_DAYS: 180  
+      RETENTION_GB: 800
+  nginx:
+    image: nginx
+    ports:
+      - 443:443
+    secrets:
+      - nginx.crt
+      - nginx.key
+      - source: nginx_unpw
+        target: nginx_unpw
+        mode: 0444
+    configs:
+      - source: nginx.conf
+        target: /etc/nginx/conf.d/site.conf
+        mode: 0444
+    networks:
+      - esnet
+
+secrets:
+  nginx.crt:
+    external: true
+  nginx.key:
+    external: true
+  nginx_unpw:
+    external: true
+  ca.crt:
+    external: true
+  logstash.crt:
+    external: true
+  logstash.key:
+    external: true
+
+configs:
+  nginx.conf:
+    external: true
+  logstash.conf:
+    external: true
+      
+volumes:
+  esdata:
+    driver: local
+  nginx:
+    driver: local
+  elasticsearch:
+    driver: local
+
+networks:
+  esnet:
+    driver: overlay     
+     
+
