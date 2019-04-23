@@ -126,7 +126,7 @@ Now open PowerShell as an administrator and run the following command from the u
 
 # Chapter 3 - Checklist
 
-1. Check Services.msc on the windows box, Does the winlogbeat show as running and automatic?
+1. Check Services.msc on the Windows box, Does the winlogbeat show as running and automatic?
 2. On the Linux machine, check the output of ```docker stack ps lme``` , You should see lme_elasticsearch/lme_nginx/lme_kibana and lme_logstash all in the 'current' state of ‘running’
 3. You can now visit the website https://your_Linux_server/ and access Kibana. The username and password is provided from the script in [Chapter 3.2](#32-install-lme-the-easy-way-using-our-script).
 
