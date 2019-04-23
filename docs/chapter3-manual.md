@@ -2,22 +2,22 @@
 
 ## Chapter Overview
 In this chapter we will:
-* Install a new linux server for events to be sent to.
+* Install a new Linux server for events to be sent to.
 * Install Docker
 * Secure the machine
 * Configure TLS certificates (or you can use your own)
 * Configure Docker
 * Setup NGINX Reverse Proxy
 
-## 3.1 Patching the linux Machine
-It is important to ensure that this linux machine remains updated with a minimum of security patches. Below are guides for a selection of the linux distributions.
+## 3.1 Patching the Linux Machine
+It is important to ensure that this Linux machine remains updated with a minimum of security patches. Below are guides for a selection of the Linux distributions.
 ### 3.1.1 Ubuntu - Preferred
 If you are using the latest Ubuntu or the current LTS version of Ubuntu then the deploy.sh installer will configure updates for you. Alternatively you can follow the guide at https://help.ubuntu.com/lts/serverguide/automatic-updates.html.en
 ### 3.1.2 Debian - Supported
 Debian - https://wiki.debian.org/UnattendedUpgrades
 
 ## 3.2 Installing Docker - Manual method
-The LME software stack is packaged as docker images to enable the product to run anywhere docker can. You can either install Docker Community edition manually  (https://www.docker.com/products/docker-engine) or use the convenience script.
+The LME software stack is packaged as Docker images to enable the product to run anywhere Docker can. You can either install Docker Community edition manually  (https://www.docker.com/products/docker-engine) or use the convenience script.
 
 ```
 curl -fsSL https://get.docker.com -o get-docker.sh
@@ -124,7 +124,7 @@ server {
 }
 ```
 
-Add this configuration to the docker configuration store using the following command:
+Add this configuration to the Docker configuration store using the following command:
 
 ```docker config create nginx.conf nginx.conf```
 
@@ -187,12 +187,12 @@ You are now ready to deploy the LME docker stack. Run the following command as r
 
 
 ## 3.5 Configuring Winlogbeat on Windows Event Collector Server
-In order for logs to get from the windows event collector to the database running on the linux server you need to install Winlogbeat.
+In order for logs to get from the Windows event collector to the database running on the Linux server you need to install Winlogbeat.
 
 
-Winlogbeat reads the event logs on the windows machine according to the configuration file provided to it. Once the event logs have been opened, Winlogbeat sends all of the new logs (and some historic) to your chosen database.
+Winlogbeat reads the event logs on the Windows machine according to the configuration file provided to it. Once the event logs have been opened, Winlogbeat sends all of the new logs (and some historic) to your chosen database.
 
-### 3.5.1 Files Required for the windows server
+### 3.5.1 Files Required for the Windows server
 You need the following files. Some of these you obtained earlier, after running the deploy script, or when manually making certificates. Others are available from the official Winlogbeat zip downloaded from the elastic site.
 
 
@@ -204,11 +204,11 @@ You need the following files. Some of these you obtained earlier, after running 
 * [winlogbeat.exe](https://www.elastic.co/downloads/beats/winlogbeat)
 
 ### 3.5.2 Winlogbeat Config
-Edit the winlogbeat.yml file and add the linux server DNS name in the appropriate place.
+Edit the winlogbeat.yml file and add the Linux server DNS name in the appropriate place.
 If your certificates are not in the same place as the locations in the file, please change this. Also, pay attention to the double slashes, these are required!
 
 ### 3.5.3 Install Winlogbeat
-Open powershell as an administrator and run 
+Open PowerShell as an administrator and run 
 ```./install-service-winlogbeat.ps1```
 
 ## 3.6 Configuring retention
@@ -228,7 +228,7 @@ You can now visit the website https://linux_server_ip/ to view your logs.
 
 
 1. Check Services.msc on the Windows box. Does the winlogbeat show as running and automatic?
-2. On the linux machine check the output of ‘docker stack ps lme’ , You should see lme_elasticsearch/lme_nginx/lme_kibana and lme_logstash all in the current state of ‘running’
+2. On the Linux machine check the output of ‘docker stack ps lme’ , You should see lme_elasticsearch/lme_nginx/lme_kibana and lme_logstash all in the current state of ‘running’
 
 ## Now move onto [Chapter 4 - Post Install Actions ](chapter4.md)
 
