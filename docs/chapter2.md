@@ -58,7 +58,7 @@ For example \\ad.testme.local\SYSVOL\ad.testme.local\Sysmon\update.bat
 
 
 ## 2.3 SCCM Deployment
-Whilst SCCM deployment is not usually the first choice for the deployment of Sysmon we have included an example install and uninstall powershell along with a detection criteria that works with SCCM.
+Whilst SCCM deployment is not usually the first choice for the deployment of Sysmon we have included an example install and uninstall PowerShell along with a detection criteria that works with SCCM.
 Files for this portion of the tutorial can be found [here](/Chapter%202%20Files/SCCM%20Deployment/)
 
 
