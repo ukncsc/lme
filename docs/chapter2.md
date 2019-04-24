@@ -31,7 +31,7 @@ You will need to download the below files and copy them to an appropriate locati
 * Sysmon64.exe - https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon
 * sigcheck64.exe  - https://docs.microsoft.com/en-us/sysinternals/downloads/sigcheck
 * sysmon.xml - [SwiftOnSecurity is the recommended Sysmon config](https://github.com/SwiftOnSecurity/sysmon-config/blob/master/sysmonconfig-export.xml).
-	* **Using the SwiftOnSecurity XML will ensure the best compatability with the pre-made dashboards.**
+	* **Using the SwiftOnSecurity XML will ensure the best compatibility with the pre-made dashboards.**
 	* The SwiftOnSecurity configuration is a good starting point, and more advanced users will benefit from customisation to include/exclude events.
 	* You will need to rename the downloaded file to sysmon.xml!
 * update.bat  - From [Our GIT](/Chapter%202%20Files/GPO%20Deployment/update.bat) (Based on work by Ryan Watson & Syspanda.com)
@@ -58,7 +58,7 @@ For example \\ad.testme.local\SYSVOL\ad.testme.local\Sysmon\update.bat
 
 
 ## 2.3 SCCM Deployment
-Whilst SCCM deployment is not usually the first choice for the deployment of Sysmon we have included an example install and uninstall powershell along with a detection criteria that works with SCCM.
+Whilst SCCM deployment is not usually the first choice for the deployment of Sysmon we have included an example install and uninstall PowerShell along with a detection criteria that works with SCCM.
 Files for this portion of the tutorial can be found [here](/Chapter%202%20Files/SCCM%20Deployment/)
 
 

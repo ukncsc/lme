@@ -15,4 +15,4 @@ Figure 1: Troubleshooting overview diagram
 
 ## Common Errors
 ### Windows log with Error code 2150859027
-If you are on windows 2016 or higher and are getting Error code 2150859027, or messages about HTTP URLs not being available in your windows logs, we suggest looking at [this guide.](https://support.microsoft.com/en-in/help/4494462/events-not-forwarded-if-the-collector-runs-windows-server-2019-or-2016)
+If you are on Windows 2016 or higher and are getting Error code 2150859027, or messages about HTTP URLs not being available in your Windows logs, we suggest looking at [this guide.](https://support.microsoft.com/en-in/help/4494462/events-not-forwarded-if-the-collector-runs-windows-server-2019-or-2016)

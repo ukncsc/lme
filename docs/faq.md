@@ -17,20 +17,20 @@ When reporting an issue or suggesting improvements, it is important to include t
 
 
 ### Linux Server
-* Docker: on the linux server type ```docker --version```
-* linux: on the linux server type ```cat /etc/os-release```
-* Logstash config: on the linux server type ```sudo docker config inspect logstash.conf --pretty```
-* Nginx config: on the linux server type ```sudo docker config inspect nginx.conf --pretty```
+* Docker: on the Linux server type ```docker --version```
+* Linux: on the Linux server type ```cat /etc/os-release```
+* Logstash config: on the Linux server type ```sudo docker config inspect logstash.conf --pretty```
+* Nginx config: on the Linux server type ```sudo docker config inspect nginx.conf --pretty```
 
 
 
 
 ## Reporting a bug
-To report an issue with LME please use the github 'issues' tab at the top of the (github) page.
+To report an issue with LME please use the GitHub 'issues' tab at the top of the (GitHub) page.
 Where possible use the template seen below when filling out your issue.
 
 
-### Github Issue template
+### GitHub Issue template
 
 **Describe the issue** 
 
@@ -72,7 +72,7 @@ Add any other context about the problem here.
 
 
 ## Requesting a new feature / improvement 
-To request a new feature or improvement with LME please use the github 'issues' tab at the top of the (github) page.
+To request a new feature or improvement with LME please use the GitHub 'issues' tab at the top of the (GitHub) page.
 
 Feature requests will be discussed by two working groups to decide if the features are a good fit for the LME project. 
 Features can have three states:
@@ -81,7 +81,7 @@ Features can have three states:
 * **Accepted** - Feature will be developed - These will be added to the LME roadmap with a priority decided based on an analysis of the effort to reward.
 * **Rejected** - This feature will not be developed as it does not fit LME
 
-Please use the following template to submit your feature request via the the github issue tab 
+Please use the following template to submit your feature request via the GitHub issue tab 
 
 ### Feature Request Template
 **Is your feature request related to a problem? Please describe.**

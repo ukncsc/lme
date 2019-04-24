@@ -4,7 +4,7 @@ This guide is intended to be a step by step guide on how to import and manage GP
 ## 1.1 How To Import a GPO
 
 ### 1.1.1 - Opening GPMC
-Open the Group Policy Management Console by running ```gpmc.msc```, You can run this command by pressing windows key + r.
+Open the Group Policy Management Console by running ```gpmc.msc```, You can run this command by pressing Windows key + R.
 
 ![import a new object](gpo_pics/gpmc.jpg)
 <p align="center">
@@ -27,7 +27,7 @@ Figure 3: Name the new GPO object
 
 
 ### 1.1.3 Import Settings
-when asked to backup existing gpo just press next
+when asked to backup existing GPO just press next
 "Backup location (select the backup folder from which you will import setting)" please select the GPO folder contained within the zip you downloaded.
 
 ![import a new object](gpo_pics/import_new_object.jpg)
@@ -35,7 +35,7 @@ when asked to backup existing gpo just press next
 Figure 4: Import an existing object
 </p>
 
-After selecting the folder which contains the GPOs you will be prompted for which GPO you wish to import from the folder, make sure you import the one that matches the name of the object you just made. For example if you have made an object called lmeclients import the lme-wef-clients gpo (as shown in figure 5 below)
+After selecting the folder which contains the GPOs you will be prompted for which GPO you wish to import from the folder, make sure you import the one that matches the name of the object you just made. For example if you have made an object called lmeclients import the lme-wef-clients GPO (as shown in figure 5 below)
 
 ![select_backup](gpo_pics/select_backup.jpg)
 <p align="center">
@@ -51,7 +51,7 @@ Figure 6: Import finished screen
 
 
 
-## 1.2 Organisational units (OU)
+## 1.2 Organisational Units (OU)
 
 What is an Organisational Unit? 
 An Orgnaisational Unit can in its simplest form be thought of as a folder to contain Users, Computers and groups.

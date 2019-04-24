@@ -2,16 +2,16 @@
 
 ## Chapter Overview
 In this chapter we will:
-* Install a new linux server for events to be sent to.
+* Install a new Linux server for events to be sent to.
 * Run a script to:
-    * install docker.
-    * secure the linux server.
+    * install Docker.
+    * secure the Linux server.
     * generate certificates.
-    * deploy the LME docker stack.
+    * deploy the LME Docker stack.
 * Make the Windows server send logs to the Linux server.
 
 ## Introduction
-This section covers the installation and configuration of the Database and search functionality on a linux server. We will install the ‘ELK’ Stack from ElasticSearch for this portion.
+This section covers the installation and configuration of the Database and search functionality on a Linux server. We will install the ‘ELK’ Stack from ElasticSearch for this portion.
 
 
 What is the ELK Stack? 
@@ -30,7 +30,7 @@ During the installation guide below you will see that the steps can either been 
 
 
 ### 3.1.1 Firewall Rules
-You will need port 5044 open for the event collector to send data into the database (on the linux server), To be able to access the web interface you will need to have firewall rules in place to allow access to port 443 (HTTPS) on the linux server.
+You will need port 5044 open for the event collector to send data into the database (on the Linux server), To be able to access the web interface you will need to have firewall rules in place to allow access to port 443 (HTTPS) on the Linux server.
 
 
 ## 3.2 Install LME the easy way using our script
@@ -42,7 +42,7 @@ SSH into your Linux server and run the following commands:
 ```
 # download a copy of the LME files
 git clone https://github.com/ukncsc/lme.git
-# Change to the lme directory for the linux server files
+# Change to the lme directory for the Linux server files
 cd lme/Chapter\ 3\ Files/
 # make script executable
 chmod +x deploy.sh
@@ -121,13 +121,13 @@ In the zip file obtained from https://www.elastic.co/downloads/beats/winlogbeat
 On the windows event collector server unzip the winlogbeat file and replace 'winlogbeat.yml' with the one that came in 'files_for_windows.zip'.
 If your certificates are not in the same place as the locations in the file please change this too. Pay attention to the double slashes, these are required!
 
-Now open powershell as an administrator and run the following command from the unzipped folder: ```./install-service-winlogbeat.ps1```
+Now open PowerShell as an administrator and run the following command from the unzipped folder: ```./install-service-winlogbeat.ps1```
 
 
 # Chapter 3 - Checklist
 
-1. Check Services.msc on the windows box, Does the winlogbeat show as running and automatic?
-2. On the linux machine, check the output of ```docker stack ps lme``` , You should see lme_elasticsearch/lme_nginx/lme_kibana and lme_logstash all in the 'current' state of ‘running’
+1. Check Services.msc on the Windows box, Does the winlogbeat show as running and automatic?
+2. On the Linux machine, check the output of ```docker stack ps lme``` , You should see lme_elasticsearch/lme_nginx/lme_kibana and lme_logstash all in the 'current' state of ‘running’
 3. You can now visit the website https://your_Linux_server/ and access Kibana. The username and password is provided from the script in [Chapter 3.2](#32-install-lme-the-easy-way-using-our-script).
 
 ## Now move onto [Chapter 4 - Post Install Actions ](chapter4.md)
