@@ -104,7 +104,7 @@ These organisations spent time trialing earlier versions of LME which was critic
 * Carl Morris sharing experiences behind his [44Con presentation](https://github.com/SecureDataLabs/44Con-2018-Sysmon)
 * [SwiftOnSecurity](https://twitter.com/swiftonsecurity) for creating an open-source Sysmon configuration which we refer to.
 * [Jessica Payne](https://twitter.com/jepaynemsft) acknowledging her [WEFFLES](https://blogs.technet.microsoft.com/jepayne/2017/12/08/weffles/) blog highlighting what's possible with in-built Windows functionality.
-* [Ryan Watson](https://twitter.com/gentlemanwatson) and [Syspanda](Syspanda.com) from which the Sysmon install script was adapted from.
+* [Ryan Watson](https://twitter.com/gentlemanwatson) and [Syspanda](http://www.syspanda.com/) from which the Sysmon install script was adapted from.
 
 ### Technology Used
 * [Sysmon](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon) from the [Sysinternals team](https://docs.microsoft.com/en-us/sysinternals/) at Microsoft.
