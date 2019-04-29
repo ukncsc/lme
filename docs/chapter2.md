@@ -48,7 +48,7 @@ Figure 5: Sysvol File Layout
 ### 2.2.2 - Scheduled task GPO Policy
 This section sets up a scheduled task to run update.bat (stored on a network folder), distributed through Group Policy.
 
-Import the [LME-Sysmon-Task](/Chapter%201%20Files/lme_gpo_for_windows.zip) GPO into group policy management and link the object to a test Organisational Unit (OU). Once the GPO is confirmed as working in your environment then you can link the GPO to a larger OU to deploy LME further.
+Import the [LME-Sysmon-Task](/Chapter%202%20Files/GPO%20Deployment/sysmon_gpo.zip) GPO into group policy management and link the object to a test Organisational Unit (OU). Once the GPO is confirmed as working in your environment then you can link the GPO to a larger OU to deploy LME further.
 
 1. Open up group policy management editor
 2. Edit the Lme-Sysmon-Task GPO
