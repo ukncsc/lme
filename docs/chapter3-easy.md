@@ -106,7 +106,8 @@ If you do not have a password, but a keyfile (for example, AWS servers) then [th
 Now you need to install Winlogbeat on the Windows Event Collector. Winlogbeat reads Event Viewer on the Windows Event Collector (based upon a configuration file) and sends them to your Linux server.
 
 ### 3.3.1 Files Required
-You need the following files, some of these you obtained earlier after running the deploy script or when manually making certificates, others are available from the official [Winlogbeat zip](https://www.elastic.co/downloads/beats/winlogbeat) downloaded from the elastic site.
+
+You need the following files, some of these you obtained earlier after running the deploy script or when manually making certificates, others are available from the official [Winlogbeat zip](https://www.elastic.co/downloads/beats/winlogbeat) downloaded from the elastic site, **This must be version 7 or greater**.
 
 In 'files_for_windows.zip', copied in [step 3.2.2](#323-download-files-for-windows-event-collector)
 * root-ca.crt

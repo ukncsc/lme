@@ -9,10 +9,6 @@ http://www.apache.org/licenses/LICENSE-2.0
  
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-## IMPORTANT NOTICE
-
-We are currently aware with an issue effecting the displaying of the Kibana dashboard when using Winlogbeat v7. We are working to update the dashboards to support this version.
-
 
 ## What is Logging Made Easy (LME)?
 
