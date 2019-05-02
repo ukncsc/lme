@@ -28,6 +28,7 @@ Figure 1: Elastic Stack components
 ## 3.1 Getting Started
 During the installation guide below you will see that the steps can either been carried out automatically using the [Easy method](chapter3-easy.md) or with finer control using the [Manual method](chapter3-manual.md). Commands are highlighted in grayboxes.
 
+You will need a linux box for this portion, **The deploy script is only tested on Ubuntu 18.04 Long Term Support (LTS).**
 
 ### 3.1.1 Firewall Rules
 You will need port 5044 open for the event collector to send data into the database (on the Linux server), To be able to access the web interface you will need to have firewall rules in place to allow access to port 443 (HTTPS) on the Linux server.
