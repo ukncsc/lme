@@ -62,6 +62,7 @@ To begin your Logging Made Easy installation, you will need access to (or creati
    * If budget allows, we recommend having a dedicated server for WEC. If this is not possible, WEC can be setup on an existing server but consider the performance impacts.
    * The WEC server could be Windows Server 2016 (or later) or Windows 8.1 client (or later) 
 * A Linux server with 2 processor cores and 16GB RAM. We will install our database (Elasticsearch) and dashboard software on this machine. This is all taken care of through Docker containers. **DO NOT install Docker from Ubuntu installation wizard ('Snaps'), we install the Docker community edition later.**
+   * The deploy script has only been tested on Ubuntu 18.04 Long Term Support (LTS).
 
 ## Where to install the servers
 

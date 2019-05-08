@@ -237,6 +237,8 @@ sed -i "s/800/$DISK_80/g" docker-compose-stack-live.yml
 }
 
 function installdocker(){
+echo "install curl to get the docker convenience script"
+apt install unattended-upgrades -y
 echo "install docker"
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
@@ -329,6 +331,8 @@ docker exec -it $(docker ps -q --filter="NAME=lme_elasticsearch") bash -c /elast
 
 function install(){
 
+#install net-tools to allow backwards compatibility
+sudo apt install net-tools -y
 #move configs
 cp docker-compose-stack.yml docker-compose-stack-live.yml
 
