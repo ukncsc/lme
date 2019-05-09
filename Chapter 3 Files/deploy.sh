@@ -190,10 +190,10 @@ else
 fi
 
 #RAM_COUNT="$(awk '( $1 == "MemTotal:" ) { print $2/1048576 }' /proc/meminfo | xargs printf "%.*f\n" 0 | xargs -I bob expr bob / 2)"
-RAM_COUNT="$(awk '( $1 == "MemTotal:" ) { print $2/1048576 }' /proc/meminfo | xargs printf "%.*f\n" 0)"
+RAM_COUNT="$(awk '( $1 == "MemAvailable:" ) { print $2/1048576 }' /proc/meminfo | xargs printf "%.*f\n" 0)"
 #Table for ES ram
 if [ "$RAM_COUNT" -lt 8 ]; then
-	echo "LME Requires 8GB of RAM - Exiting"
+	echo "LME Requires 8GB of RAM Available for use - Exiting"
 	exit
 elif [ "$RAM_COUNT" -ge 8 -a "$RAM_COUNT" -le 16 ]; then 
 	ES_RAM="$(expr $RAM_COUNT - 4)"
