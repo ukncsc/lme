@@ -238,7 +238,7 @@ sed -i "s/800/$DISK_80/g" docker-compose-stack-live.yml
 
 function installdocker(){
 echo "install curl to get the docker convenience script"
-apt install unattended-upgrades -y
+apt-get install unattended-upgrades -y
 echo "install docker"
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
@@ -272,7 +272,7 @@ function autoupdates(){
 lin_ver=$( get_distribution )
 echo This OS was detected as: $lin_ver
 if [ $lin_ver == "ubuntu" ]; then
-apt install unattended-upgrades -y
+apt-get install unattended-upgrades -y
 sed -i 's#//Unattended-Upgrade::Automatic-Reboot "false";#Unattended-Upgrade::Automatic-Reboot "true";#g' /etc/apt/apt.conf.d/50unattended-upgrades
 sed -i 's#//Unattended-Upgrade::Automatic-Reboot-Time "02:00";#Unattended-Upgrade::Automatic-Reboot-Time "02:00";#g' /etc/apt/apt.conf.d/50unattended-upgrades
 
@@ -332,7 +332,7 @@ docker exec -it $(docker ps -q --filter="NAME=lme_elasticsearch") bash -c /elast
 function install(){
 
 #install net-tools to allow backwards compatibility
-sudo apt install net-tools -y
+sudo apt-get install net-tools -y
 #move configs
 cp docker-compose-stack.yml docker-compose-stack-live.yml
 
