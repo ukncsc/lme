@@ -41,6 +41,9 @@ At the time of writing only security updates are configured on Ubuntu, so please
 SSH into your Linux server and run the following commands:
 
 ```
+# Install Git client to be able to clone the LME repository
+sudo apt update
+sudo apt install git -y
 # download a copy of the LME files
 git clone https://github.com/ukncsc/lme.git
 # Change to the lme directory for the Linux server files
