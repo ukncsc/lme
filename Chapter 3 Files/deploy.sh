@@ -450,9 +450,12 @@ function uninstall(){
 
 function update(){
 
-git pull
-cp docker-compose-stack.yml docker-compose-stack-live.yml
-configuredocker
+	git pull
+	cp docker-compose-stack.yml docker-compose-stack-live.yml
+	docker stack rm lme
+	docker config rm logstash.conf nginx.conf
+	docker config create logstash.conf logstash.conf
+	configuredocker
 	deploylme
 	configelasticsearch
 }
