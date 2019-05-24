@@ -222,7 +222,7 @@ DISK_SIZE="$(echo $DF_OUTPUT | cut -d ' ' -f 4)"
 #make it stripped disk size
 DISK_SIZE_ROUND="$(echo ${DISK_SIZE/G/} | xargs printf "%.*f\n" 0)"
 
-#lets do math to get 80%
+#lets do math to get 75% (%80 is low watermark for ES but as curator uses this we want to delete data *before* the disk gets full)
 DISK_80="$(( $DISK_SIZE_ROUND*80/100 ))"
 
 
