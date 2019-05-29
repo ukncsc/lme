@@ -1,7 +1,7 @@
 #!/bin/bash
 ##########################
 # LME Deploy Script 	 #
-# Version 0.1 - 27/03/19 #
+# Version 0.2 - 28/05/19 #
 ##########################
 # This script configures a host for LME including generating certificates and populating configuration files.
 # A number of arguments can be passed to this script to override the default options
@@ -178,6 +178,9 @@ docker config create nginx.conf nginx.conf
 
 #add logstash conf to config
 docker config create logstash.conf logstash.conf
+
+#add os mapping to config
+docker config create osmap.csv osmap.csv
 }
 
 function configuredocker() {
@@ -443,7 +446,7 @@ echo "####################################################################"
 function uninstall(){
 	docker stack rm lme
 	docker secret rm nginx.crt nginx.key nginx_plainpass nginx_unpw winlogbeat.crt winlogbeat.key ca.crt logstash.crt logstash.key
-	docker config rm logstash.conf nginx.conf
+	docker config rm logstash.conf nginx.conf osmap.csv
 	rm -r certs
 	rm -r nginx.conf
 }
@@ -453,8 +456,10 @@ function update(){
 	git pull
 	cp docker-compose-stack.yml docker-compose-stack-live.yml
 	docker stack rm lme
-	docker config rm logstash.conf nginx.conf
+	docker config rm logstash.conf nginx.conf osmap.csv
 	docker config create logstash.conf logstash.conf
+	docker config create nginx.conf nginx.conf
+	docker config create osmap.csv osmap.csv
 	configuredocker
 	deploylme
 	configelasticsearch
