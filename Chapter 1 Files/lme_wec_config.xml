@@ -2,28 +2,28 @@
 
 <!-- ########################## -->
 <!-- # LME WEC Config         # -->
-<!-- # Version 0.1 - 27/03/19 # -->
+<!-- # Version 0.2 - 28/05/19 # -->
 <!-- ########################## -->
 
 
 
 <Subscription xmlns="http://schemas.microsoft.com/2006/03/windows/events/subscription">
-	<SubscriptionId>lme</SubscriptionId>
-	<SubscriptionType>SourceInitiated</SubscriptionType>
-	<Description>Logging Made Easy</Description>
-	<Enabled>true</Enabled>
-	<Uri>http://schemas.microsoft.com/wbem/wsman/1/windows/EventLog</Uri>
-	<ConfigurationMode>Normal</ConfigurationMode>
-	<Delivery Mode="Push">
-		<Batching>
-			<MaxLatencyTime>900000</MaxLatencyTime>
-		</Batching>
-		<PushSettings>
-			<Heartbeat Interval="900000"/>
-		</PushSettings>
-	</Delivery>
-	<Query>
-		<![CDATA[
+  <SubscriptionId>lme</SubscriptionId>
+  <SubscriptionType>SourceInitiated</SubscriptionType>
+  <Description>Logging Made Easy</Description>
+  <Enabled>true</Enabled>
+  <Uri>http://schemas.microsoft.com/wbem/wsman/1/windows/EventLog</Uri>
+  <ConfigurationMode>Normal</ConfigurationMode>
+  <Delivery Mode="Push">
+    <Batching>
+      <MaxLatencyTime>900000</MaxLatencyTime>
+    </Batching>
+    <PushSettings>
+      <Heartbeat Interval="900000"/>
+    </PushSettings>
+  </Delivery>
+  <Query>
+    <![CDATA[
 
 
 <QueryList>
@@ -230,23 +230,43 @@
     <!-- An account was logged off--> 
     <Select Path="Security">*[System[(EventID=4634)]]</Select>
   </Query>
+  <Query Id="53" Path="Security">
+    <!-- An account was locked out--> 
+    <Select Path="Security">*[System[(EventID=4740)]]</Select>
+  </Query>
+  <Query Id="54" Path="System">
+    <!-- Windows update install started--> 
+    <Select Path="System">*[System[(EventID=43)]]</Select>
+  </Query>
+  <Query Id="55" Path="System">
+    <!-- Windows update install success--> 
+    <Select Path="System">*[System[(EventID=19)]]</Select>
+  </Query>
+  <Query Id="56" Path="System">
+    <!-- Unexpected Shutdown/Bluescreen--> 
+    <Select Path="System">*[System[(EventID=41)]]</Select>
+  </Query>
+  <Query Id="56" Path="System">
+    <!-- Windows update install failed--> 
+    <Select Path="System">*[System[(EventID=20)]]</Select>
+  </Query>
 </QueryList>
 
                 
-		
-		]]>
-	</Query>
-	<ReadExistingEvents>false</ReadExistingEvents>
-	<TransportName>HTTP</TransportName>
-	<ContentFormat>Events</ContentFormat>
-	<Locale Language="en-US"/>
-	<LogFile>ForwardedEvents</LogFile>
-	<PublisherName>Microsoft-Windows-EventCollector</PublisherName>
-	<AllowedSourceNonDomainComputers>
-		<AllowedIssuerCAList>
-		</AllowedIssuerCAList>
-	</AllowedSourceNonDomainComputers>
-	<AllowedSourceDomainComputers>O:NSG:BAD:P(A;;GA;;;DC)(A;;GA;;;DD)S:</AllowedSourceDomainComputers>
+    
+    ]]>
+  </Query>
+  <ReadExistingEvents>false</ReadExistingEvents>
+  <TransportName>HTTP</TransportName>
+  <ContentFormat>Events</ContentFormat>
+  <Locale Language="en-US"/>
+  <LogFile>ForwardedEvents</LogFile>
+  <PublisherName>Microsoft-Windows-EventCollector</PublisherName>
+  <AllowedSourceNonDomainComputers>
+    <AllowedIssuerCAList>
+    </AllowedIssuerCAList>
+  </AllowedSourceNonDomainComputers>
+  <AllowedSourceDomainComputers>O:NSG:BAD:P(A;;GA;;;DC)(A;;GA;;;DD)S:</AllowedSourceDomainComputers>
 </Subscription>
 
 

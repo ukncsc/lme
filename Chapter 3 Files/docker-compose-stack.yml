@@ -36,6 +36,9 @@ services:
       - source: logstash.conf
         target: /usr/share/logstash/pipeline/logstash.conf
         mode: 0444
+      - source: osmap.csv
+        target: /tmp/osmap.csv
+        mode: 0444
     secrets:
       - ca.crt
       - logstash.crt
@@ -83,6 +86,8 @@ configs:
   nginx.conf:
     external: true
   logstash.conf:
+    external: true
+  osmap.csv:
     external: true
       
 volumes:
