@@ -1,7 +1,7 @@
 #!/bin/bash
 ##########################
 # LME Deploy Script 	 #
-# Version 0.2 - 28/05/19 #
+# Version 0.3 - 13/06/19 #
 ##########################
 # This script configures a host for LME including generating certificates and populating configuration files.
 # A number of arguments can be passed to this script to override the default options
@@ -241,7 +241,7 @@ sed -i "s/800/$DISK_80/g" docker-compose-stack-live.yml
 
 function installdocker(){
 echo "install curl to get the docker convenience script"
-apt-get install unattended-upgrades -y
+apt-get install curl -y
 echo "install docker"
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
