@@ -68,6 +68,9 @@ The filter setting is located at "Computer Configuration/Policies/Administrative
 2. Run a command prompt, change to the directory containing the wec_config.xml file you just copied.
 3. Run the command ```wecutil cs lme_wec_config.xml``` as an administrator.
 
+**Note if you are using Windows Server 2016 (version 1903 or greater) or Windows Server 2019 you will probably need to apply the microsoft fix to the Windows collector box**
+
+You can find more details about this issue and the commands to run to fix this [Here](https://support.microsoft.com/en-in/help/4494462/events-not-forwarded-if-the-collector-runs-windows-server-2019-or-2016)
 ________________
 
 ## Chapter 1 - Checklist
