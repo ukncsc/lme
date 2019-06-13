@@ -2,7 +2,7 @@
 
 <!-- ########################## -->
 <!-- # LME WEC Config         # -->
-<!-- # Version 0.2 - 28/05/19 # -->
+<!-- # Version 0.3 - 13/06/19 # -->
 <!-- ########################## -->
 
 
@@ -13,7 +13,7 @@
   <Description>Logging Made Easy</Description>
   <Enabled>true</Enabled>
   <Uri>http://schemas.microsoft.com/wbem/wsman/1/windows/EventLog</Uri>
-  <ConfigurationMode>Normal</ConfigurationMode>
+  <ConfigurationMode>Custom</ConfigurationMode>
   <Delivery Mode="Push">
     <Batching>
       <MaxLatencyTime>900000</MaxLatencyTime>
