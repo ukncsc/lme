@@ -169,13 +169,18 @@ Now add this file to the docker secrets store with
 
 ```docker secret create nginx_unpw nginx_unpw.txt```
 ### 3.3.7 Logstash Configuration
-Copy the logstash configuration obtained from [github](/Chapter%203%20Files/logstash.conf) onto the docker configuration store
+Copy the logstash configuration obtained from [GitHub](/Chapter%203%20Files/logstash.conf) onto the docker configuration store
 
 
 ```docker config create logstash.conf logstash.conf```
 
-### 3.3.8 Build Curator
-You need to manually build the curator service. You can do this by running:
+### 3.3.8 Logstash Extra Configuration
+Copy the os build version to os friendly name mapping file from [GitHub](/Chapter%203%20Files/osmap.csv) onto the docker configuration store.
+
+```docker config create osmap.csv osmap.csv```
+
+### 3.3.9 Build Curator
+You need to manually build the curator service, the files for this docker image can be found in [Chapter 3 Files on GitHub](/Chapter%203%20Files/curator). You can do this by running:
 
 ```docker build -t lme/curator curator/ --no-cache```
 
