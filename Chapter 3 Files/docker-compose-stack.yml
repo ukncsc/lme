@@ -6,28 +6,37 @@ version: '3.3'
 services:
   
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.5.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.1.1
     environment:
       - cluster.name=loggingmadeeasy-es
-        #      - bootstrap.memory_lock=true
+      - node.name=es01
+      - discovery.type=single-node
+      - xpack.security.enabled=true
       - "ES_JAVA_OPTS=-Xmsram-countg -Xmxram-countg"
     volumes:
       - esdata:/usr/share/elasticsearch/data
+    secrets:
+      - source: elasticsearch.keystore
+        target: /usr/share/elasticsearch/config/elasticsearch.keystore
     networks:
       - esnet
 
   kibana:
-    image: docker.elastic.co/kibana/kibana-oss:6.5.1
+    image: docker.elastic.co/kibana/kibana:7.1.1
     environment:
-      SERVER_NAME: kibana
-      ELASTICSEARCH_URL: http://elasticsearch:9200
+      - SERVER_NAME=kibana
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - elasticsearch.username="kibana"
+      - elasticsearch.password="kibanapassword"
     networks:
       - esnet
-        #    ports:
-        #      - 5601:5601
+    ports:
+      - 5601:5601
 
   logstash:
-    image: docker.elastic.co/logstash/logstash-oss:6.5.1
+    image: docker.elastic.co/logstash/logstash:7.1.1
+    environment:
+      - elasticsearch.username=logstash_system
     ports:
       - 5044:5044 
     networks:
@@ -44,47 +53,18 @@ services:
       - logstash.crt
       - logstash.key
 
-  curator:
-    image:  lme/curator:latest
-    networks:
-      - esnet
-    environment:
-      RETENTION_DAYS: 180  
-      RETENTION_GB: 800
-  nginx:
-    image: nginx
-    ports:
-      - 443:443
-    secrets:
-      - nginx.crt
-      - nginx.key
-      - source: nginx_unpw
-        target: nginx_unpw
-        mode: 0444
-    configs:
-      - source: nginx.conf
-        target: /etc/nginx/conf.d/site.conf
-        mode: 0444
-    networks:
-      - esnet
 
 secrets:
-  nginx.crt:
-    external: true
-  nginx.key:
-    external: true
-  nginx_unpw:
-    external: true
   ca.crt:
     external: true
   logstash.crt:
     external: true
   logstash.key:
     external: true
+  elasticsearch.keystore:
+    external: true
 
 configs:
-  nginx.conf:
-    external: true
   logstash.conf:
     external: true
   osmap.csv:
@@ -92,10 +72,6 @@ configs:
       
 volumes:
   esdata:
-    driver: local
-  nginx:
-    driver: local
-  elasticsearch:
     driver: local
 
 networks:

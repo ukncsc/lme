@@ -4,8 +4,7 @@
 # Version 0.3 - 13/06/19 #
 ##########################
 # This script configures a host for LME including generating certificates and populating configuration files.
-# A number of arguments can be passed to this script to override the default options
-# "-c true" - use self made certs placed in certs/nginx.crt and certs/nginx.key
+
 
 
 function generatepassword() {
@@ -59,27 +58,6 @@ echo "subjectKeyIdentifier=hash" >> certs/root-ca.cnf
 #sign the root ca
 echo "Sign root CA"
 openssl x509 -req  -days 3650  -in certs/root-ca.csr -signkey certs/root-ca.key -sha256 -out certs/root-ca.crt -extfile certs/root-ca.cnf -extensions root_ca
-
-##nginx
-#make a new key for nginx (proxy infront of kibana)
-echo "Making nginx Cert"
-openssl genrsa -out certs/nginx.key 4096
-
-#make a cert signing request for nginx
-openssl req -new -key certs/nginx.key -out certs/nginx.csr -sha256 -subj '/C=GB/ST=UK/L=London/O=Docker/CN=Kibana'
-
-#set openssl so that this cert can only perform server auth and cannot sign certs
-echo "[server]" > certs/nginx.cnf
-echo "authorityKeyIdentifier=keyid,issuer" >> certs/nginx.cnf
-echo "basicConstraints = critical,CA:FALSE" >> certs/nginx.cnf
-echo "extendedKeyUsage=serverAuth" >> certs/nginx.cnf
-echo "keyUsage = critical, digitalSignature, keyEncipherment" >> certs/nginx.cnf
-#echo "subjectAltName = DNS:localhost, IP:127.0.0.1" >> certs/nginx.cnf
-echo "subjectKeyIdentifier=hash" >> certs/nginx.cnf
-
-#sign the nginx cert
-echo "Sign nginx cert"
-openssl x509 -req -days 750 -in certs/nginx.csr -sha256 -CA certs/root-ca.crt -CAkey certs/root-ca.key -CAcreateserial -out certs/nginx.crt -extfile certs/nginx.cnf -extensions server
 
 
 ##logstash server
@@ -135,46 +113,15 @@ echo "add certs and keys"
 #ca cert
 docker secret create ca.crt certs/root-ca.crt
 
-#nginx
-docker secret create nginx.key certs/nginx.key
-docker secret create nginx.crt certs/nginx.crt
 
 #logstash
 docker secret create logstash.key certs/logstash.key
 docker secret create logstash.crt certs/logstash.crt
 }
 
-function confignginx() {
-#create nginx conf
-echo "##########################" > nginx.conf
-echo "# LME Deploy Script 	   #" >> nginx.conf
-echo "# Version 0.1 - 27/03/19 #" >> nginx.conf
-echo "##########################" >> nginx.conf
-echo "upstream kibanaus {" >> nginx.conf
-echo "server kibana:5601;" >> nginx.conf
-echo "}" >> nginx.conf
-echo "server {" >> nginx.conf
-echo "listen                443 ssl;" >> nginx.conf
-echo "server_name           localhost;" >> nginx.conf
-echo ""
-echo "ssl_protocols TLSv1.2 TLSv1.3;" >> nginx.conf
-echo "ssl_prefer_server_ciphers on;" >> nginx.conf
-echo "ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384;" >> nginx.conf
-echo ""
-echo "ssl_certificate       /run/secrets/nginx.crt;" >> nginx.conf
-echo "ssl_certificate_key   /run/secrets/nginx.key;" >> nginx.conf
-echo " " >> nginx.conf
-echo "location / {" >> nginx.conf
-echo "auth_basic \"LME Admin\";" >> nginx.conf
-echo "auth_basic_user_file /run/secrets/nginx_unpw;" >> nginx.conf
-echo "proxy_pass http://kibanaus;" >> nginx.conf
-echo "}" >> nginx.conf
-echo "}" >> nginx.conf
-}
+
 
 function provisionconfig() {
-#add nginx conf to containers
-docker config create nginx.conf nginx.conf
 
 #add logstash conf to config
 docker config create logstash.conf logstash.conf
@@ -234,7 +181,7 @@ echo "We think your main disk is $DISK_SIZE on $DISK_DEV"
 echo "We are assigning $DISK_80 G for log storage"
 
 #lets change the value in the config now
-sed -i "s/800/$DISK_80/g" docker-compose-stack-live.yml
+#sed -i "s/800/$DISK_80/g" docker-compose-stack-live.yml
 
 
 }
@@ -373,23 +320,11 @@ elif [ "$selfsignedyn" == "n" ]; then
 
 echo "Please make sure you have the following certificates named correctly"
 echo "./certs/root-ca.crt"
-echo "./certs/nginx.key"
-echo "./certs/nginx.crt"
 echo "./certs/logstash.crt"
 echo "./certs/logstash.key"
 
 echo "checking for root-ca.crt"
 if [ ! -f ./certs/root-ca.crt ]; then
-    echo "File not found!"
-    exit
-fi
-echo "checking for nginx.key"
-if [ ! -f ./certs/nginx.key ]; then
-    echo "File not found!"
-    exit
-fi
-echo "checking for nginx.crt"
-if [ ! -f ./certs/nginx.crt ]; then
     echo "File not found!"
     exit
 fi
@@ -412,6 +347,8 @@ initdocker
 
 
 populatecerts
+
+docker secret create elasticsearch.keystore elasticsearch.keystore
 
 else
 echo "Not a valid option"
@@ -445,7 +382,7 @@ echo "####################################################################"
 
 function uninstall(){
 	docker stack rm lme
-	docker secret rm nginx.crt nginx.key nginx_plainpass nginx_unpw winlogbeat.crt winlogbeat.key ca.crt logstash.crt logstash.key
+	docker secret rm nginx.crt nginx.key nginx_plainpass nginx_unpw winlogbeat.crt winlogbeat.key ca.crt logstash.crt logstash.key elasticsearch.keystore
 	docker config rm logstash.conf nginx.conf osmap.csv
 	rm -r certs
 	rm -r nginx.conf
@@ -458,7 +395,6 @@ function update(){
 	docker stack rm lme
 	docker config rm logstash.conf nginx.conf osmap.csv
 	docker config create logstash.conf logstash.conf
-	docker config create nginx.conf nginx.conf
 	docker config create osmap.csv osmap.csv
 	configuredocker
 	deploylme
