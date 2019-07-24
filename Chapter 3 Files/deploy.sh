@@ -317,7 +317,7 @@ sed -i 's#//Unattended-Upgrade::Automatic-Reboot "false";#Unattended-Upgrade::Au
 sed -i 's#//Unattended-Upgrade::Automatic-Reboot-Time "02:00";#Unattended-Upgrade::Automatic-Reboot-Time "02:00";#g' /etc/apt/apt.conf.d/50unattended-upgrades
 
 
-autoupdatesfile="/etc/apt/apt.conf.d/20auto-upgrades"
+auto_os_updatesfile="/etc/apt/apt.conf.d/20auto-upgrades"
 apt_UPL_0='APT::Periodic::Update-Package-Lists "0";'
 apt_UPL_1='APT::Periodic::Update-Package-Lists "1";'
 
@@ -329,25 +329,25 @@ apt_DUP_1='APT::Periodic::Download-Upgradeable-Packages "1";'
 
 
 #check if package list is set to 1 or 0 and then make sure its 1 if its not set then set it
-if [ ! -z $( grep "$apt_UPL_0" "$autoupdatesfile" -o grep "$apt_UPL_1" "$autoupdatesfile" ) ]; then
-sed -i "s#$apt_UPL_0#$apt_UPL_1#g" $autoupdatesfile
+if [ ! -z $( grep "$apt_UPL_0" "$auto_os_updatesfile" -o grep "$apt_UPL_1" "$auto_os_updatesfile" ) ]; then
+sed -i "s#$apt_UPL_0#$apt_UPL_1#g" $auto_os_updatesfile
 else
-echo $apt_UPL_1 >> $autoupdatesfile
+echo $apt_UPL_1 >> $auto_os_updatesfile
 fi
 
 #check unattended upgrade is set to 1 or 0 and then make sure its 1 if its not set then set it
-if [ ! -z $( grep "$apt_UU_0" "$autoupdatesfile" -o grep "$apt_UU_1" "$autoupdatesfile" ) ]; then
-sed -i "s#$apt_UU_0#$apt_UU_1#g" $autoupdatesfile
+if [ ! -z $( grep "$apt_UU_0" "$auto_os_updatesfile" -o grep "$apt_UU_1" "$auto_os_updatesfile" ) ]; then
+sed -i "s#$apt_UU_0#$apt_UU_1#g" $auto_os_updatesfile
 else
-echo $apt_UU_1 >> $autoupdatesfile
+echo $apt_UU_1 >> $auto_os_updatesfile
 fi
 
 
 #check download packages is set to 1 or 0 and then make sure its 1 if its not set then set it
-if [ ! -z $( grep "$apt_DUP_0" "$autoupdatesfile" -o grep "$apt_DUP_1" "$autoupdatesfile" ) ]; then
-sed -i "s#$apt_DUP_0#$apt_DUP_1#g" $autoupdatesfile
+if [ ! -z $( grep "$apt_DUP_0" "$auto_os_updatesfile" -o grep "$apt_DUP_1" "$auto_os_updatesfile" ) ]; then
+sed -i "s#$apt_DUP_0#$apt_DUP_1#g" $auto_os_updatesfile
 else
-echo $apt_DUP_1 >> $autoupdatesfile
+echo $apt_DUP_1 >> $auto_os_updatesfile
 fi
 
 
@@ -390,7 +390,7 @@ read -e -p "Enter the DNS name that winlogbeat uses to communicate with this box
 echo "[x] Configuring winlogbeat config and certificates to use $logstaship as the IP and $logstashcn as the DNS"
 
 #enable auto updates if ubuntu
-autoupdates
+auto_os_updates
 
 read -e -p "This script will use self signed certificates for communication and encryption, Do you want to continue with self signed certificates? ([y]es/[n]o): " -i "y" selfsignedyn
 
