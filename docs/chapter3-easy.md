@@ -39,18 +39,18 @@ You will need port 5044 open for the event collector to send data into the datab
 
 At the time of writing only security updates are configured on Ubuntu, so please install Ubuntu on a new virtual or physical machine. You may have already done this as part of the pre-requisites in the initial readme file.
 
-SSH into your Linux server and run the following commands:
+SSH into your Linux server and run the 10.following commands:
 
 ```
 # Install Git client to be able to clone the LME repository
 sudo apt update
 sudo apt install git -y
 # download a copy of the LME files
-git clone https://github.com/ukncsc/lme.git /opt/lme/
+sudo git clone https://github.com/ukncsc/lme.git /opt/lme/
 # Change to the lme directory for the Linux server files
 cd /opt/lme/Chapter\ 3\ Files/
 # make script executable
-chmod +x deploy.sh
+sudo chmod +x deploy.sh
 # execute script with root privileges
 sudo ./deploy.sh install
 ```
