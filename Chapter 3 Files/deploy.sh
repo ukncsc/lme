@@ -9,8 +9,9 @@
 function generatepasswords() {
 elastic_user_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 kibana_system_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
-logstash_system_pass==$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
-logstash_writer==$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+logstash_system_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+logstash_writer=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+update_user_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 }
 
 function setpasswords() {
@@ -256,7 +257,6 @@ else
         echo "vm.max_map_count=262144" >> /etc/sysctl.conf
 fi
 
-#RAM_COUNT="$(awk '( $1 == "MemTotal:" ) { print $2/1048576 }' /proc/meminfo | xargs printf "%.*f\n" 0 | xargs -I bob expr bob / 2)"
 RAM_COUNT="$(awk '( $1 == "MemAvailable:" ) { print $2/1048576 }' /proc/meminfo | xargs printf "%.*f\n" 0)"
 #Table for ES ram
 if [ "$RAM_COUNT" -lt 8 ]; then
@@ -279,28 +279,7 @@ sed -i "s/ram-count/$ES_RAM/g" docker-compose-stack-live.yml
 
 sed -i "s/insertkibanapasswordhere/$kibana_system_pass/g" docker-compose-stack-live.yml
 
-#show ext4 disk
-DF_OUTPUT="$(df -h -l -t ext4 --output=source,size)"
 
-#pull dev name
-DISK_DEV="$(echo $DF_OUTPUT | cut -d ' ' -f 3)"
-
-#pull dev size
-DISK_SIZE="$(echo $DF_OUTPUT | cut -d ' ' -f 4)"
-
-#make it stripped disk size
-DISK_SIZE_ROUND="$(echo ${DISK_SIZE/G/} | xargs printf "%.*f\n" 0)"
-
-#lets do math to get 75% (%80 is low watermark for ES but as curator uses this we want to delete data *before* the disk gets full)
-DISK_80="$(( $DISK_SIZE_ROUND*80/100 ))"
-
-
-
-echo -e "\e[32m[x]\e[0m We think your main disk is $DISK_SIZE on $DISK_DEV"
-echo -e "\e[32m[x]\e[0m We are assigning $DISK_80 G for log storage"
-
-#lets change the value in the config now
-sed -i "s/800/$DISK_80/g" docker-compose-stack-live.yml
 
 
 }
@@ -333,7 +312,72 @@ get_distribution() {
         echo "$lsb_dist"
 }
 
-function autoupdates(){
+function dashboard_update(){
+mkdir /opt/lme
+cp dashboard_update.sh /opt/lme/
+chmod 700 /opt/lme/dashboard_update.sh
+
+echo -e "\e[32m[x]\e[0m Updating logstash configuration with logstash writer"
+sed -i "s/dashboardupdatepassword/$dashboard_update/g" /opt/lme/dashboard_update.sh
+
+echo -e "\e[32m[x]\e[0m Creating dashboard update crontab"
+crontab -l | { cat; echo "0 1 * * * /opt/lme/dashboard_update.sh"; } | crontab -
+}
+
+function auto_lme_update(){
+mkdir /opt/lme
+cp lme_update.sh /opt/lme/
+chmod 700 /opt/lme/lme_update.sh
+
+echo -e "\e[32m[x]\e[0m Creating LME update crontab"
+crontab -l | { cat; echo "30 1 * * * /opt/lme/lme_update.sh"; } | crontab -
+
+}
+
+function data_retention(){
+
+#show ext4 disk
+DF_OUTPUT="$(df -h -l -t ext4 --output=source,size)"
+
+#pull dev name
+DISK_DEV="$(echo $DF_OUTPUT | cut -d ' ' -f 3)"
+
+#pull dev size
+DISK_SIZE="$(echo $DF_OUTPUT | cut -d ' ' -f 4)"
+
+#make it stripped disk size
+DISK_SIZE_ROUND="$(echo ${DISK_SIZE/G/} | xargs printf "%.*f\n" 0)"
+
+#lets do math to get 75% (%80 is low watermark for ES but as curator uses this we want to delete data *before* the disk gets full)
+DISK_80="$(( $DISK_SIZE_ROUND*80/100 ))"
+
+
+
+echo -e "\e[32m[x]\e[0m We think your main disk is $DISK_SIZE on $DISK_DEV"
+echo -e "\e[32m[x]\e[0m We are assigning $DISK_80 G for log storage"
+
+curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https://127.0.0.1:9200/_ilm/policy/lme_ilm_policy" -H 'Content-Type: application/json' -d'
+{
+    "policy": {
+        "phases": {
+            "hot": {
+                "actions": {}
+            },
+            "delete": {
+                "min_age": "'$DISK_80'd",
+                "actions": {
+                    "delete": {}
+                }
+            }
+        }
+    }
+}
+'
+
+}
+
+
+function auto_os_updates(){
 
 lin_ver=$( get_distribution )
 echo This OS was detected as: $lin_ver
@@ -428,6 +472,7 @@ generatecerts
 
 
 
+
 elif [ "$selfsignedyn" == "n" ]; then
 
 echo "Please make sure you have the following certificates named correctly"
@@ -462,13 +507,6 @@ if [ ! -f ./certs/logstash.key ]; then
     echo -e "\e[31m[X]\e[0m File not found!"
     exit
 fi
-
-
-
-
-
-
-
 
 
 else

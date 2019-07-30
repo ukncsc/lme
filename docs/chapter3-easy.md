@@ -6,6 +6,7 @@ In this chapter we will:
 * Run a script to:
     * install Docker.
     * secure the Linux server.
+    * secure the elasticsearch server.
     * generate certificates.
     * deploy the LME Docker stack.
 * Make the Windows server send logs to the Linux server.
@@ -45,9 +46,9 @@ SSH into your Linux server and run the following commands:
 sudo apt update
 sudo apt install git -y
 # download a copy of the LME files
-git clone https://github.com/ukncsc/lme.git
+git clone https://github.com/ukncsc/lme.git /opt/lme/
 # Change to the lme directory for the Linux server files
-cd lme/Chapter\ 3\ Files/
+cd /opt/lme/Chapter\ 3\ Files/
 # make script executable
 chmod +x deploy.sh
 # execute script with root privileges
@@ -62,18 +63,21 @@ Running the above commands will:
 5) Changes Elasticsearch configuration, including retention based upon disk size.
 
 
-The deploy script will output a username and password for use when accessing the dashboard. 
+The deploy script will output an number of usernames and passwords for use when accessing the dashboard and for the internal systems. 
 
-The username and password details will be provided in a message similar to below.
+The usernames and passwords will be provided in a message similar to below.
 
 ```
-####################################################################
-## KIBANA Credentials are (these will not be accessible again!!!!)                
-## User: admin
-## Password: 32 Character Password
-####################################################################
+##################################################################################"
+## KIBANA/Elasticsearch Credentials are (these will not be accesible again!!!!) ##"
+## elastic:<PASSWORD>"
+## elastic_user_pass:<PASSWORD>"
+## kibana_system_pass:<PASSWORD>"
+## logstash_system:<PASSWORD>"
+## logstash_writer:<PASSWORD>"
+##################################################################################"
 ```
-**It is important that this is safely stored. Access to this password would allow an attacker to erase the logs.**
+**It is important that these are safely stored. Access to these passwords would allow an attacker to erase the logs.**
 
 ### 3.2.2 Changing default retention policy
 The default retention will be calculated based upon 80% of the machines disk size. The calculated size will be displayed as an output of the script.
