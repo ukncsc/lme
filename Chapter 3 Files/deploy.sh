@@ -60,6 +60,34 @@ curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https
 echo -e "\e[32m[x]\e[0m Updating logstash configuration with logstash writer"
 sed -i "s/insertlogstashwriterpasswordhere/$logstash_writer/g" logstash.conf
 
+echo -e "\e[32m[x]\e[0m creating update role (dashboards)"
+curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/role/dashboard_update" -H 'Content-Type: application/json' -d'
+{
+  "cluster": ["monitor"], 
+  "indices": [
+    {
+      "names": [], 
+      "privileges": []  
+    }
+  ]
+}
+'
+
+
+echo -e "\e[32m[x]\e[0m creating update user (dashboards)"
+curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/dashboard_update" -H 'Content-Type: application/json' -d'
+{
+  "password" : "dashboard_update",
+  "roles" : [ "dashboard_update"],
+  "full_name" : "Internal dashboard update User"
+  }
+'
+
+echo -e "\e[32m[x]\e[0m setting update user password (dashboards)"
+curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/dashboard_update/_password" -H 'Content-Type: application/json' -d' { "password" : "'"$update_user_pass"'"} '
+
+
+
 
 
 }
@@ -68,13 +96,12 @@ function zipfiles(){
 #copy them to home to start with
 apt-get install zip -y
 mkdir /tmp/lme
-cp ~/lme/Chapter\ 3\ Files/winlogbeat.yml /tmp/lme/
-cp ~/lme/Chapter\ 3\ Files/certs/wlbclient.crt /tmp/lme/
-cp ~/lme/Chapter\ 3\ Files/certs/wlbclient.key /tmp/lme/
-cp ~/lme/Chapter\ 3\ Files/certs/root-ca.crt /tmp/lme/
+cp /opt/lme/Chapter\ 3\ Files/winlogbeat.yml /tmp/lme/
+cp /opt/lme/Chapter\ 3\ Files/certs/wlbclient.crt /tmp/lme/
+cp /opt/lme/Chapter\ 3\ Files/certs/wlbclient.key /tmp/lme/
+cp /opt/lme/Chapter\ 3\ Files/certs/root-ca.crt /tmp/lme/
 sed -i "s/logstash_dns_name/$logstashcn/g" /tmp/lme/winlogbeat.yml
-zip -r ~/files_for_windows.zip /tmp/lme
-chown ubuntu:ubuntu ~/files_for_windows.zip
+zip -r opt/lme/files_for_windows.zip /tmp/lme
 }
 
 
@@ -459,6 +486,16 @@ setpasswords
 configelasticsearch
 zipfiles
 
+#cron lme update
+auto_lme_update
+
+#cron dash update
+dashboard_update
+
+#ILM
+data_retention
+
+
 echo "##################################################################################"
 echo "## KIBANA/Elasticsearch Credentials are (these will not be accesible again!!!!) ##"
 echo "## elastic:$elastic_user_pass"
@@ -466,6 +503,7 @@ echo "## elastic_user_pass:$elastic_user_pass"
 echo "## kibana_system_pass:$kibana_system_pass"
 echo "## logstash_system:$logstash_system_pass"
 echo "## logstash_writer:$logstash_writer"
+echo "## update_user:$update_user_pass"
 echo "##################################################################################"
 }
 
