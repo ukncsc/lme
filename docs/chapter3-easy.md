@@ -49,8 +49,6 @@ sudo apt install git -y
 sudo git clone https://github.com/ukncsc/lme.git /opt/lme/
 # Change to the lme directory for the Linux server files
 cd /opt/lme/Chapter\ 3\ Files/
-# make script executable
-sudo chmod +x deploy.sh
 # execute script with root privileges
 sudo ./deploy.sh install
 ```
