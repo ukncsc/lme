@@ -61,14 +61,15 @@ curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https
 echo -e "\e[32m[x]\e[0m Updating logstash configuration with logstash writer"
 sed -i "s/insertlogstashwriterpasswordhere/$logstash_writer/g" logstash.conf
 
+#create role, Only needs kibana perms so the other data is just falsified. 
 echo -e "\e[32m[x]\e[0m creating update role (dashboards)"
 curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/role/dashboard_update" -H 'Content-Type: application/json' -d'
 {
   "cluster": ["monitor"], 
   "indices": [
     {
-      "names": [], 
-      "privileges": []  
+      "names": ["Notarealindex"], 
+      "privileges": ["read"]  
     }
   ]
 }
@@ -313,7 +314,6 @@ get_distribution() {
 }
 
 function dashboard_update(){
-mkdir /opt/lme
 cp dashboard_update.sh /opt/lme/
 chmod 700 /opt/lme/dashboard_update.sh
 
@@ -325,7 +325,6 @@ crontab -l | { cat; echo "0 1 * * * /opt/lme/dashboard_update.sh"; } | crontab -
 }
 
 function auto_lme_update(){
-mkdir /opt/lme
 cp lme_update.sh /opt/lme/
 chmod 700 /opt/lme/lme_update.sh
 
