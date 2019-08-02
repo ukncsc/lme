@@ -4,7 +4,7 @@
 Below you can find the upgrade paths that are currently supported and what steps are required for these upgrades.
 
 ### v0.1 - > v0.2
-
+TODO
 
 ### Versions Earlier than v0.1
 Unfortunately due to the disparity of versions before the official v0.1 release there is no formal upgrade path. We recommend running the following commands which should not lose data but there is no guarantee.

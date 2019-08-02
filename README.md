@@ -81,6 +81,8 @@ Although in it’s infancy, we are hoping that LME will help organisations to ma
 
 [Troubleshooting](/docs/troubleshooting.md)
 
+[Upgrading](/docs/upgrading.md)
+
 ## Credits
 ### Core Team
 * Shane M, NCSC Technical Lead.
