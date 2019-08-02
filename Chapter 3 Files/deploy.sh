@@ -65,14 +65,20 @@ sed -i "s/insertlogstashwriterpasswordhere/$logstash_writer/g" logstash.conf
 echo -e "\e[32m[x]\e[0m creating update role (dashboards)"
 curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/role/dashboard_update" -H 'Content-Type: application/json' -d'
 {
-  "cluster": ["monitor"], 
-  "indices": [
-    {
-      "names": ["Notarealindex"], 
-      "privileges": ["read"]  
-    }
-  ]
-}
+  "cluster":[],
+  "indices":[],
+  "applications":[{
+    "application":"kibana-.kibana",
+  "privileges":[
+  "feature_canvas.all",
+  "feature_savedObjectsManagement.all",
+  "feature_indexPatterns.all",
+  "feature_dashboard.all",
+  "feature_visualize.all"],
+  "resources":["*"]}],
+  "run_as":[],
+  "metadata":{},
+  "transient_metadata":{"enabled":true}}
 '
 
 
