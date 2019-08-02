@@ -103,7 +103,7 @@ cp /opt/lme/Chapter\ 3\ Files/certs/wlbclient.crt /tmp/lme/
 cp /opt/lme/Chapter\ 3\ Files/certs/wlbclient.key /tmp/lme/
 cp /opt/lme/Chapter\ 3\ Files/certs/root-ca.crt /tmp/lme/
 sed -i "s/logstash_dns_name/$logstashcn/g" /tmp/lme/winlogbeat.yml
-zip -r opt/lme/files_for_windows.zip /tmp/lme
+zip -r /opt/lme/files_for_windows.zip /tmp/lme
 }
 
 
@@ -523,11 +523,21 @@ setpasswords
 configelasticsearch
 zipfiles
 
+read -e -p "Do you want to automatically update LME ([y]es/[n]o): " -i "y" autoupdate_enabled
+
+if [ "$autoupdate_enabled" == "y" ]; then
+echo -e "\e[32m[x]\e[0m Enabling LME Automatic Update"
 #cron lme update
 auto_lme_update
+fi
 
+read -e -p "Do you want to automatically update Dashboards ([y]es/[n]o): " -i "y" dashboardupdate_enabled
+
+if [ "$dashboardupdate_enabled" == "y" ]; then
+echo -e "\e[32m[x]\e[0m Enabling Dashboard Automatic Update"
 #cron dash update
 dashboard_update
+fi
 
 #ILM
 data_retention
