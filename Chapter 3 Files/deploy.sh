@@ -576,9 +576,7 @@ function update(){
         docker config rm logstash.conf nginx.conf osmap.csv
         docker config create logstash.conf logstash.conf
         docker config create osmap.csv osmap.csv
-        configuredocker
         deploylme
-        configelasticsearch
 }
 
 ############
