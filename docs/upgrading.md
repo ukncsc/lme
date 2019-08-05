@@ -4,7 +4,25 @@
 Below you can find the upgrade paths that are currently supported and what steps are required for these upgrades.
 
 ### v0.1 - > v0.2
-TODO
+The upgrade path between v0.1 and v0.2 is a little different than going forward due to the installation directory being changed.
+To update please do the following on the Linux server:
+
+```
+# Change to the lme directory for the Linux server files
+cd ~/lme/Chapter\ 3\ Files/
+# execute script with root privileges
+sudo ./deploy.sh uninstall
+```
+
+Then following the standard installation instructions for the Linux server do the following:
+
+```
+# Change to the lme directory for the Linux server files
+cd /opt/lme/Chapter\ 3\ Files/
+# execute script with root privileges
+sudo ./deploy.sh install
+```
+
 
 ### Versions Earlier than v0.1
 Unfortunately due to the disparity of versions before the official v0.1 release there is no formal upgrade path. We recommend running the following commands which should not lose data but there is no guarantee.
