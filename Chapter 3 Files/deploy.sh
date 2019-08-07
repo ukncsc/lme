@@ -324,7 +324,7 @@ cp dashboard_update.sh /opt/lme/
 chmod 700 /opt/lme/dashboard_update.sh
 
 echo -e "\e[32m[x]\e[0m Updating logstash configuration with logstash writer"
-sed -i "s/dashboardupdatepassword/$dashboard_update/g" /opt/lme/dashboard_update.sh
+sed -i "s/dashboardupdatepassword/$update_user_pass/g" /opt/lme/dashboard_update.sh
 
 echo -e "\e[32m[x]\e[0m Creating dashboard update crontab"
 crontab -l | { cat; echo "0 1 * * * /opt/lme/dashboard_update.sh"; } | crontab -
@@ -571,7 +571,6 @@ function uninstall(){
 function update(){
 
         git pull
-        cp docker-compose-stack.yml docker-compose-stack-live.yml
         docker stack rm lme
         docker config rm logstash.conf nginx.conf osmap.csv
         docker config create logstash.conf logstash.conf
