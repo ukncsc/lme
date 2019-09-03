@@ -305,7 +305,7 @@ docker swarm init
 }
 
 function deploylme() {	
-docker stack deploy lme --compose-file docker-compose-stack-live.yml
+docker stack deploy lme --compose-file /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
 }
 
 get_distribution() {
@@ -570,11 +570,11 @@ function uninstall(){
 
 function update(){
 
-        git pull
+        git -C /opt/lme/ pull
         docker stack rm lme
         docker config rm logstash.conf nginx.conf osmap.csv
-        docker config create logstash.conf logstash.conf
-        docker config create osmap.csv osmap.csv
+        docker config create logstash.conf /opt/lme/Chapter\ 3\ Files/logstash.conf
+        docker config create osmap.csv /opt/lme/Chapter\ 3\ Files/osmap.csv
         deploylme
 }
 
