@@ -6,7 +6,7 @@ version: '3.3'
 services:
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.0
     environment:
       - node.name=es01
       - discovery.seed_hosts=es01
@@ -44,7 +44,7 @@ services:
 
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.2.0
+    image: docker.elastic.co/kibana/kibana:7.3.0
     environment:
       SERVER_NAME: kibana
       ELASTICSEARCH_HOSTS: https://elasticsearch:9200
@@ -68,7 +68,7 @@ services:
       - 5601:5601
 
   logstash:
-    image: docker.elastic.co/logstash/logstash:7.2.0
+    image: docker.elastic.co/logstash/logstash:7.3.0
 #    environment:
 #      XPACK_MONITORING_ENABLED: "true"
 #      XPACK_MONITORING_ELASTICSEARCH_HOSTS: https://elasticsearch:9200
