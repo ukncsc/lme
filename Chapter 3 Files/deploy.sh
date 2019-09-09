@@ -573,6 +573,7 @@ function update(){
         git -C /opt/lme/ pull
         docker stack rm lme
         docker config rm logstash.conf nginx.conf osmap.csv
+        sleep 1m
         docker config create logstash.conf /opt/lme/Chapter\ 3\ Files/logstash.conf
         docker config create osmap.csv /opt/lme/Chapter\ 3\ Files/osmap.csv
         deploylme
