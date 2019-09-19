@@ -22,6 +22,7 @@ services:
       - xpack.security.transport.ssl.certificate_authorities=/usr/share/elasticsearch/config/certificates/ca.crt
       - xpack.security.transport.ssl.certificate=/usr/share/elasticsearch/config/certificates/elasticsearch.crt
       - xpack.security.transport.ssl.key=/usr/share/elasticsearch/config/certificates/elasticsearch.key
+      - xpack.monitoring.enabled=false
       - cluster.name=loggingmadeeasy-es
         #      - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xmsram-countg -Xmxram-countg"
@@ -69,8 +70,8 @@ services:
 
   logstash:
     image: docker.elastic.co/logstash/logstash:7.3.0
-#    environment:
-#      XPACK_MONITORING_ENABLED: "true"
+    environment:
+      XPACK_MONITORING_ENABLED: "false"
 #      XPACK_MONITORING_ELASTICSEARCH_HOSTS: https://elasticsearch:9200
 #      XPACK_MONITORING_ELASTICSEARCH_USERNAME: logstash_system
 #      XPACK_MONITORING_ELASTICSEARCH_PASSWORD: logstash_system
