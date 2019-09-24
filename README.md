@@ -36,7 +36,7 @@ We are **not** able to comment on or troubleshoot individual installations, If y
 
 ## Who is Logging Made Easy for?
 
-From one man bands with a handful devices to look after, through to organisations with approximately 250 devices.
+From one man bands with a handful devices to look after, through to larger organisations.
 
 LME is for you if:
 

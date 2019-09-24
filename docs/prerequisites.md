@@ -50,7 +50,7 @@ Text in *italics* are an easy way of doing something, such as running a script. 
 You should follow each chapter in order, and complete the checklist at the end before continuing.
 
 ## Scaling the solution
-To keep LME simple, our guide only covers single server setups. This effectively limits the setup to approximately 250 machines or less, although it’s difficult to estimate how much load the single server setup will take.
+To keep LME simple, our guide only covers single server setups. It’s difficult to estimate how much load the single server setup will take.
 It’s possible to scale the solution to multiple event collectors and ELK nodes, but that will require more experience with the technologies involved.
 
 ## Required infrastructure
