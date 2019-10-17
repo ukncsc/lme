@@ -58,17 +58,17 @@ It’s possible to scale the solution to multiple event collectors and ELK nodes
 To begin your Logging Made Easy installation, you will need access to (or creation of) the following servers: 
 
 * A Windows Active Directory. This is for deploying Group Policy Objects (GPO)
-* A server with 2 processor cores and 8GB RAM. We will install the Windows Event Collector Service on this machine, and set it up as a Windows Event Collector (WEC) and join it to the domain.
+* A server with 2 processor cores and at least 8GB RAM. We will install the Windows Event Collector Service on this machine, and set it up as a Windows Event Collector (WEC) and join it to the domain.
    * If budget allows, we recommend having a dedicated server for WEC. If this is not possible, WEC can be setup on an existing server but consider the performance impacts.
    * The WEC server could be Windows Server 2016 (or later) or Windows 8.1 client (or later) 
-* A Linux server with 2 processor cores and 16GB RAM. We will install our database (Elasticsearch) and dashboard software on this machine. This is all taken care of through Docker containers. **DO NOT install Docker from Ubuntu installation wizard ('Snaps'), we install the Docker community edition later.**
+* A Linux server with 2 processor cores and at least 16GB RAM. We will install our database (Elasticsearch) and dashboard software on this machine. This is all taken care of through Docker containers. **DO NOT install Docker from Ubuntu installation wizard ('Snaps'), we install the Docker community edition later.**
    * The deploy script has only been tested on Ubuntu 18.04 Long Term Support (LTS).
 
 ## Where to install the servers
 
 Servers can be either on premise, in a public cloud or private cloud. It is your choice, but you'll need to consider how to network between the clients and servers.
 
-## What firewall rules are needed?
+## What firewall rules are needed?s
 
 ![Overview of Network rules](troubleshooting-overview.jpg)
 <p align="center">  

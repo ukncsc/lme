@@ -71,9 +71,7 @@ Although in it’s infancy, we are hoping that LME will help organisations to ma
 
 [Chapter 2 – Sysmon Install](/docs/chapter2.md)
 
-[Chapter 3A – Database (Easy Method)](/docs/chapter3-easy.md)
-
-[Chapter 3B – Database (Manual Method)](/docs/chapter3-manual.md)
+[Chapter 3 – Database (Easy Install)](/docs/chapter3-easy.md)
 
 [Chapter 4 - Post Install Actions ](/docs/chapter4.md)
 
