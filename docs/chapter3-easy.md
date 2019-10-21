@@ -57,7 +57,7 @@ Running the above commands will:
 1) Enables auto security updates (Ubuntu Only)
 2) Generate TLS certificates.
 3) Install Docker Community Edition.
-4) Configures Docker to run ELK with an Nginx proxy.
+4) Configures Docker to run ELK.
 5) Changes Elasticsearch configuration, including retention based upon disk size.
 
 
@@ -69,7 +69,6 @@ The usernames and passwords will be provided in a message similar to below.
 ##################################################################################"
 ## KIBANA/Elasticsearch Credentials are (these will not be accesible again!!!!) ##"
 ## elastic:<PASSWORD>"
-## elastic_user_pass:<PASSWORD>"
 ## kibana_system_pass:<PASSWORD>"
 ## logstash_system:<PASSWORD>"
 ## logstash_writer:<PASSWORD>"
