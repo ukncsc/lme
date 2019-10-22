@@ -379,6 +379,18 @@ curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https:
 }
 '
 
+
+
+curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https://127.0.0.1:9200/_template/lme_template?pretty" -H 'Content-Type: application/json' -d'
+{
+  "index_patterns": ["winlogbeat-*"],                 
+  "settings": {
+    "number_of_shards": 4,
+    "number_of_replicas": 0,
+    "index.lifecycle.name": "lme_ilm_policy"    
+  }
+}
+'
 }
 
 
