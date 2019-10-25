@@ -83,9 +83,14 @@ Although in it’s infancy, we are hoping that LME will help organisations to ma
 
 ## Credits
 ### Core Team
-* Shane M, NCSC Technical Lead.
+* Richard W, NCSC Project Lead.
+* Adam B, NCSC Technical Lead.
+* Martin W, NCSC Technical support / Customer Liaison.
+* Jordan C, NCSC Visual Support.
+* Michael H, NCSC Business Analyst.
+* Rob B, NCSC Project Manager.
+* Shane M, Previous NCSC Technical Lead.
 * Lucy A, David L and Oli T, Cabinet Office Government Security Group, funding and project management.
-* Adam B, NCSC, Customer Liaison / Developer.
 * Duncan A, NCC Group, Lead Developer.
 * Harry G and Alfie T, NCSC, creating visualisations.
 
@@ -108,6 +113,6 @@ These organisations spent time trialing earlier versions of LME which was critic
 * [Ryan Watson](https://twitter.com/gentlemanwatson) and [Syspanda](http://www.syspanda.com/) from which the Sysmon install script was adapted from.
 
 ### Technology Used
-* [Sysmon](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon) from the [Sysinternals team](https://docs.microsoft.com/en-us/sysinternals/) at Microsoft.
+* [Sysmon](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon) and [Sigcheck](https://docs.microsoft.com/en-us/sysinternals/downloads/sigcheck) from the [Sysinternals team](https://docs.microsoft.com/en-us/sysinternals/) at Microsoft.
 * Elasticsearch, Logstash, Kibana and Winlogbeat from [Elastic.co](https://elastic.co/) and their [github](https://github.com/elastic)
 * [Docker Community Edition](https://github.com/docker/docker-ce)
