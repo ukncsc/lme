@@ -59,7 +59,8 @@ echo -e "\e[32m[x]\e[0m setting logstash writer password"
 curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/logstash_writer/_password" -H 'Content-Type: application/json' -d' { "password" : "'"$logstash_writer"'"} '
 
 echo -e "\e[32m[x]\e[0m Updating logstash configuration with logstash writer"
-sed -i "s/insertlogstashwriterpasswordhere/$logstash_writer/g" logstash.conf
+cp logstash.conf logstash.edited.conf
+sed -i "s/insertlogstashwriterpasswordhere/$logstash_writer/g" logstash.edited.conf
 
 #create role, Only needs kibana perms so the other data is just falsified. 
 echo -e "\e[32m[x]\e[0m creating update role (dashboards)"
@@ -249,7 +250,7 @@ docker secret create kibana.crt certs/kibana.crt
 
 function populatelogstashconfig() {
 #add logstash conf to config
-docker config create logstash.conf logstash.conf
+docker config create logstash.conf logstash.edited.conf
 
 #add os mapping to config
 docker config create osmap.csv osmap.csv
@@ -564,7 +565,6 @@ data_retention
 echo "##################################################################################"
 echo "## KIBANA/Elasticsearch Credentials are (these will not be accesible again!!!!) ##"
 echo "## elastic:$elastic_user_pass"
-echo "## elastic_user_pass:$elastic_user_pass"
 echo "## kibana_system_pass:$kibana_system_pass"
 echo "## logstash_system:$logstash_system_pass"
 echo "## logstash_writer:$logstash_writer"
@@ -586,7 +586,22 @@ function update(){
         docker stack rm lme
         docker config rm logstash.conf nginx.conf osmap.csv
         sleep 1m
-        docker config create logstash.conf /opt/lme/Chapter\ 3\ Files/logstash.conf
+        # mv old config to .old
+        mv /opt/lme/Chapter\ 3\ Files/logstash.edited.conf /opt/lme/Chapter\ 3\ Files/logstash.edited.conf.old
+
+        # copy new git version
+        cp /opt/lme/Chapter\ 3\ Files/logstash.conf /opt/lme/Chapter\ 3\ Files/logstash.edited.conf
+
+        # copy pass from old config into var
+        Logstash_Config_Pass="$(awk '{if(/password/) print $3}' < /opt/lme/Chapter\ 3\ Files/logstash.edited.conf.old)"
+
+        # Insert var into new config
+        sed -i "s/insertlogstashwriterpasswordhere/$Logstash_Config_Pass/g" logstash.edited.conf
+
+        # delete old config
+        rm /opt/lme/Chapter\ 3\ Files/logstash.edited.conf.old
+
+        docker config create logstash.conf /opt/lme/Chapter\ 3\ Files/logstash.edited.conf
         docker config create osmap.csv /opt/lme/Chapter\ 3\ Files/osmap.csv
         deploylme
 }
