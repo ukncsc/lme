@@ -24,6 +24,7 @@ services:
       - xpack.security.transport.ssl.key=/usr/share/elasticsearch/config/certificates/elasticsearch.key
       - xpack.monitoring.enabled=false
       - cluster.name=loggingmadeeasy-es
+      - path.repo=/usr/share/elasticsearch/data
         #      - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xmsram-countg -Xmxram-countg"
     command: /bin/bash -c "cp -r /run/secrets /usr/share/elasticsearch/config/certificates && /usr/local/bin/docker-entrypoint.sh eswrapper"
