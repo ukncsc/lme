@@ -96,6 +96,9 @@ xcopy %GLBSYSMONCONFIG% %SYSMONCONF% /y
 chdir %SYSMONDIR%
 (%SYSMONBIN% -c %SYSMONCONF%)
 )
+
+sc stop Sysmon64
+sc start Sysmon64
 EXIT /B 0
 
 :uninstallsysmon

@@ -4,32 +4,81 @@ version: '3.3'
 # Version 0.1 - 27/03/19 #
 ##########################
 services:
-  
+
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.5.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.4.0
     environment:
+      - node.name=es01
+      - discovery.seed_hosts=es01
+      - cluster.initial_master_nodes=es01
+      - ELASTIC_PASSWORD=temp
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=/usr/share/elasticsearch/config/certificates/elasticsearch.key
+      - xpack.security.http.ssl.certificate_authorities=/usr/share/elasticsearch/config/certificates/ca.crt
+      - xpack.security.http.ssl.certificate=/usr/share/elasticsearch/config/certificates/elasticsearch.crt
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.security.transport.ssl.certificate_authorities=/usr/share/elasticsearch/config/certificates/ca.crt
+      - xpack.security.transport.ssl.certificate=/usr/share/elasticsearch/config/certificates/elasticsearch.crt
+      - xpack.security.transport.ssl.key=/usr/share/elasticsearch/config/certificates/elasticsearch.key
+      - xpack.monitoring.enabled=false
       - cluster.name=loggingmadeeasy-es
+      - path.repo=/usr/share/elasticsearch/data
         #      - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xmsram-countg -Xmxram-countg"
+    command: /bin/bash -c "cp -r /run/secrets /usr/share/elasticsearch/config/certificates && /usr/local/bin/docker-entrypoint.sh eswrapper"
     volumes:
       - esdata:/usr/share/elasticsearch/data
     networks:
       - esnet
+    ports:
+      - 9200:9200
+    secrets:
+      - ca.crt
+      - elasticsearch.crt
+      - elasticsearch.key
+#    healthcheck:
+#      test: curl -k https://localhost:9200 >/dev/null; if [[ $$? == 52 ]]; then echo 0; else echo 1; fi
+#      interval: 30s
+#      timeout: 10s
+#      retries: 5  
+
 
   kibana:
-    image: docker.elastic.co/kibana/kibana-oss:6.5.1
+    image: docker.elastic.co/kibana/kibana:7.4.0
     environment:
       SERVER_NAME: kibana
-      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: https://elasticsearch:9200
+      ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: /usr/share/kibana/certificates/ca.crt
+      SERVER_SSL_ENABLED: "true"
+      SERVER_SSL_KEY: /usr/share/kibana/certificates/kibana.key
+      SERVER_SSL_CERTIFICATE: /usr/share/kibana/certificates/kibana.crt
+      ELASTICSEARCH_USERNAME: kibana
+      ELASTICSEARCH_PASSWORD: insertkibanapasswordhere
+      XPACK_ML_ENABLED: "false"
+      XPACK_REPORTING_ENABLED: "false"
+      XPACK_APM_UI_ENABLED: "false"
+    command: /bin/bash -c "cp -r /run/secrets /usr/share/kibana/certificates && /usr/local/bin/kibana-docker"
+    secrets:
+      - ca.crt
+      - kibana.crt
+      - kibana.key
     networks:
       - esnet
-        #    ports:
-        #      - 5601:5601
+    ports:
+      - 443:5601
 
   logstash:
-    image: docker.elastic.co/logstash/logstash-oss:6.5.1
+    image: docker.elastic.co/logstash/logstash:7.4.0
+    environment:
+      XPACK_MONITORING_ENABLED: "false"
+#      XPACK_MONITORING_ELASTICSEARCH_HOSTS: https://elasticsearch:9200
+#      XPACK_MONITORING_ELASTICSEARCH_USERNAME: logstash_system
+#      XPACK_MONITORING_ELASTICSEARCH_PASSWORD: logstash_system
+#      XPACK_MONITORING_ELASTICSEARCH_SSL_CERTIFICATE_AUTORITY: /run/secrets/ca.crt
     ports:
-      - 5044:5044 
+      - 5044:5044
     networks:
       - esnet
     configs:
@@ -44,62 +93,32 @@ services:
       - logstash.crt
       - logstash.key
 
-  curator:
-    image:  lme/curator:latest
-    networks:
-      - esnet
-    environment:
-      RETENTION_DAYS: 180  
-      RETENTION_GB: 800
-  nginx:
-    image: nginx
-    ports:
-      - 443:443
-    secrets:
-      - nginx.crt
-      - nginx.key
-      - source: nginx_unpw
-        target: nginx_unpw
-        mode: 0444
-    configs:
-      - source: nginx.conf
-        target: /etc/nginx/conf.d/site.conf
-        mode: 0444
-    networks:
-      - esnet
 
 secrets:
-  nginx.crt:
-    external: true
-  nginx.key:
-    external: true
-  nginx_unpw:
-    external: true
   ca.crt:
     external: true
   logstash.crt:
     external: true
   logstash.key:
     external: true
-
-configs:
-  nginx.conf:
+  elasticsearch.crt:
     external: true
+  elasticsearch.key:
+    external: true
+  kibana.crt:
+    external: true
+  kibana.key:
+    external: true
+configs:
   logstash.conf:
     external: true
   osmap.csv:
     external: true
-      
+
 volumes:
   esdata:
-    driver: local
-  nginx:
-    driver: local
-  elasticsearch:
     driver: local
 
 networks:
   esnet:
-    driver: overlay     
-     
-
+    driver: overlay

@@ -79,4 +79,4 @@ File exists - C:\Windows\sysmon64.exe
 2. Is the Sysmon Eventlog showing data? (It’s located in Applications and Services Logs/Microsoft/Windows/Sysmon/Operational)
 3. Are you seeing Sysmon logs in the forwarded events folder on the Windows event forwarder box?
 
-## Now move onto [Chapter 3A - Easy Install](chapter3-easy.md) or [Chapter 3B - Manual Install](chapter3-manual.md)
+## Now move onto [Chapter 3 - Database Easy Install](chapter3-easy.md)

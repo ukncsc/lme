@@ -12,7 +12,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 ## What is Logging Made Easy (LME)?
 
-Logging Made Easy is a self-install tutorial for small organisations to gain a basic level of centralised security logging for Windows clients and provide functionality to detect attacks. It's the coming together of multiple free and open-source software, where LME helps the reader integrate them together to produce an end-to-end logging capability. We also provide some pre-made configuration files and scripts, although there is the option to do it on your own. 
+Logging Made Easy is a self-install tutorial for small organisations to gain a basic level of centralised security logging for Windows clients and provide functionality to detect attacks. It's the coming together of multiple free and open-source software (some which is covered under licences other than Apache V2), where LME helps the reader integrate them together to produce an end-to-end logging capability. We also provide some pre-made configuration files and scripts, although there is the option to do it on your own. 
 
 Logging Made Easy can:
 - Tell you about software patch levels on enrolled devices
@@ -36,7 +36,7 @@ We are **not** able to comment on or troubleshoot individual installations, If y
 
 ## Who is Logging Made Easy for?
 
-From one man bands with a handful devices to look after, through to organisations with approximately 250 devices.
+From one man bands with a handful devices to look after, through to larger organisations.
 
 LME is for you if:
 
@@ -71,9 +71,7 @@ Although in it’s infancy, we are hoping that LME will help organisations to ma
 
 [Chapter 2 – Sysmon Install](/docs/chapter2.md)
 
-[Chapter 3A – Database (Easy Method)](/docs/chapter3-easy.md)
-
-[Chapter 3B – Database (Manual Method)](/docs/chapter3-manual.md)
+[Chapter 3 – Database (Easy Install)](/docs/chapter3-easy.md)
 
 [Chapter 4 - Post Install Actions ](/docs/chapter4.md)
 
@@ -81,11 +79,18 @@ Although in it’s infancy, we are hoping that LME will help organisations to ma
 
 [Troubleshooting](/docs/troubleshooting.md)
 
+[Upgrading](/docs/upgrading.md)
+
 ## Credits
 ### Core Team
-* Shane M, NCSC Technical Lead.
+* Richard W, NCSC Project Lead.
+* Adam B, NCSC Technical Lead.
+* Martin W, NCSC Technical support / Customer Liaison.
+* Jordan C, NCSC Visual Support.
+* Michael H, NCSC Business Analyst.
+* Rob B, NCSC Project Manager.
+* Shane M, Previous NCSC Technical Lead.
 * Lucy A, David L and Oli T, Cabinet Office Government Security Group, funding and project management.
-* Adam B, NCSC, Customer Liaison / Developer.
 * Duncan A, NCC Group, Lead Developer.
 * Harry G and Alfie T, NCSC, creating visualisations.
 
@@ -108,6 +113,6 @@ These organisations spent time trialing earlier versions of LME which was critic
 * [Ryan Watson](https://twitter.com/gentlemanwatson) and [Syspanda](http://www.syspanda.com/) from which the Sysmon install script was adapted from.
 
 ### Technology Used
-* [Sysmon](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon) from the [Sysinternals team](https://docs.microsoft.com/en-us/sysinternals/) at Microsoft.
+* [Sysmon](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon) and [Sigcheck](https://docs.microsoft.com/en-us/sysinternals/downloads/sigcheck) from the [Sysinternals team](https://docs.microsoft.com/en-us/sysinternals/) at Microsoft.
 * Elasticsearch, Logstash, Kibana and Winlogbeat from [Elastic.co](https://elastic.co/) and their [github](https://github.com/elastic)
 * [Docker Community Edition](https://github.com/docker/docker-ce)

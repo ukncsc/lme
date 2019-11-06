@@ -1,4 +1,4 @@
-# Chapter 3A – Database Easy Install
+# Chapter 3 – Database Easy Install
 
 ## Chapter Overview
 In this chapter we will:
@@ -6,6 +6,7 @@ In this chapter we will:
 * Run a script to:
     * install Docker.
     * secure the Linux server.
+    * secure the elasticsearch server.
     * generate certificates.
     * deploy the LME Docker stack.
 * Make the Windows server send logs to the Linux server.
@@ -26,7 +27,7 @@ Figure 1: Elastic Stack components
 
 
 ## 3.1 Getting Started
-During the installation guide below you will see that the steps can either been carried out automatically using the [Easy method](chapter3-easy.md) or with finer control using the [Manual method](chapter3-manual.md). Commands are highlighted in grayboxes.
+During the installation guide below you will see that the steps can been carried out automatically using the [Easy method](chapter3-easy.md). Commands are highlighted in grayboxes.
 
 You will need a linux box for this portion, **The deploy script is only tested on Ubuntu 18.04 Long Term Support (LTS).**
 
@@ -38,18 +39,16 @@ You will need port 5044 open for the event collector to send data into the datab
 
 At the time of writing only security updates are configured on Ubuntu, so please install Ubuntu on a new virtual or physical machine. You may have already done this as part of the pre-requisites in the initial readme file.
 
-SSH into your Linux server and run the following commands:
+SSH into your Linux server and run the 10.following commands:
 
 ```
 # Install Git client to be able to clone the LME repository
 sudo apt update
 sudo apt install git -y
 # download a copy of the LME files
-git clone https://github.com/ukncsc/lme.git
+sudo git clone https://github.com/ukncsc/lme.git /opt/lme/
 # Change to the lme directory for the Linux server files
-cd lme/Chapter\ 3\ Files/
-# make script executable
-chmod +x deploy.sh
+cd /opt/lme/Chapter\ 3\ Files/
 # execute script with root privileges
 sudo ./deploy.sh install
 ```
@@ -58,22 +57,24 @@ Running the above commands will:
 1) Enables auto security updates (Ubuntu Only)
 2) Generate TLS certificates.
 3) Install Docker Community Edition.
-4) Configures Docker to run ELK with an Nginx proxy.
+4) Configures Docker to run ELK.
 5) Changes Elasticsearch configuration, including retention based upon disk size.
 
 
-The deploy script will output a username and password for use when accessing the dashboard. 
+The deploy script will output an number of usernames and passwords for use when accessing the dashboard and for the internal systems. 
 
-The username and password details will be provided in a message similar to below.
+The usernames and passwords will be provided in a message similar to below.
 
 ```
-####################################################################
-## KIBANA Credentials are (these will not be accessible again!!!!)                
-## User: admin
-## Password: 32 Character Password
-####################################################################
+##################################################################################"
+## KIBANA/Elasticsearch Credentials are (these will not be accesible again!!!!) ##"
+## elastic:<PASSWORD>"
+## kibana_system_pass:<PASSWORD>"
+## logstash_system:<PASSWORD>"
+## logstash_writer:<PASSWORD>"
+##################################################################################"
 ```
-**It is important that this is safely stored. Access to this password would allow an attacker to erase the logs.**
+**It is important that these are safely stored. Access to these passwords would allow an attacker to erase the logs.**
 
 ### 3.2.2 Changing default retention policy
 The default retention will be calculated based upon 80% of the machines disk size. The calculated size will be displayed as an output of the script.
