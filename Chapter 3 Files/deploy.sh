@@ -12,6 +12,10 @@ kibana_system_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -
 logstash_system_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 logstash_writer=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 update_user_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+
+echo -e "\e[32m[x]\e[0m Updating logstash configuration with logstash writer"
+cp logstash.conf logstash.edited.conf
+sed -i "s/insertlogstashwriterpasswordhere/$logstash_writer/g" logstash.edited.conf
 }
 
 function setpasswords() {
@@ -58,9 +62,7 @@ curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https
 echo -e "\e[32m[x]\e[0m setting logstash writer password"
 curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/logstash_writer/_password" -H 'Content-Type: application/json' -d' { "password" : "'"$logstash_writer"'"} '
 
-echo -e "\e[32m[x]\e[0m Updating logstash configuration with logstash writer"
-cp logstash.conf logstash.edited.conf
-sed -i "s/insertlogstashwriterpasswordhere/$logstash_writer/g" logstash.edited.conf
+
 
 #create role, Only needs kibana perms so the other data is just falsified. 
 echo -e "\e[32m[x]\e[0m creating update role (dashboards)"
@@ -586,6 +588,9 @@ function update(){
         docker stack rm lme
         docker config rm logstash.conf nginx.conf osmap.csv
         sleep 1m
+
+        #Update Logstash Config
+
         # mv old config to .old
         mv /opt/lme/Chapter\ 3\ Files/logstash.edited.conf /opt/lme/Chapter\ 3\ Files/logstash.edited.conf.old
 
@@ -600,6 +605,25 @@ function update(){
 
         # delete old config
         rm /opt/lme/Chapter\ 3\ Files/logstash.edited.conf.old
+
+        #END Update Logstash Config
+
+        #Update Docker Config
+
+        #Move old docker config to .old
+        mv /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old
+
+        #copy new git version
+        cp /opt/lme/Chapter\ 3\ Files/docker-compose-stack.yml /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
+
+        # copy ramcount into var
+        Ram_from_conf="$(awk '{if(/-Xms/) print $3}' < /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old)"
+
+        # copy elastic pass into var
+        elasticpass_from_conf=="$(awk '{if(/password/) print $3}' < /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old)"
+
+
+
 
         docker config create logstash.conf /opt/lme/Chapter\ 3\ Files/logstash.edited.conf
         docker config create osmap.csv /opt/lme/Chapter\ 3\ Files/osmap.csv
