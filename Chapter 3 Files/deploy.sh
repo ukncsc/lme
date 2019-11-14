@@ -566,7 +566,11 @@ data_retention
 
 echo "##################################################################################"
 echo "## KIBANA/Elasticsearch Credentials are (these will not be accesible again!!!!) ##"
+echo "##"
+echo "## Web Interface login:"
 echo "## elastic:$elastic_user_pass"
+echo "##"
+echo "## System Credentials"
 echo "## kibana_system_pass:$kibana_system_pass"
 echo "## logstash_system:$logstash_system_pass"
 echo "## logstash_writer:$logstash_writer"
@@ -580,6 +584,8 @@ function uninstall(){
         docker secret rm kibana.crt kibana.key
         docker config rm logstash.conf osmap.csv
         rm -r certs
+        echo -e "\e[31m[X]\e[0m NOTICE!"
+        echo -e "\e[31m[X]\e[0m No data has been deleted, Run 'sudo docker volume rm lme_esdata' to delete the elasticsearch database"
 }
 
 function update(){
@@ -619,9 +625,14 @@ function update(){
         # copy ramcount into var
         Ram_from_conf="$(awk '{if(/-Xms/) print $3}' < /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old)"
 
-        # copy elastic pass into var
-        elasticpass_from_conf=="$(awk '{if(/password/) print $3}' < /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old)"
+        # update Config file with ramcount
+        sed -i "s/ram-count/$ES_RAM/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
 
+        # copy elastic pass into var
+        Kibanapass_from_conf="$(awk '{if(/password/) print $3}' < /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old)"
+
+        #update config with kibana password
+        sed -i "s/insertkibanapasswordhere/$Kibanapass_from_conf/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
 
 
 
