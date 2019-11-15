@@ -623,13 +623,13 @@ function update(){
         cp /opt/lme/Chapter\ 3\ Files/docker-compose-stack.yml /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
 
         # copy ramcount into var
-        Ram_from_conf="$(awk '{if(/-Xms/) print $3}' < /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old)"
+        Ram_from_conf="$(grep -P -o "(?<=Xms)\d" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old)"
 
         # update Config file with ramcount
-        sed -i "s/ram-count/$ES_RAM/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
+        sed -i "s/ram-count/$Ram_from_conf/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
 
         # copy elastic pass into var
-        Kibanapass_from_conf="$(awk '{if(/password/) print $3}' < /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old)"
+        Kibanapass_from_conf="$(grep -P -o "(?<=ELASTICSEARCH_PASSWORD: ).*" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old)"
 
         #update config with kibana password
         sed -i "s/insertkibanapasswordhere/$Kibanapass_from_conf/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml

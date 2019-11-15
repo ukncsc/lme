@@ -73,10 +73,6 @@ services:
     image: docker.elastic.co/logstash/logstash:7.4.0
     environment:
       XPACK_MONITORING_ENABLED: "false"
-#      XPACK_MONITORING_ELASTICSEARCH_HOSTS: https://elasticsearch:9200
-#      XPACK_MONITORING_ELASTICSEARCH_USERNAME: logstash_system
-#      XPACK_MONITORING_ELASTICSEARCH_PASSWORD: logstash_system
-#      XPACK_MONITORING_ELASTICSEARCH_SSL_CERTIFICATE_AUTORITY: /run/secrets/ca.crt
     ports:
       - 5044:5044
     networks:
