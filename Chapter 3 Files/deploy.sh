@@ -623,7 +623,7 @@ function update(){
         cp /opt/lme/Chapter\ 3\ Files/docker-compose-stack.yml /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
 
         # copy ramcount into var
-        Ram_from_conf="$(grep -P -o "(?<=Xms)\d" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old)"
+        Ram_from_conf="$(grep -P -o "(?<=Xms)\d+" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old)"
 
         # update Config file with ramcount
         sed -i "s/ram-count/$Ram_from_conf/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
