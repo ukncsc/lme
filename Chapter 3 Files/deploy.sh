@@ -14,8 +14,8 @@ logstash_writer=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1
 update_user_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
 echo -e "\e[32m[x]\e[0m Updating logstash configuration with logstash writer"
-cp logstash.conf logstash.edited.conf
-sed -i "s/insertlogstashwriterpasswordhere/$logstash_writer/g" logstash.edited.conf
+cp /opt/lme/Chapter\ 3\ Files/logstash.conf /opt/lme/Chapter\ 3\ Files/logstash.edited.conf
+sed -i "s/insertlogstashwriterpasswordhere/$logstash_writer/g" /opt/lme/Chapter\ 3\ Files/logstash.edited.conf
 }
 
 function setpasswords() {
