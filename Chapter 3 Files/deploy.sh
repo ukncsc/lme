@@ -285,9 +285,9 @@ else
         exit
 fi
 
-sed -i "s/ram-count/$ES_RAM/g" docker-compose-stack-live.yml
+sed -i "s/ram-count/$ES_RAM/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
 
-sed -i "s/insertkibanapasswordhere/$kibana_system_pass/g" docker-compose-stack-live.yml
+sed -i "s/insertkibanapasswordhere/$kibana_system_pass/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
 
 
 
@@ -607,7 +607,7 @@ function update(){
         Logstash_Config_Pass="$(awk '{if(/password/) print $3}' < /opt/lme/Chapter\ 3\ Files/logstash.edited.conf.old)"
 
         # Insert var into new config
-        sed -i "s/insertlogstashwriterpasswordhere/$Logstash_Config_Pass/g" logstash.edited.conf
+        sed -i "s/insertlogstashwriterpasswordhere/$Logstash_Config_Pass/g" /opt/lme/Chapter\ 3\ Files/logstash.edited.conf
 
         # delete old config
         rm /opt/lme/Chapter\ 3\ Files/logstash.edited.conf.old
