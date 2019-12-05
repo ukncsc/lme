@@ -84,6 +84,9 @@ services:
       - source: osmap.csv
         target: /tmp/osmap.csv
         mode: 0444
+      - source: logstash_custom.conf
+        target: /usr/share/logstash/pipeline/logstash_custom.conf
+        mode: 0444 
     secrets:
       - ca.crt
       - logstash.crt
@@ -110,7 +113,8 @@ configs:
     external: true
   osmap.csv:
     external: true
-
+  logstash_custom.conf:
+    external: true
 volumes:
   esdata:
     driver: local
