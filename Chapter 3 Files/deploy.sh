@@ -5,6 +5,17 @@
 ##########################
 # This script configures a host for LME including generating certificates and populating configuration files.
 
+function customlogstashconf(){
+
+#add option for custom logstash config
+CUSTOM_LOGSTASH_CONF=/opt/lme/Chapter\ 3\ Files/logstash_custom.conf
+if test -f "$CUSTOM_LOGSTASH_CONF"; then
+   echo -e "\e[32m[x]\e[0m Custom logstash config exists, Not creating"
+else
+   echo -e "\e[32m[x]\e[0m Creating custom logstash conf"
+   echo "#custom logstash configuration file" >> /opt/lme/Chapter\ 3\ Files/logstash_custom.conf
+fi
+}
 
 function generatepasswords() {
 elastic_user_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
@@ -537,6 +548,7 @@ installdocker
 initdockerswarm
 populatecerts
 generatepasswords
+customlogstashconf
 populatelogstashconfig
 configuredocker
 deploylme
@@ -593,7 +605,7 @@ function update(){
 
         git -C /opt/lme/ pull
         docker stack rm lme
-        docker config rm logstash.conf nginx.conf osmap.csv
+        docker config rm logstash.conf nginx.conf osmap.csv logstash_custom.conf
         sleep 1m
 
         #Update Logstash Config
@@ -634,11 +646,13 @@ function update(){
 
         #update config with kibana password
         sed -i "s/insertkibanapasswordhere/$Kibanapass_from_conf/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
-
+        
+        customlogstashconf
 
 
         docker config create logstash.conf /opt/lme/Chapter\ 3\ Files/logstash.edited.conf
         docker config create osmap.csv /opt/lme/Chapter\ 3\ Files/osmap.csv
+        docker config create logstash_custom.conf /opt/lme/Chapter\ 3\ Files/logstash_custom.conf
         deploylme
 }
 
