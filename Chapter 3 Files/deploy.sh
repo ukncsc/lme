@@ -584,6 +584,7 @@ function uninstall(){
         docker secret rm kibana.crt kibana.key
         docker config rm logstash.conf osmap.csv
         rm -r certs
+	crontab -l | sed -E '/lme_update.sh|dashboard_update.sh/d' | crontab -
         echo -e "\e[31m[X]\e[0m NOTICE!"
         echo -e "\e[31m[X]\e[0m No data has been deleted, Run 'sudo docker volume rm lme_esdata' to delete the elasticsearch database"
 }
