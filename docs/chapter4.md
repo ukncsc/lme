@@ -16,7 +16,7 @@ In a web browser, navigate to ```https:\\your_Linux_server``` and authenticate w
 
 First you will need to create an index. If you would like to use the pre-made dashboards, the import process creates the index for you.
 
-The dashboard and visualisation objects are contained within a JSON file and can be easily imported by clicking ‘Management’ -> ‘Saved Objects’. Please follow the steps in Figure 1, and the JSON files are located in [Chapter 4 Files\dashboard 'version'.json](/Chapter%204%20Files/).
+The dashboard and visualisation objects are contained within a NDJSON file (previously JSON) and can be easily imported by clicking ‘Management’ -> ‘Saved Objects’. Please follow the steps in Figure 1, and the NDJSON files are located in [Chapter 4 Files\dashboard 'version'.ndjson](/Chapter%204%20Files/).
 
 
 ![Importing Objects](import.jpg)
@@ -29,11 +29,11 @@ A number of the dashboards should automatically be visible under the ‘Dashboar
 
 ### 4.1.2 Check you are receiving logs
 
-Click on the 'Dashboard' tab, on the left-hand side then select 'LME Status Dashboard'. This will show a dashboard similar to Figure 2 (although the graphs will have less data on them).
+Click on the 'Dashboard' tab, on the left-hand side then select 'HealthCheck Dashboard - Overview'. This will show a dashboard similar to Figure 2 (although the graphs will have less data on them).
 
-![LME Status Dashboard](dashboard.jpg)
+![HealthCheck Dashboard - Overview](healthcheckstatus.jpg)
 <p align="center">
-Figure 2 - The LME Status Dashboard
+Figure 2 - The LME HealthCheck Dashboard - Overview
 </p>
 
 In the top right hand corner, click on 'Last 15 minutes' and select Today. This will change the date range to only include todays data, and the dashboard will then have an accurate representation of machines that have been sending logs. Changing to 'Last 7 days' will be useful in the future to visualise logs over time. Please see Figure 3 below.
