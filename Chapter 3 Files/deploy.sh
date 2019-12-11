@@ -265,6 +265,10 @@ function populatelogstashconfig() {
 #add logstash conf to config
 docker config create logstash.conf logstash.edited.conf
 
+#add logstash_custom conf to config
+customlogstashconf
+docker config create logstash_custom.conf logstash_custom.conf
+
 #add os mapping to config
 docker config create osmap.csv osmap.csv
 }
