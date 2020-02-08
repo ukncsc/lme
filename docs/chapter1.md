@@ -62,7 +62,7 @@ We strongly recommend that this is restricted to IP addresses or ranges specific
 
 An example of this would be if you hosted a LAN with the subnet 192.168.2.0/24, then you could only allows NICs residing within the range 192.168.2.1-192.168.2.254 to run a WinRM listener via the GPO policy.
 
-See Microsfot Document for verification and details:
+See Microsoft Document for verification and details:
 https://docs.microsoft.com/en-us/windows/win32/winrm/installation-and-configuration-for-windows-remote-management
 
 The filter setting is located at "Computer Configuration/Policies/Administrative Templates/Windows Components/Windows Remote Management (WinRM)/WinRM Service/allow remote server management through WinRM"
