@@ -30,7 +30,7 @@ A centralised network folder accessible by all machines that are going to be run
 You will need to download the below files and copy them to an appropriate location such as sysvol located at ``` \\%YourDomainName%\sysvol\%YourDomainName%\Sysmon ```
 * Sysmon64.exe - https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon
 * sigcheck64.exe  - https://docs.microsoft.com/en-us/sysinternals/downloads/sigcheck
-* sysmon.xml - [SwiftOnSecurity ALPHA is the recommended Sysmon config](https://github.com/SwiftOnSecurity/sysmon-config/blob/master/z-AlphaVersion.xml).
+* sysmon.xml - [SwiftOnSecurity ALPHA is the recommended Sysmon config](https://github.com/SwiftOnSecurity/sysmon-config/blob/master/sysmonconfig-export.xml).
 	* **Using the SwiftOnSecurity XML will ensure the best compatibility with the pre-made dashboards.**
 	* The SwiftOnSecurity configuration is a good starting point, and more advanced users will benefit from customisation to include/exclude events.
 	* You will need to rename the downloaded file to sysmon.xml!
