@@ -57,7 +57,13 @@ Figure 3: Editing Server Name In Group Policy
 
 **It is recommended that you now follow the below steps to restrict access to WinRM to specific IP addresses**
 
-Both the LME-WEC-Server and LME-WEC-Client GPOs include a wildcard filter allowing any IP address to connect to the WinRM service, We strongly recommend that this is restricted to specific IP addresses or ranges.
+Both the LME-WEC-Server and LME-WEC-Client GPOs include a wildcard filter allowing all IP addresses on the host and client to run a WinRM Listener and be connected to.
+We strongly recommend that this is restricted to IP addresses or ranges specific to your network environment.
+
+An example of this would be if you hosted a LAN with the subnet 192.168.2.0/24, then you could only allows NICs residing within the range 192.168.2.1-192.168.2.254 to run a WinRM listener via the GPO policy.
+
+See Microsoft Document for verification and details:
+https://docs.microsoft.com/en-us/windows/win32/winrm/installation-and-configuration-for-windows-remote-management
 
 The filter setting is located at "Computer Configuration/Policies/Administrative Templates/Windows Components/Windows Remote Management (WinRM)/WinRM Service/allow remote server management through WinRM"
 
