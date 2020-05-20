@@ -16,4 +16,11 @@ setting as appropriate.
 
 ![Retention delete phase settings](retention_pics/retention_2.png)
 
-Care must be taken to ensure that the retention period is appropriate for the disk space available. If disk space is exhausted then the solution will experience performance issues and new logs will not be recorded.
+Care must be taken to ensure that the retention period is appropriate for the
+disk space available. If disk space is exhausted then the solution will
+experience performance issues and new logs will not be recorded.
+
+Click the "Save policy" button and the new setting will be applied to the LME
+indices. The changes will be applied immediately, so care should be taken to
+ensure that the new policy does not result in unwanted data loss. (E.g. by
+reducing the retention period, which would cause existing logs to be deleted.)
