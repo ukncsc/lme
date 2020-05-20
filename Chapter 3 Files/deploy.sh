@@ -371,7 +371,7 @@ DISK_SIZE="$(echo $DF_OUTPUT | cut -d ' ' -f 4)"
 #make it stripped disk size
 DISK_SIZE_ROUND="$(echo ${DISK_SIZE/G/} | xargs printf "%.*f\n" 0)"
 
-#let's do maths to get 75% (%80 is low watermark for ES but as curator uses this we want to delete data *before* the disk gets full)
+#lets do math to get 75% (%80 is low watermark for ES but as curator uses this we want to delete data *before* the disk gets full)
 DISK_80="$(( $DISK_SIZE_ROUND*80/100 ))"
 
 
@@ -407,50 +407,6 @@ curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https:
     "number_of_replicas": 0,
     "index.lifecycle.name": "lme_ilm_policy"    
   }
-}
-'
-}
-
-function update_data_retention(){
-
-#show ext4 disk
-DF_OUTPUT="$(df -h -l -t ext4 --output=source,size)"
-
-#pull dev name
-DISK_DEV="$(echo $DF_OUTPUT | cut -d ' ' -f 3)"
-
-#pull dev size
-DISK_SIZE="$(echo $DF_OUTPUT | cut -d ' ' -f 4)"
-
-#make it stripped disk size
-DISK_SIZE_ROUND="$(echo ${DISK_SIZE/G/} | xargs printf "%.*f\n" 0)"
-
-#let's do maths to get 75% (%80 is low watermark for ES but as curator uses this we want to delete data *before* the disk gets full)
-DISK_80="$(( $DISK_SIZE_ROUND*80/100 ))"
-
-echo -e "\e[32m[x]\e[0m We think your main disk is $DISK_SIZE on $DISK_DEV"
-
-read -e -p "Enter the number of days you would like to retain logs for: " -i $DISK_80 RET_DAYS
-
-echo -e "\e[32m[x]\e[0m We are assigning $RET_DAYS G for log storage"
-
-read -e -sp "Enter the password for the 'elastic' user): " ELASTIC_PASSWORD
-
-curl --cacert certs/root-ca.crt --user elastic:$ELASTIC_PASSWORD -X PUT "https://127.0.0.1:9200/_ilm/policy/lme_ilm_policy" -H 'Content-Type: application/json' -d'
-{
-    "policy": {
-        "phases": {
-            "hot": {
-                "actions": {}
-            },
-            "delete": {
-                "min_age": "'$RET_DAYS'd",
-                "actions": {
-                    "delete": {}
-                }
-            }
-        }
-    }
 }
 '
 }
@@ -715,7 +671,7 @@ function update(){
 
 if [ "$1" == "" ]; then
         echo "No operation specified"
-        echo "Usage:            ./deploy.sh (install/uninstall/update/retention)"
+        echo "Usage:            ./deploy.sh (install/uninstall/update)"
         echo "Example:  ./deploy.sh install"
         exit
 elif [ "$1" == "install" ]; then
@@ -724,11 +680,9 @@ elif [ "$1" == "uninstall" ]; then
         uninstall
 elif [ "$1" == "update" ]; then
         update
-elif [ "$1" == "retention" ]; then
-        update_data_retention
 else
         echo "Invalid operation specified"
-        echo "Usage:            ./deploy.sh (install/uninstall/update/retention)"
+        echo "Usage:            ./deploy.sh (install/uninstall/update)"
         echo "Example:  ./deploy.sh install"
         exit
 fi
