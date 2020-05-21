@@ -1,6 +1,6 @@
 # Backing up LME Logs
 
-Logs are backed up using the built-in Elastic facilities. Out-of-the-box,
+Logs are backed up using the built-in Elastic facilities. Out of the box,
 ElasicSearch supports backing up to filesystems, and this is the only approach
 supported by LME. Other backup destinations are supported but these require
 separate plugins, and are not supported by LME.
