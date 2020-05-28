@@ -18,7 +18,12 @@ setting as appropriate.
 
 Care must be taken to ensure that the retention period is appropriate for the
 disk space available. If disk space is exhausted then the solution will
-experience performance issues and new logs will not be recorded.
+experience performance issues and new logs will not be recorded. By default,
+Elasticsearch will not allocate shards to any nodes that are using 85% or more
+of the available disk space. See [the Elasticsearch
+documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/disk-allocator.html)
+(the `cluster.routing.allocation.disk.watermark.low` setting in particular) for
+more information.
 
 Click the "Save policy" button and the new setting will be applied to the LME
 indices. The changes will be applied immediately, so care should be taken to
