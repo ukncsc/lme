@@ -1,13 +1,13 @@
 # Backing up LME Logs
 
 Logs are backed up using the built-in Elastic facilities. Out of the box,
-ElasicSearch supports backing up to filesystems, and this is the only approach
+Elasticsearch supports backing up to filesystems, and this is the only approach
 supported by LME. Other backup destinations are supported but these require
 separate plugins, and are not supported by LME.
 
 ## Approach
 
-Backups are created using ElasticSearch snapshots. The initial snapshot will
+Backups are created using Elasticsearch snapshots. The initial snapshot will
 contain all of the current logs but subsequent backups will only contain changes
 since the last snapshot was taken. It is therefore possible to take regular
 backups without a significant effect on the system's performance and without
@@ -18,7 +18,7 @@ consuming large amounts of disk space.
 ### Create a filesystem repository
 
 The LME installation creates a bind mount in Docker that maps to the
-`/opt/lme/backups` directory on the host system. *TODO* CONFIRM THIS LOCATION
+`/opt/lme/backups` directory on the host system.
 
 The LME log retention period is determined by the amount of disk space on the
 host system. Therefore it is strongly recommended that an external drive be
@@ -26,15 +26,15 @@ mounted at the `/opt/lme/backups` location so that both disk space is conserved
 and to ensure that backups exist on a separate drive.
 
 Once the external drive has been mounted on the host, you need to create a
-repostiory for Elastic to use, which can be done through the Kibana interface.
+repository for Elastic to use, which can be done through the Kibana interface.
 
 First navigate to the "Snapshot and Restore" page under the management tab:
-![Snaphost and Restore](backup_pics/snapshot_and_restore.png)
+![Snapshot and Restore](backup_pics/snapshot_and_restore.png)
 
 Then create a repository by clicking the "Register a repository" button and
 filling in the following screens:
 
-![Repostiory one](backup_pics/repository_1.png)
+![Repository one](backup_pics/repository_1.png)
 
 In the above picture, the repository has been named "LME-backups" but you can
 select any other name as appropriate. The "Shared file system" repository type
@@ -43,12 +43,12 @@ should be selected.
 On the next screen, the file system location should be set to
 `/opt/lme/backups`. The other fields can be left with the default values.
 
-![Repostiory two](backup_pics/repository_2.png)
+![Repository two](backup_pics/repository_2.png)
 
 The repository will be created and will show in the list on the management
 screen:
 
-![Repostiory three](backup_pics/repository_3.png)
+![Repository three](backup_pics/repository_3.png)
 
 ### Create a snapshot schedule policy
 
