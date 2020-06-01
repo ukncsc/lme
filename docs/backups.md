@@ -61,7 +61,7 @@ On the next screen, pick a name for your new policy ("lme-snapshots" in this
 example). For the snapshot name the value `<lme-daily-{now/d}>` will create
 files with the prefix `lme-daily` and with the current date as a suffix. Make
 sure your new repository is selected, and then configure a schedule in line with
-your backup policy. Elastic Search uses incremental snapshots for its backup,
+your backup policy. Elasticsearch uses incremental snapshots for its backup,
 and so only the previous day's logs will need to be snapshotted, which will help
 minimise the performance impact.
 
