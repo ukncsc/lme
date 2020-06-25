@@ -1,5 +1,15 @@
 winlogbeat.event_logs:
   - name: ForwardedEvents
+    processors:
+      - script:
+          lang: javascript
+          id: sysmon
+          file: "C:\\Program Files\\lme\\winlogbeat-7.6.1-windows-x86_64\\module\\sysmon\\config\\winlogbeat-sysmon.js"
+      - script:
+          lang: javascript
+          id: security
+          file: "C:\\Program Files\\lme\\winlogbeat-7.6.1-windows-x86_64\\module\\security\\config\\winlogbeat-security.js"
+  
 output.logstash:
   hosts: ["logstash_dns_name:5044"]
   ssl.certificate_authorities: ["C:\\Program Files\\lme\\root-ca.crt"]
