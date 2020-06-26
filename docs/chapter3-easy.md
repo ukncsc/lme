@@ -118,6 +118,8 @@ In 'files_for_windows.zip', copied in [step 3.2.2](#323-download-files-for-windo
 * wlbclient.key
 * wlbclient.crt
 * winlogbeat.yml 
+* module/security/config/winlogbeat-security.js
+* /module/sysmon/config/winlogbeat-sysmon.js
 
 In the zip file obtained from https://www.elastic.co/downloads/beats/winlogbeat
 * install-service-winlogbeat.ps1
