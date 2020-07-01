@@ -33,6 +33,24 @@ cd /opt/lme/Chapter\ 3\ Files/
 sudo ./deploy.sh update
 ```
 
+This update also requires manual changes to the winlogbeat service on the windows event collector machine, we recommend that you take this oportunity to ensure that you are running the latest version of winlogbeat also. 
+
+Required manual update steps.
+
+* Download the new winlogbeat.yml file from [here](https://github.com/ukncsc/lme/blob/master/Chapter%203%20Files/winlogbeat.yml)
+* Open up the OLD winlogbeat.yml file and copy the DNS name on line 4
+* Enter the copied DNS name into the new winlogbeat.yml file on line 14 replacing the "logstash_dns_name" text
+* Download the winlogbeat-sysmon.js and winlogbeat-security.js file from [here](https://github.com/ukncsc/lme/tree/master/Chapter%203%20Files/module) and place them in the directories listed below
+```
+C:\\Program Files\\lme\\winlogbeat-7.6.1-windows-x86_64\\module\\sysmon\\config\\winlogbeat-sysmon.js
+C:\\Program Files\\lme\\winlogbeat-7.6.1-windows-x86_64\\module\\security\\config\\winlogbeat-security.js
+```
+
+Finally, uninstall and reinstall winlogbeat using the following commands (run powershell as admin)
+```
+./uninstall-service-winlogbeat.ps1
+./install-service-winlogbeat.ps1
+```
 
 ### Versions Earlier than v0.1
 Unfortunately due to the disparity of versions before the official v0.1 release there is no formal upgrade path. We recommend running the following commands which should not lose data but there is no guarantee.
