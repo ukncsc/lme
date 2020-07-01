@@ -491,9 +491,9 @@ DEFAULT_IF="$(route | grep '^default' | grep -o '[^ ]*$')"
 #get ip of the interface
 EXT_IP="$(/sbin/ifconfig $DEFAULT_IF| awk -F ' *|:' '/inet /{print $3}')"
 
-read -e -p "Enter the IP that winlogbeat will use to communicate with this box: " -i "$EXT_IP" logstaship
+read -e -p "Enter the IP of this linux server: " -i "$EXT_IP" logstaship
 
-read -e -p "Enter the DNS name that winlogbeat uses to communicate with this box: " logstashcn
+read -e -p "Enter the DNS name of this linux server, This needs to be resolvable from the Windows Event Collector: " logstashcn
 echo "[x] Configuring winlogbeat config and certificates to use $logstaship as the IP and $logstashcn as the DNS"
 
 #enable auto updates if ubuntu
