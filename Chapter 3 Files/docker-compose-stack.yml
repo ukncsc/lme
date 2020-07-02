@@ -61,9 +61,6 @@ services:
       SERVER_SSL_CERTIFICATE: /usr/share/kibana/certificates/kibana.crt
       ELASTICSEARCH_USERNAME: kibana
       ELASTICSEARCH_PASSWORD: insertkibanapasswordhere
-      XPACK_ML_ENABLED: "false"
-      XPACK_REPORTING_ENABLED: "true"
-      XPACK_APM_UI_ENABLED: "false"
     command: /bin/bash -c "cp -r /run/secrets /usr/share/kibana/certificates && /usr/local/bin/kibana-docker"
     secrets:
       - ca.crt
