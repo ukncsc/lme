@@ -4,11 +4,11 @@ winlogbeat.event_logs:
       - script:
           lang: javascript
           id: sysmon
-          file: "C:\\Program Files\\lme\\winlogbeat-7.6.1-windows-x86_64\\module\\sysmon\\config\\winlogbeat-sysmon.js"
+          file: "C:\\Program Files\\lme\\module\\sysmon\\config\\winlogbeat-sysmon.js"
       - script:
           lang: javascript
           id: security
-          file: "C:\\Program Files\\lme\\winlogbeat-7.6.1-windows-x86_64\\module\\security\\config\\winlogbeat-security.js"
+          file: "C:\\Program Files\\lme\\module\\security\\config\\winlogbeat-security.js"
   
 output.logstash:
   hosts: ["logstash_dns_name:5044"]

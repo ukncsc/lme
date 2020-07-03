@@ -122,8 +122,6 @@ cp /opt/lme/Chapter\ 3\ Files/winlogbeat.yml /tmp/lme/
 cp /opt/lme/Chapter\ 3\ Files/certs/wlbclient.crt /tmp/lme/
 cp /opt/lme/Chapter\ 3\ Files/certs/wlbclient.key /tmp/lme/
 cp /opt/lme/Chapter\ 3\ Files/certs/root-ca.crt /tmp/lme/
-mkdir -p /tmp/lme/module/
-cp -r /opt/lme/Chapter\ 3\ Files/module/* /tmp/lme/module/
 sed -i "s/logstash_dns_name/$logstashcn/g" /tmp/lme/winlogbeat.yml
 zip -r /opt/lme/files_for_windows.zip /tmp/lme
 }
