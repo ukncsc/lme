@@ -61,6 +61,8 @@ Finally, uninstall and reinstall winlogbeat using the following commands (run po
 
 Now check services.msc or similar and ensure that the winlogbeat service is running. 
 
+To get the most out of LME we strongly recommend you follow chapter 4 again to upload the latest dashboards to your LME instance. 
+
 
 ### Versions Earlier than v0.1
 Unfortunately due to the disparity of versions before the official v0.1 release there is no formal upgrade path. We recommend running the following commands which should not lose data but there is no guarantee.

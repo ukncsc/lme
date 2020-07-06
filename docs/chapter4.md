@@ -20,6 +20,9 @@ The dashboard and visualisation objects are contained within a NDJSON file (prev
 
 
 ![Importing Objects](import.jpg)
+![Importing Objects](import1.jpg)
+![Importing Objects](import2.jpg)
+
 <p align="center">
 Figure 1 - Steps to import objects
 </p>

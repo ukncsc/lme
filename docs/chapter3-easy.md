@@ -29,7 +29,7 @@ Figure 1: Elastic Stack components
 ## 3.1 Getting Started
 During the installation guide below you will see that the steps can been carried out automatically using the [Easy method](chapter3-easy.md). Commands are highlighted in grayboxes.
 
-You will need a linux box for this portion, **The deploy script is only tested on Ubuntu 18.04 Long Term Support (LTS).** In addition, only installation on a single server is supported. Please see [the resilience documentation](resilience.md) for more details.
+You will need a linux box for this portion, **The deploy script is only tested on Ubuntu Long Term Support (LTS) editions.** In addition, only installation on a single server is supported. Please see [the resilience documentation](resilience.md) for more details.
 
 ### 3.1.1 Firewall Rules
 You will need port 5044 open for the event collector to send data into the database (on the Linux server), To be able to access the web interface you will need to have firewall rules in place to allow access to port 443 (HTTPS) on the Linux server.
@@ -128,6 +128,12 @@ In the zip file obtained from https://www.elastic.co/downloads/beats/winlogbeat
 ### 3.3.2 Install Winlogbeat
 On the windows event collector server unzip the winlogbeat file and replace 'winlogbeat.yml' with the one that came in 'files_for_windows.zip'.
 If your certificates are not in the same place as the locations in the file please change this too. Pay attention to the double slashes, these are required!
+
+* Copy winlogbeat-sysmon.js and winlogbeat-security.js file from the latest winlogbeat download and place them in the directories listed below
+```
+C:\\Program Files\\lme\\winlogbeat-7.6.1-windows-x86_64\\module\\sysmon\\config\\winlogbeat-sysmon.js
+C:\\Program Files\\lme\\winlogbeat-7.6.1-windows-x86_64\\module\\security\\config\\winlogbeat-security.js
+``` 
 
 Now open PowerShell as an administrator and run the following command from the unzipped folder: ```./install-service-winlogbeat.ps1```
 
