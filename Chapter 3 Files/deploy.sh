@@ -357,6 +357,57 @@ crontab -l | { cat; echo "30 1 * * * /opt/lme/lme_update.sh"; } | crontab -
 
 }
 
+function pipelineupdate(){
+  #ask user for password
+read -e -p "Enter the password for the existing elastic user: " pipeline_elastic_user
+
+curl --cacert certs/root-ca.crt --user elastic:$pipeline_elastic_user -X PUT "https://127.0.0.1:9200/_ingest/pipeline/syslog" -H 'Content-Type: application/json' -d'
+{
+  "processors": [
+    {
+      "rename": {
+        "field": "host",
+        "target_field": "old.provider"
+      }
+    }
+  ]
+}
+'
+
+#create syslog pipeline
+curl --cacert certs/root-ca.crt --user elastic:$pipeline_elastic_user -X PUT "https://127.0.0.1:9200/_ingest/pipeline/winlogbeat" -H 'Content-Type: application/json' -d'
+{
+  "processors": []
+}
+'
+}
+
+function pipelines(){
+#create beats pipeline
+curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https://127.0.0.1:9200/_ingest/pipeline/syslog" -H 'Content-Type: application/json' -d'
+{
+  "processors": [
+    {
+      "rename": {
+        "field": "host",
+        "target_field": "old.provider"
+      }
+    }
+  ]
+}
+'
+
+#create syslog pipeline
+curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https://127.0.0.1:9200/_ingest/pipeline/winlogbeat" -H 'Content-Type: application/json' -d'
+{
+  "processors": []
+}
+'
+
+
+
+}
+
 function data_retention(){
 
 #show ext4 disk
@@ -579,6 +630,8 @@ fi
 #ILM
 data_retention
 
+#pipeline
+pipeline
 
 echo "##################################################################################"
 echo "## KIBANA/Elasticsearch Credentials are (these will not be accesible again!!!!) ##"
@@ -621,7 +674,7 @@ function update(){
         cp /opt/lme/Chapter\ 3\ Files/logstash.conf /opt/lme/Chapter\ 3\ Files/logstash.edited.conf
 
         # copy pass from old config into var
-        Logstash_Config_Pass="$(awk '{if(/password/) print $3}' < /opt/lme/Chapter\ 3\ Files/logstash.edited.conf.old)"
+        Logstash_Config_Pass="$(awk '{if(/password/) print $3}' < /opt/lme/Chapter\ 3\ Files/logstash.edited.conf.old | head -1)"
 
         # Insert var into new config
         sed -i "s/insertlogstashwriterpasswordhere/$Logstash_Config_Pass/g" /opt/lme/Chapter\ 3\ Files/logstash.edited.conf
@@ -671,7 +724,7 @@ function update(){
 
 if [ "$1" == "" ]; then
         echo "No operation specified"
-        echo "Usage:            ./deploy.sh (install/uninstall/update)"
+        echo "Usage:            ./deploy.sh (install/uninstall/update/pipelineupdate)"
         echo "Example:  ./deploy.sh install"
         exit
 elif [ "$1" == "install" ]; then
@@ -680,9 +733,11 @@ elif [ "$1" == "uninstall" ]; then
         uninstall
 elif [ "$1" == "update" ]; then
         update
+elif [ "$1" == "pipelineupdate" ]; then
+        pipelineupdate     
 else
         echo "Invalid operation specified"
-        echo "Usage:            ./deploy.sh (install/uninstall/update)"
+        echo "Usage:            ./deploy.sh (install/uninstall/update/pipelineupdate)"
         echo "Example:  ./deploy.sh install"
         exit
 fi
