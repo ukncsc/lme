@@ -77,6 +77,7 @@ services:
       XPACK_MONITORING_ENABLED: "false"
     ports:
       - 5044:5044
+      - 12514:12514
     networks:
       - esnet
     configs:
