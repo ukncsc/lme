@@ -5,6 +5,7 @@ In this chapter we will:
 * Setup Kibana in order to view your logs
 * Import some premade dashboards
 * Check you are getting logs from your clients
+* Enable the default detection rules
 
 ## 4.1 Initial Kibana setup
 
@@ -46,7 +47,14 @@ In the top right hand corner, click on 'Last 15 minutes' and select Today. This 
 Figure 3 - Time range filter
 </p>
 
-## 4.2 Learning how to use Kibana
+## 4.2 Enable the Detection Engine
+
+![Enable siem](siem.png)
+![Enable siem](siem1.png)
+![Enable siem](siem2.png)
+
+
+## 4.3 Learning how to use Kibana
 
 If you have never used Kibana before, Elasticsearch have provided a number of videos exploring the features of Kibana and how to create new dashboards and analytics. https://www.youtube.com/playlist?list=PLhLSfisesZIvA8ad1J2DSdLWnTPtzWSfI
 

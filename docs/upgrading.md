@@ -61,7 +61,8 @@ Finally, uninstall and reinstall winlogbeat using the following commands (run po
 
 Now check services.msc or similar and ensure that the winlogbeat service is running. 
 
-To get the most out of LME we strongly recommend you follow chapter 4 again to upload the latest dashboards to your LME instance. 
+To get the most out of LME we strongly recommend you follow chapter 4 again to upload the latest dashboards to your LME instance.
+To get the smart 'signals' detection engine working we suggest you follow that section in chapter 4 if you have not already. 
 
 
 ### Versions Earlier than v0.1
