@@ -708,7 +708,7 @@ function update(){
         sed -i "s/insertkibanapasswordhere/$Kibanapass_from_conf/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
 
 	      #copy kibana encryption key
-        kibanakey="$(grep -P -o "(?<=xpack.encryptedSavedObjects.encryptionKey: ).*" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old)"
+        kibanakey="$(grep -P -o "(?<=XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY: ).*" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old)"
 
         #update config with kibana key
         sed -i "s/kibanakey/$kibanakey/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
