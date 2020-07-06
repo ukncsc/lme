@@ -23,6 +23,8 @@ kibana_system_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -
 logstash_system_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 logstash_writer=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 update_user_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+kibanakey=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 42 | head -n 1)
+
 
 echo -e "\e[32m[x]\e[0m Updating logstash configuration with logstash writer"
 cp /opt/lme/Chapter\ 3\ Files/logstash.conf /opt/lme/Chapter\ 3\ Files/logstash.edited.conf
@@ -304,6 +306,7 @@ sed -i "s/ram-count/$ES_RAM/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-l
 
 sed -i "s/insertkibanapasswordhere/$kibana_system_pass/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
 
+sed -i "s/kibanakey/$kibanakey/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
 
 
 
@@ -703,7 +706,13 @@ function update(){
 
         #update config with kibana password
         sed -i "s/insertkibanapasswordhere/$Kibanapass_from_conf/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
-        
+
+	      #copy kibana encryption key
+        kibanakey="$(grep -P -o "(?<=xpack.encryptedSavedObjects.encryptionKey: ).*" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old)"
+
+        #update config with kibana key
+        sed -i "s/kibanakey/$kibanakey/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
+
         customlogstashconf
 
 
