@@ -52,6 +52,8 @@ Figure 3 - Time range filter
 ![Enable siem](siem.png)
 ![Enable siem](siem1.png)
 ![Enable siem](siem2.png)
+![Enable siem](siem3.png)
+![Enable siem](siem4.png)
 
 
 ## 4.3 Learning how to use Kibana
