@@ -54,7 +54,7 @@ Import the [LME-Sysmon-Task](/Chapter%202%20Files/GPO%20Deployment/sysmon_gpo.zi
 2. Edit the Lme-Sysmon-Task GPO
 3. Change the setting for the batch file network location by navigating to: ```Computer Configuration\Preferences\Control Panel Settings\Scheduled Tasks\lme-sysmon-deploy\Actions``` and then select ```"Start a program" > Edit > Change the Location.```
 
-For example \\ad.testme.local\SYSVOL\ad.testme.local\Sysmon\update.bat
+For example ```\\testme.local\SYSVOL\testme.local\Sysmon\update.bat```
 
 
 ## 2.3 SCCM Deployment

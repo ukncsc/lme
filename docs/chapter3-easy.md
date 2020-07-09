@@ -29,7 +29,7 @@ Figure 1: Elastic Stack components
 ## 3.1 Getting Started
 During the installation guide below you will see that the steps can been carried out automatically using the [Easy method](chapter3-easy.md). Commands are highlighted in grayboxes.
 
-You will need a linux box for this portion, **The deploy script is only tested on Ubuntu 18.04 Long Term Support (LTS).** In addition, only installation on a single server is supported. Please see [the resilience documentation](resilience.md) for more details.
+You will need a linux box for this portion, **The deploy script is only tested on Ubuntu Long Term Support (LTS) editions.** In addition, only installation on a single server is supported. Please see [the resilience documentation](resilience.md) for more details.
 
 ### 3.1.1 Firewall Rules
 You will need port 5044 open for the event collector to send data into the database (on the Linux server), To be able to access the web interface you will need to have firewall rules in place to allow access to port 443 (HTTPS) on the Linux server.
@@ -118,6 +118,8 @@ In 'files_for_windows.zip', copied in [step 3.2.2](#323-download-files-for-windo
 * wlbclient.key
 * wlbclient.crt
 * winlogbeat.yml 
+* module/security/config/winlogbeat-security.js
+* /module/sysmon/config/winlogbeat-sysmon.js
 
 In the zip file obtained from https://www.elastic.co/downloads/beats/winlogbeat
 * install-service-winlogbeat.ps1
@@ -127,13 +129,19 @@ In the zip file obtained from https://www.elastic.co/downloads/beats/winlogbeat
 On the windows event collector server unzip the winlogbeat file and replace 'winlogbeat.yml' with the one that came in 'files_for_windows.zip'.
 If your certificates are not in the same place as the locations in the file please change this too. Pay attention to the double slashes, these are required!
 
+* Copy winlogbeat-sysmon.js and winlogbeat-security.js file from the latest winlogbeat download and place them in the directories listed below
+```
+C:\\Program Files\\lme\\winlogbeat-7.6.1-windows-x86_64\\module\\sysmon\\config\\winlogbeat-sysmon.js
+C:\\Program Files\\lme\\winlogbeat-7.6.1-windows-x86_64\\module\\security\\config\\winlogbeat-security.js
+``` 
+
 Now open PowerShell as an administrator and run the following command from the unzipped folder: ```./install-service-winlogbeat.ps1```
 
 
 # Chapter 3 - Checklist
 
 1. Check Services.msc on the Windows box, Does the winlogbeat show as running and automatic?
-2. On the Linux machine, check the output of ```docker stack ps lme``` , You should see lme_elasticsearch/lme_nginx/lme_kibana and lme_logstash all in the 'current' state of ‘running’
+2. On the Linux machine, check the output of ```docker stack ps lme``` , You should see lme_elasticsearch/lme_kibana and lme_logstash all in the 'current' state of ‘running’
 3. You can now visit the website https://your_Linux_server/ and access Kibana. The username and password is provided from the script in [Chapter 3.2](#32-install-lme-the-easy-way-using-our-script).
 
 ## Now move onto [Chapter 4 - Post Install Actions ](chapter4.md)

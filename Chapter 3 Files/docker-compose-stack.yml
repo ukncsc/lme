@@ -1,12 +1,12 @@
 version: '3.3'
 ##########################
 # LME Stack deploy file  #
-# Version 0.1 - 27/03/19 #
+# Version 0.3 - 30/06/19 #
 ##########################
 services:
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.4.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
     environment:
       - node.name=es01
       - discovery.seed_hosts=es01
@@ -51,7 +51,7 @@ services:
 
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.4.0
+    image: docker.elastic.co/kibana/kibana:7.8.0
     environment:
       SERVER_NAME: kibana
       ELASTICSEARCH_HOSTS: https://elasticsearch:9200
@@ -61,9 +61,7 @@ services:
       SERVER_SSL_CERTIFICATE: /usr/share/kibana/certificates/kibana.crt
       ELASTICSEARCH_USERNAME: kibana
       ELASTICSEARCH_PASSWORD: insertkibanapasswordhere
-      XPACK_ML_ENABLED: "false"
-      XPACK_REPORTING_ENABLED: "true"
-      XPACK_APM_UI_ENABLED: "false"
+      XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY: kibanakey
     command: /bin/bash -c "cp -r /run/secrets /usr/share/kibana/certificates && /usr/local/bin/kibana-docker"
     secrets:
       - ca.crt
@@ -75,11 +73,12 @@ services:
       - 443:5601
 
   logstash:
-    image: docker.elastic.co/logstash/logstash:7.4.0
+    image: docker.elastic.co/logstash/logstash:7.8.0
     environment:
       XPACK_MONITORING_ENABLED: "false"
     ports:
       - 5044:5044
+      - 12514:12514
     networks:
       - esnet
     configs:

@@ -23,6 +23,8 @@ kibana_system_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -
 logstash_system_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 logstash_writer=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 update_user_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+kibanakey=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 42 | head -n 1)
+
 
 echo -e "\e[32m[x]\e[0m Updating logstash configuration with logstash writer"
 cp /opt/lme/Chapter\ 3\ Files/logstash.conf /opt/lme/Chapter\ 3\ Files/logstash.edited.conf
@@ -304,6 +306,7 @@ sed -i "s/ram-count/$ES_RAM/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-l
 
 sed -i "s/insertkibanapasswordhere/$kibana_system_pass/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
 
+sed -i "s/kibanakey/$kibanakey/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
 
 
 
@@ -354,6 +357,57 @@ chmod 700 /opt/lme/lme_update.sh
 
 echo -e "\e[32m[x]\e[0m Creating LME update crontab"
 crontab -l | { cat; echo "30 1 * * * /opt/lme/lme_update.sh"; } | crontab -
+
+}
+
+function pipelineupdate(){
+  #ask user for password
+read -e -p "Enter the password for the existing elastic user: " pipeline_elastic_user
+
+curl --cacert certs/root-ca.crt --user elastic:$pipeline_elastic_user -X PUT "https://127.0.0.1:9200/_ingest/pipeline/syslog" -H 'Content-Type: application/json' -d'
+{
+  "processors": [
+    {
+      "rename": {
+        "field": "host",
+        "target_field": "old.provider"
+      }
+    }
+  ]
+}
+'
+
+#create syslog pipeline
+curl --cacert certs/root-ca.crt --user elastic:$pipeline_elastic_user -X PUT "https://127.0.0.1:9200/_ingest/pipeline/winlogbeat" -H 'Content-Type: application/json' -d'
+{
+  "processors": []
+}
+'
+}
+
+function pipelines(){
+#create beats pipeline
+curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https://127.0.0.1:9200/_ingest/pipeline/syslog" -H 'Content-Type: application/json' -d'
+{
+  "processors": [
+    {
+      "rename": {
+        "field": "host",
+        "target_field": "old.provider"
+      }
+    }
+  ]
+}
+'
+
+#create syslog pipeline
+curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https://127.0.0.1:9200/_ingest/pipeline/winlogbeat" -H 'Content-Type: application/json' -d'
+{
+  "processors": []
+}
+'
+
+
 
 }
 
@@ -490,9 +544,9 @@ DEFAULT_IF="$(route | grep '^default' | grep -o '[^ ]*$')"
 #get ip of the interface
 EXT_IP="$(/sbin/ifconfig $DEFAULT_IF| awk -F ' *|:' '/inet /{print $3}')"
 
-read -e -p "Enter the IP that winlogbeat will use to communicate with this box: " -i "$EXT_IP" logstaship
+read -e -p "Enter the IP of this linux server: " -i "$EXT_IP" logstaship
 
-read -e -p "Enter the DNS name that winlogbeat uses to communicate with this box: " logstashcn
+read -e -p "Enter the DNS name of this linux server, This needs to be resolvable from the Windows Event Collector: " logstashcn
 echo "[x] Configuring winlogbeat config and certificates to use $logstaship as the IP and $logstashcn as the DNS"
 
 #enable auto updates if ubuntu
@@ -579,6 +633,8 @@ fi
 #ILM
 data_retention
 
+#pipeline
+pipeline
 
 echo "##################################################################################"
 echo "## KIBANA/Elasticsearch Credentials are (these will not be accesible again!!!!) ##"
@@ -621,7 +677,7 @@ function update(){
         cp /opt/lme/Chapter\ 3\ Files/logstash.conf /opt/lme/Chapter\ 3\ Files/logstash.edited.conf
 
         # copy pass from old config into var
-        Logstash_Config_Pass="$(awk '{if(/password/) print $3}' < /opt/lme/Chapter\ 3\ Files/logstash.edited.conf.old)"
+        Logstash_Config_Pass="$(awk '{if(/password/) print $3}' < /opt/lme/Chapter\ 3\ Files/logstash.edited.conf.old | head -1)"
 
         # Insert var into new config
         sed -i "s/insertlogstashwriterpasswordhere/$Logstash_Config_Pass/g" /opt/lme/Chapter\ 3\ Files/logstash.edited.conf
@@ -650,7 +706,13 @@ function update(){
 
         #update config with kibana password
         sed -i "s/insertkibanapasswordhere/$Kibanapass_from_conf/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
-        
+
+	      #copy kibana encryption key
+        kibanakey="$(grep -P -o "(?<=XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY: ).*" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old)"
+
+        #update config with kibana key
+        sed -i "s/kibanakey/$kibanakey/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
+
         customlogstashconf
 
 
@@ -671,7 +733,7 @@ function update(){
 
 if [ "$1" == "" ]; then
         echo "No operation specified"
-        echo "Usage:            ./deploy.sh (install/uninstall/update)"
+        echo "Usage:            ./deploy.sh (install/uninstall/update/pipelineupdate)"
         echo "Example:  ./deploy.sh install"
         exit
 elif [ "$1" == "install" ]; then
@@ -680,9 +742,11 @@ elif [ "$1" == "uninstall" ]; then
         uninstall
 elif [ "$1" == "update" ]; then
         update
+elif [ "$1" == "pipelineupdate" ]; then
+        pipelineupdate     
 else
         echo "Invalid operation specified"
-        echo "Usage:            ./deploy.sh (install/uninstall/update)"
+        echo "Usage:            ./deploy.sh (install/uninstall/update/pipelineupdate)"
         echo "Example:  ./deploy.sh install"
         exit
 fi
