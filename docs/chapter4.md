@@ -18,7 +18,7 @@ In a web browser, navigate to ```https:\\your_Linux_server``` and authenticate w
 First you will need to create an index. If you would like to use the pre-made dashboards, the import process creates the index for you.
 
 The dashboard and visualisation objects are contained within a NDJSON file (previously JSON) and can be easily imported 
-***IMPORTANT: You must open the dashboard file (in notepad or similar) and use find an replace to change all instances of "ChangeThisDomain" to your kibana URL:***
+***IMPORTANT: You must open the dashboard file (in notepad or similar) and use find and replace to change all instances of "ChangeThisDomain" to your kibana URL:***
 * If you use a hostname to access kibana then it should be ```https://kibanahostname.example.com\``` where kibanahostname.example.com is your kibana DNS name
 * If you use an ip to access kibana ```https://127.0.0.1\``` where 127.0.0.1 is the ip of your kibana
 
