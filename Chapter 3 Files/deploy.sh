@@ -633,8 +633,8 @@ fi
 #ILM
 data_retention
 
-#pipeline
-pipeline
+#pipelines
+pipelines
 
 echo "##################################################################################"
 echo "## KIBANA/Elasticsearch Credentials are (these will not be accesible again!!!!) ##"
