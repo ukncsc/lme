@@ -15,9 +15,9 @@ In this chapter we will:
 This section covers the installation and configuration of the Database and search functionality on a Linux server. We will install the ‘ELK’ Stack from ElasticSearch for this portion.
 
 
-What is the ELK Stack? 
+What is the ELK Stack?
 "ELK" is the acronym for three open source projects: Elasticsearch, Logstash, and Kibana. Elasticsearch is a search and analytics engine. Logstash is a server‑side data processing pipeline that ingests data from multiple sources simultaneously, transforms it, and then sends it to a "stash" like Elasticsearch. Kibana lets users visualize data with charts and graphs in Elasticsearch.
-  
+
 
 ![Elkstack components](elkstack.jpg)
 <p align="center">
@@ -39,7 +39,7 @@ You will need port 5044 open for the event collector to send data into the datab
 
 At the time of writing only security updates are configured on Ubuntu, so please install Ubuntu on a new virtual or physical machine. You may have already done this as part of the pre-requisites in the initial readme file.
 
-SSH into your Linux server and run the 10.following commands:
+SSH into your Linux server and run the following commands:
 
 ```
 # Install Git client to be able to clone the LME repository
@@ -54,14 +54,14 @@ sudo ./deploy.sh install
 ```
 
 Running the above commands will:
-1) Enables auto security updates (Ubuntu Only)
+1) Enable auto security updates (Ubuntu Only)
 2) Generate TLS certificates.
 3) Install Docker Community Edition.
-4) Configures Docker to run ELK.
-5) Changes Elasticsearch configuration, including retention based upon disk size.
+4) Configure Docker to run ELK.
+5) Change Elasticsearch configuration, including retention based upon disk size.
 
 
-The deploy script will output an number of usernames and passwords for use when accessing the dashboard and for the internal systems. 
+The deploy script will output an number of usernames and passwords for use when accessing the dashboard and for the internal systems.
 
 The usernames and passwords will be provided in a message similar to below.
 
@@ -81,7 +81,7 @@ The default retention will be calculated based upon 80% of the machines disk siz
 
 If you wish to change the default retention (e.g. you expanded your disk), please edit ```docker-compose-stack.yml``` and edit the following lines.
 ```
-RETENTION_DAYS: 180  
+RETENTION_DAYS: 180
 RETENTION_GB: 800
 ```
 Once these have been edited you can update the system with the following command: ```./deploy.sh update```
@@ -117,13 +117,13 @@ In 'files_for_windows.zip', copied in [step 3.2.2](#323-download-files-for-windo
 * root-ca.crt
 * wlbclient.key
 * wlbclient.crt
-* winlogbeat.yml 
+* winlogbeat.yml
 * module/security/config/winlogbeat-security.js
 * /module/sysmon/config/winlogbeat-sysmon.js
 
 In the zip file obtained from https://www.elastic.co/downloads/beats/winlogbeat
 * install-service-winlogbeat.ps1
-* winlogbeat.exe 
+* winlogbeat.exe
 
 ### 3.3.2 Install Winlogbeat
 On the windows event collector server unzip the winlogbeat file and replace 'winlogbeat.yml' with the one that came in 'files_for_windows.zip'.
@@ -133,7 +133,7 @@ If your certificates are not in the same place as the locations in the file plea
 ```
 C:\\Program Files\\lme\\winlogbeat-7.6.1-windows-x86_64\\module\\sysmon\\config\\winlogbeat-sysmon.js
 C:\\Program Files\\lme\\winlogbeat-7.6.1-windows-x86_64\\module\\security\\config\\winlogbeat-security.js
-``` 
+```
 
 Now open PowerShell as an administrator and run the following command from the unzipped folder: ```./install-service-winlogbeat.ps1```
 

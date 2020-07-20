@@ -1,7 +1,7 @@
 # Chapter 1 – Set up Windows Event Forwarding
 
 ![Event Forwarding overview](eventforwarding_overview.jpg)
-<p align="center">  
+<p align="center">
 Figure 1: Finished state of Chapter 1
 </p>
 
@@ -16,7 +16,7 @@ In this chapter we will:
 
 
 ## 1.1 Introduction
-This chapter will cover setting up the in-built Windows functionality for event forwarding. This effectively takes the individual events (such as a file being opened) and sends them to a central machine for processing. This is similar to the setup discussed in this [Microsoft blog](https://blogs.technet.microsoft.com/jepayne/2017/12/08/weffles/). 
+This chapter will cover setting up the in-built Windows functionality for event forwarding. This effectively takes the individual events (such as a file being opened) and sends them to a central machine for processing. This is similar to the setup discussed in this [Microsoft blog](https://blogs.technet.microsoft.com/jepayne/2017/12/08/weffles/).
 
 
 Only a selection of events will be sent from the clients ‘Event Viewer’ to a central ‘Event Collector’. The events will then be uploaded to the database and dashboard in Chapter 3.
@@ -29,12 +29,12 @@ You will need TCP port 5985 open between the clients and the Windows Event Colle
 
 
 We recommend that this traffic does not go directly across the Internet, so you should host the Windows Event Collector on the local network, in a similar place to the Active Directory server.
-	
+
 
 
 
 ## 1.3 Import Group Policy objects
-  
+
 ![Group Policy Setup](gpo.jpg)
 <p align="center">
 Figure 2: Setting up Group Policy
@@ -44,10 +44,10 @@ Figure 2: Setting up Group Policy
 ### 1.3.1 Domain Controller/Management Workstation Steps
 
 1. Apply the [LME-WEC-Server GPO](/Chapter%201%20Files/lme_gpo_for_windows.zip) to the Windows Event Collector only (either using OU filtering, security filtering or WMI filter). You can use the group policy management tool, Normally found on your domain controller (or management workstation with Remote Server Administration Tools installed).
-	
+
 	* If you are not sure how to do this, here is a [step by step guide to GPOs](/docs/gpo_step_by_step.md)
 
-2. Apply the [LME-WEC-Client GPO](/Chapter%201%20Files/lme_gpo_for_windows.zip) to a test selection of machines. We recommend that you use a test group of machines rather than your whole estate until you have confirmed the GPO is working as intended - as seen in the [Checklist](#chapter-1---checklist). 
+2. Apply the [LME-WEC-Client GPO](/Chapter%201%20Files/lme_gpo_for_windows.zip) to a test selection of machines. We recommend that you use a test group of machines rather than your whole estate until you have confirmed the GPO is working as intended - as seen in the [Checklist](#chapter-1---checklist).
 3. Edit the [LME-WEC-Client GPO](/Chapter%201%20Files/lme_gpo_for_windows.zip) “Computer Configuration/Policies/Administrative Templates/Windows Components/Event Forwarding/Configure Target Subscription Manager” and change the FQDN to match your windows collector box name, this option can be seen in Figure 3 below.
 
 ![Group Policy Server Name](gpoedit.jpg)
@@ -74,7 +74,7 @@ The filter setting is located at "Computer Configuration/Policies/Administrative
 2. Run a command prompt, change to the directory containing the wec_config.xml file you just copied.
 3. Run the command ```wecutil cs lme_wec_config.xml``` as an administrator.
 
-**Note if you are using Windows Server 2016 (version 1903 or greater) or Windows Server 2019 you will probably need to apply the microsoft fix to the Windows collector box**
+**Note if you are using Windows Server 2016 (version 1903 or greater) or Windows Server 2019 you will probably need to apply the Microsoft fix to the Windows collector box**
 
 You can find more details about this issue and the commands to run to fix this [Here](https://support.microsoft.com/en-in/help/4494462/events-not-forwarded-if-the-collector-runs-windows-server-2019-or-2016)
 ________________
@@ -89,4 +89,4 @@ ________________
 Figure 4: Event Log Subscriptions
 </p>
 
-## Now move onto [Chapter 2 – Sysmon Install](chapter2.md) 
+## Now move onto [Chapter 2 – Sysmon Install](chapter2.md)
