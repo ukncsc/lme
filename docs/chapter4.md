@@ -1,4 +1,4 @@
-# Chapter 4 - Post Install Actions 
+# Chapter 4 - Post Install Actions
 
 ## Chapter Overview
 In this chapter we will:
@@ -11,16 +11,16 @@ In this chapter we will:
 
 Once you have completed chapters 1 to 3, you can import a set of Kibana dashboards that we have created. These will help visualise the logs, and answer questions like 'What patch level are my clients running?'.
 
-In a web browser, navigate to ```https:\\your_Linux_server``` and authenticate with the credentials provided in [Chapter 3.2](/docs/chapter3-easy.md#32-install-lme-the-easy-way-using-our-script).
+In a web browser, navigate to ```https://your_Linux_server``` and authenticate with the credentials provided in [Chapter 3.2](/docs/chapter3-easy.md#32-install-lme-the-easy-way-using-our-script).
 
 ### 4.1.1 Import Initial Dashboards
 
 First you will need to create an index. If you would like to use the pre-made dashboards, the import process creates the index for you.
 
-The dashboard and visualisation objects are contained within a NDJSON file (previously JSON) and can be easily imported 
+The dashboard and visualisation objects are contained within a NDJSON file (previously JSON) and can be easily imported
 ***IMPORTANT: You must open the dashboard file (in notepad or similar) and use find and replace to change all instances of "ChangeThisDomain" to your kibana URL:***
 * If you use a hostname to access kibana then it should be ```https://kibanahostname.example.com\``` where kibanahostname.example.com is your kibana DNS name
-* If you use an ip to access kibana ```https://127.0.0.1\``` where 127.0.0.1 is the ip of your kibana
+* If you use an IP address to access kibana ```https://127.0.0.1\``` where 127.0.0.1 is the IP address of your kibana
 
 You can now import the dashboards by clicking ‘Management’ -> ‘Saved Objects’. Please follow the steps in Figure 1, and the NDJSON files are located in [Chapter 4 Files\dashboard 'version'.ndjson](/Chapter%204%20Files/).
 
