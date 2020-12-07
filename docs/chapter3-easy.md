@@ -41,7 +41,7 @@ If the ELK stack is being deployed behind a web proxy, and Docker isn't configur
 ```
 sudo mkdir -p /etc/systemd/system/docker.service.d
 ```
-2) Create a file named /etc/systemd/system/docker.service.d/http-proxy.conf that adds the HTTP_PROXY environment variable:
+2) Create a file named /etc/systemd/system/docker.service.d/http-proxy.conf that adds the HTTP_PROXY and HTTPS_PROXY environment variables (keep/delete as required for your environment):
 ```
 [Service]
 Environment="HTTP_PROXY=http://[proxy address or IP]:[proxy port]"
@@ -51,6 +51,8 @@ Environment="HTTPS_PROXY=https://[proxy address or IP]:[proxy port]"
 ```
 sudo systemctl daemon-reload
 ```
+
+Check the [official Docker documentation](https://docs.docker.com/config/daemon/systemd/#httphttps-proxy) for this process, including details on how to bypass the proxy if you have internal image registries which need to be reachable from this host.
 
 ## 3.2 Install LME the easy way using our script
 
