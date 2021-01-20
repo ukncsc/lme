@@ -50,7 +50,7 @@
     <Select Path="System">*[System[Provider[@Name='Microsoft-Windows-Kernel-General'] and (EventID=12 or EventID=13)]]</Select>
   </Query>
   <Query Id="5" Path="System">
-    <!-- Service Install (7000), service start failure (7045), new service (4697) -->
+    <!-- Service start failure (7000), service install (7045), new service (4697) -->
     <Select Path="System">*[System[Provider[@Name='Service Control Manager'] and (EventID = 7000 or EventID=7045)]]</Select>
 <Select Path="Security">*[System[(EventID=4697)]]</Select>
   </Query>
