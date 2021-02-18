@@ -31,7 +31,7 @@ Permissions on logs for Domain Controllers need further adjustment, [see this bl
 Importing the dashboard is described in [section 4.1.1](https://github.com/ukncsc/lme/blob/master/docs/chapter4.md#411-import-initial-dashboards).  First, ensure you have modified the latest dashboards file from Github to replace `ChangeThisDomain` with your Kibana server’s DNS name.  Note that it’s imperative that you keep the trailing backslash (e.g. `https://kibanahostname.example.com\`) otherwise importing the file to Kibana will hang.  This is discussed more in [issue #74](https://github.com/ukncsc/lme/issues/74).
 
 ### Events not forwarded to Kibana
-The `winlogbeat` service installed in [section 3.3](https://github.com/ukncsc/lme/blob/master/docs/chapter3-easy.md#33-configuring-winlogbeat-on-windows-event-collector-server) is responsible for sending events from the collector to Kibana.  Confirm the `winlogbeat` service is running.
+The `winlogbeat` service installed in [section 3.3](https://github.com/ukncsc/lme/blob/master/docs/chapter3-easy.md#33-configuring-winlogbeat-on-windows-event-collector-server) is responsible for sending events from the collector to Kibana.  Confirm the `winlogbeat` service is running and check the log file (`C:\ProgramData\winlogbeat\logs`) for errors.
 
 By default the `ForwardedEvents` maximum log size is around 20MB so events will be lost if the `winlogbeat` service stops.  Consider increasing the size of the `ForwardedEvents` log file to help reduce log loss in this scenario.  Historical logs are sent once the `winlogbeat` service starts.
 
