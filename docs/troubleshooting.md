@@ -16,3 +16,10 @@ Figure 1: Troubleshooting overview diagram
 ## Common Errors
 ### Windows log with Error code 2150859027
 If you are on Windows 2016 or higher and are getting Error code 2150859027, or messages about HTTP URLs not being available in your Windows logs, we suggest looking at [this guide.](https://support.microsoft.com/en-in/help/4494462/events-not-forwarded-if-the-collector-runs-windows-server-2019-or-2016)
+
+### No logs forwarded from member servers
+Check the following:
+
+* Sysmon service is running on the client
+* The [LME-WEC-Client-GPO](https://github.com/ukncsc/lme/blob/master/Chapter%201%20Files/lme_gpo_for_windows.zip) is applying to the member server
+* That the member server has been rebooted to apply permissions to the logs ([see issue #41](https://github.com/ukncsc/lme/issues/41#issuecomment-554037796))
