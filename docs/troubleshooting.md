@@ -25,9 +25,9 @@ Check the following:
 * That the member server has been rebooted to apply permissions to the logs ([see issue #41](https://github.com/ukncsc/lme/issues/41#issuecomment-554037796))
 
 ### Events not forwarding from Domain Controllers
-Please be aware that Logging Made Easy does not currently support logging Domain Controllers, and the log volumes may be significant from servers with this role.  If you wish to proceed forwarding logs from your Domain Controllers please be aware you do this at your own risk!
+Please be aware that Logging Made Easy does not currently support logging Domain Controllers, and the log volumes may be significant from servers with this role.  If you wish to proceed forwarding logs from your Domain Controllers please be aware you do this at your own risk!  Monitoring such servers has not been tested or endorsed by the NCSC and may have unintended side effects.
 
-Permissions on logs for Domain Controllers need further adjustment, [see this blog post](https://rockyprogress.wordpress.com/2011/12/04/security-event-log-collection-from-a-domain-controller/).  Note the NCSC is not responsible for the content of external sites.
+If you wish to monitor Domain Controllers then the contents of [this blog post](https://rockyprogress.wordpress.com/2011/12/04/security-event-log-collection-from-a-domain-controller/) may be helpful.  Note the NCSC is not responsible for the content of external sites.
 
 > Remember, Domain Controller logging is not currently supported.
 
