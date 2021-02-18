@@ -23,3 +23,6 @@ Check the following:
 * Sysmon service is running on the client
 * The [LME-WEC-Client-GPO](https://github.com/ukncsc/lme/blob/master/Chapter%201%20Files/lme_gpo_for_windows.zip) is applying to the member server
 * That the member server has been rebooted to apply permissions to the logs ([see issue #41](https://github.com/ukncsc/lme/issues/41#issuecomment-554037796))
+
+### Events not forwarding from Domain Controllers
+Permissions on logs for Domain Controllers need further adjustment, [see this blog post](https://rockyprogress.wordpress.com/2011/12/04/security-event-log-collection-from-a-domain-controller/).  Note the NCSC is not responsible for the content of external sites.
