@@ -7,7 +7,7 @@ You can find basic troubleshooting steps in the [Troubleshooting Guide](troubles
 When reporting an issue or suggesting improvements, it is important to include the versions of all the components, where possible. This ensures that the issue has not already been fixed! 
 
 ### Windows Server
-* Operating System: Press CTRL+R and type ```winver```
+* Operating System: Press "Windows Key"+R and type ```winver```
 * WEC Config: Open EventViewer > Subscriptions > "LME" > Description should contain version number
 * Winlogbeat Config: At the top of the file C:\Program Files\lme\winlogbeat.yml there should be a version number.
 * Winlogbeat.exe version: Press CTRL+R and type ```"C:\Program Files\lme\winlogbeat.exe" version```
