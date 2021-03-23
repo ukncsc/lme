@@ -10,7 +10,7 @@ When reporting an issue or suggesting improvements, it is important to include t
 * Operating System: Press "Windows Key"+R and type ```winver```
 * WEC Config: Open EventViewer > Subscriptions > "LME" > Description should contain version number
 * Winlogbeat Config: At the top of the file C:\Program Files\lme\winlogbeat.yml there should be a version number.
-* Winlogbeat.exe version: Press CTRL+R and type ```"C:\Program Files\lme\winlogbeat.exe" version```
+* Winlogbeat.exe version: Press "Windows Key"+R and type ```"C:\Program Files\lme\winlogbeat.exe" version```
 * Sysmon config: From either the top of the file or look at the status dashboard
 * Sysmon executable: Either run sysmon.exe or look at the status dashboard
 
