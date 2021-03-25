@@ -16,3 +16,28 @@ Figure 1: Troubleshooting overview diagram
 ## Common Errors
 ### Windows log with Error code 2150859027
 If you are on Windows 2016 or higher and are getting Error code 2150859027, or messages about HTTP URLs not being available in your Windows logs, we suggest looking at [this guide.](https://support.microsoft.com/en-in/help/4494462/events-not-forwarded-if-the-collector-runs-windows-server-2019-or-2016)
+
+### No logs forwarded from member servers
+Check the following:
+
+* Sysmon service is running on the client
+* The [LME-WEC-Client-GPO](https://github.com/ukncsc/lme/blob/master/Chapter%201%20Files/lme_gpo_for_windows.zip) is applying to the member server
+* That the member server has been rebooted to apply permissions to the logs ([see issue #41](https://github.com/ukncsc/lme/issues/41#issuecomment-554037796))
+
+### Events not forwarding from Domain Controllers
+Please be aware that Logging Made Easy does not currently support logging Domain Controllers, and the log volumes may be significant from servers with this role.  If you wish to proceed forwarding logs from your Domain Controllers please be aware you do this at your own risk!  Monitoring such servers has not been tested or endorsed by the NCSC and may have unintended side effects.
+
+### Importing the Kibana dashboard hangs
+Importing the dashboard is described in [section 4.1.1](https://github.com/ukncsc/lme/blob/master/docs/chapter4.md#411-import-initial-dashboards).  First, ensure you have modified the latest dashboards file from Github to replace `ChangeThisDomain` with your Kibana server’s DNS name.  Note that it’s imperative that you keep the trailing backslash (e.g. `https://kibanahostname.example.com\`) otherwise importing the file to Kibana will hang.  This is discussed more in [issue #74](https://github.com/ukncsc/lme/issues/74).
+
+### Events not forwarded to Kibana
+The `winlogbeat` service installed in [section 3.3](https://github.com/ukncsc/lme/blob/master/docs/chapter3-easy.md#33-configuring-winlogbeat-on-windows-event-collector-server) is responsible for sending events from the collector to Kibana.  Confirm the `winlogbeat` service is running and check the log file (`C:\ProgramData\winlogbeat\logs`) for errors.
+
+By default the `ForwardedEvents` maximum log size is around 20MB so events will be lost if the `winlogbeat` service stops.  Consider increasing the size of the `ForwardedEvents` log file to help reduce log loss in this scenario.  Historical logs are sent once the `winlogbeat` service starts.
+
+* Open Microsoft Event View (`eventvwr`)
+* Expand _Windows Logs_ and right click _Forwarded Events_
+* Click _properties_
+* Adjust _maximum log size (KB)_ to a higher value.  Note that the system will automatically adjust the size to the nearest multiple of 64KB.
+![Adjusting the log size](AdjustForwardedEventsLogSize.png)
+
