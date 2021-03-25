@@ -9,17 +9,17 @@ Figure 1: Finished state of Chapter 1
 In this chapter we will:
 * Install a new windows server for events to be sent to (or choose an existing suitable server).
 * Add some Group Policy Objects (GPOs) to your Active Directory (AD).
-* Configuring the Windows event collector listener service.
+* Configuring the Windows Event Collector listener service.
 * Configure clients to send logs to this box.
 
 
 
 
 ## 1.1 Introduction
-This chapter will cover setting up the in-built Windows functionality for event forwarding. This effectively takes the individual events (such as a file being opened) and sends them to a central machine for processing. This is similar to the setup discussed in this [Microsoft blog](https://blogs.technet.microsoft.com/jepayne/2017/12/08/weffles/).
+This chapter will cover setting up the in-built Windows functionality for event forwarding. This effectively takes the individual events (such as a file being opened) and sends them to a central machine for processing. This is similar to the setup discussed in this [Microsoft blog](https://docs.microsoft.com/en-us/windows/security/threat-protection/use-windows-event-forwarding-to-assist-in-intrusion-detection).
 
 
-Only a selection of events will be sent from the clients ‘Event Viewer’ to a central ‘Event Collector’. The events will then be uploaded to the database and dashboard in Chapter 3.
+Only a selection of events will be sent from the client's ‘Event Viewer’ to a central ‘Event Collector’. The events will then be uploaded to the database and dashboard in Chapter 3.
 This chapter will require the clients and event collector to be Active Directory domain joined and the event collector can be either a Windows server or a Windows client operating system.
 
 ## 1.2 Firewall rules and where to host
@@ -43,12 +43,12 @@ Figure 2: Setting up Group Policy
 
 ### 1.3.1 Domain Controller/Management Workstation Steps
 
-1. Apply the [LME-WEC-Server GPO](/Chapter%201%20Files/lme_gpo_for_windows.zip) to the Windows Event Collector only (either using OU filtering, security filtering or WMI filter). You can use the group policy management tool, Normally found on your domain controller (or management workstation with Remote Server Administration Tools installed).
+1. Apply the [LME-WEC-Server GPO](/Chapter%201%20Files/lme_gpo_for_windows.zip) to the Windows Event Collector only (either using OU filtering, security filtering or WMI filter). You can use the group policy management tool, normally found on your domain controller (or management workstation with Remote Server Administration Tools installed).
 
 	* If you are not sure how to do this, here is a [step by step guide to GPOs](/docs/gpo_step_by_step.md)
 
 2. Apply the [LME-WEC-Client GPO](/Chapter%201%20Files/lme_gpo_for_windows.zip) to a test selection of machines. We recommend that you use a test group of machines rather than your whole estate until you have confirmed the GPO is working as intended - as seen in the [Checklist](#chapter-1---checklist).
-3. Edit the [LME-WEC-Client GPO](/Chapter%201%20Files/lme_gpo_for_windows.zip) “Computer Configuration/Policies/Administrative Templates/Windows Components/Event Forwarding/Configure Target Subscription Manager” and change the FQDN to match your windows collector box name, this option can be seen in Figure 3 below.
+3. Edit the [LME-WEC-Client GPO](/Chapter%201%20Files/lme_gpo_for_windows.zip) “Computer Configuration/Policies/Administrative Templates/Windows Components/Event Forwarding/Configure Target Subscription Manager” and change the FQDN to match your Windows collector box name - this option can be seen in Figure 3 below.
 
 ![Group Policy Server Name](gpoedit.jpg)
 <p align="center">
@@ -57,7 +57,7 @@ Figure 3: Editing Server Name In Group Policy
 
 **It is recommended that you now follow the below steps to restrict access to WinRM to specific IP addresses**
 
-Both the LME-WEC-Server and LME-WEC-Client GPOs include a wildcard filter allowing all IP addresses on the host and client to run a WinRM Listener and be connected to.
+Both the LME-WEC-Server and LME-WEC-Client GPOs include a wildcard filter allowing all IP addresses on the host and client to run a WinRM Listener and to receive inbound connections using this protocol.
 We strongly recommend that this is restricted to IP addresses or ranges specific to your network environment.
 
 An example of this would be if you hosted a LAN with the subnet 192.168.2.0/24, then you could only allows NICs residing within the range 192.168.2.1-192.168.2.254 to run a WinRM listener via the GPO policy.
@@ -70,9 +70,9 @@ The filter setting is located at "Computer Configuration/Policies/Administrative
 
 ### 1.3.2 Windows Collector Box Steps
 
-1. Copy the [lme_wec_config.xml](/Chapter%201%20Files/lme_wec_config.xml) file to the windows event collector server.
-2. Run a command prompt, change to the directory containing the wec_config.xml file you just copied.
-3. Run the command ```wecutil cs lme_wec_config.xml``` as an administrator.
+1. Copy the [lme_wec_config.xml](/Chapter%201%20Files/lme_wec_config.xml) file to the Windows Event Collector server.
+2. Run a command prompt as an administrator, change to the directory containing the wec_config.xml file you just copied.
+3. Run the command ```wecutil cs lme_wec_config.xml``` within the elevated command prompt.
 
 **Note if you are using Windows Server 2016 (version 1903 or greater) or Windows Server 2019 you will probably need to apply the Microsoft fix to the Windows collector box**
 

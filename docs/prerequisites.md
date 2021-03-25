@@ -20,7 +20,7 @@ We estimate that you should allow a couple of days to run through the entire ins
 
 ## High level overview diagram of the LME system
 
-![High level overview](/docs/chapter_overview.jpg)
+![High level overview](chapter_overview.jpg)
 <p align="center">
 Figure 1: High level overview, linking to documentation chapters
 </p>

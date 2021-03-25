@@ -1,12 +1,12 @@
 version: '3.3'
 ##########################
 # LME Stack deploy file  #
-# Version 0.3 - 30/06/19 #
+# Version 0.4 - 24/03/21 #
 ##########################
 services:
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.11.2
     environment:
       - node.name=es01
       - discovery.seed_hosts=es01
@@ -51,7 +51,7 @@ services:
 
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.8.0
+    image: docker.elastic.co/kibana/kibana:7.11.2
     environment:
       SERVER_NAME: kibana
       ELASTICSEARCH_HOSTS: https://elasticsearch:9200
@@ -73,7 +73,7 @@ services:
       - 443:5601
 
   logstash:
-    image: docker.elastic.co/logstash/logstash:7.8.0
+    image: docker.elastic.co/logstash/logstash:7.11.2
     environment:
       XPACK_MONITORING_ENABLED: "false"
     ports:
@@ -84,9 +84,6 @@ services:
     configs:
       - source: logstash.conf
         target: /usr/share/logstash/pipeline/logstash.conf
-        mode: 0444
-      - source: osmap.csv
-        target: /tmp/osmap.csv
         mode: 0444
       - source: logstash_custom.conf
         target: /usr/share/logstash/pipeline/logstash_custom.conf
@@ -114,8 +111,6 @@ secrets:
     external: true
 configs:
   logstash.conf:
-    external: true
-  osmap.csv:
     external: true
   logstash_custom.conf:
     external: true

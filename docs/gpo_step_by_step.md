@@ -27,8 +27,8 @@ Figure 3: Name the new GPO object
 
 
 ### 1.1.3 Import Settings
-when asked to backup existing GPO just press next
-"Backup location (select the backup folder from which you will import setting)" please select the GPO folder contained within the zip you downloaded.
+When asked to backup existing GPO just press next
+"Backup location (select the backup folder from which you will import setting)" please select the GPO folder contained within the the [lme_gpo_for_windows.zip](/Chapter%201%20Files/lme_gpo_for_windows.zip) file **NOTE this file will need to first be extracted somewhere accessible**
 
 ![import a new object](gpo_pics/import_new_object.jpg)
 <p align="center">
@@ -68,13 +68,13 @@ Figure 7: Making a new OU
 
 ### 1.2.2 - Adding clients/servers to OU
 
-To add Client machines, Servers or security group to a specified OU:
+To add Client machines, Servers or Security Groups to a specified OU:
 
-Open Active Directory users and computers
+Open Active Directory Users and Computers
 
 ![import finished](gpo_pics/aduc.jpg)
 <p align="center">
-Figure 8: Open Active Directory users and computers
+Figure 8: Open Active Directory Users and Computers
 </p>
 
 Find the machine(s) that you wish to be in the group and drag and drop the machines into the group.
@@ -84,7 +84,7 @@ Find the machine(s) that you wish to be in the group and drag and drop the machi
 ### 1.2.3 - How to link a GPO to an OU
 
 To 'activate' the GPOs that you previously imported you need to link these GPOs to the OUs you want to use. 
-To create these right click on the OU that you wish to be linked to a GPO
+To create these, return to the Group Policy Management Console, then right click on the OU that you wish to be linked to a GPO
 
 ![Create a new GPO link](gpo_pics/link_an_ou.jpg)
 <p align="center">

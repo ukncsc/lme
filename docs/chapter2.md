@@ -2,10 +2,10 @@
 
 ## Chapter Overview
 In this chapter we will:
-* Setup a GPO or SCCM job to deploy sysmon across your clients.
+* Setup a GPO or SCCM job to deploy Sysmon across your clients.
 
 ## 2.1 Introduction
-Sysmon is a Windows service from Microsoft which logs Windows activity to event logs, based of settings defined in an XML configuration file.
+Sysmon is a Windows service from Microsoft which logs Windows activity to event logs, based on settings defined in an XML configuration file.
 
 
 **By following this guide and using Sysmon, you are agreeing to the following EULA. 
@@ -16,24 +16,25 @@ LME supports either GPO or SCCM Deployment. It is your choice which of these you
 
 ## 2.2 GPO Deployment
 
-Group Policy Object (GPO) deployment involves created a 'scheduled task' that will periodically connect to a network folder location and run update.bat to install Sysmon or modify an existing installation.
+Group Policy Object (GPO) deployment involves creating a 'scheduled task' that will periodically connect to a network folder location and run update.bat to install Sysmon or modify an existing installation.
 
 Using Microsoft Group Policy to deploy LME requires two main things:
 * A location to host the configuration and executables.
 * A Group Policy Object (GPO) to create a scheduled task.
 
 ### 2.2.1 - Folder Layout
-A centralised network folder accessible by all machines that are going to be running sysmon is needed. We suggest inside the sysvol directory as a suitable place since this is configured by default to have very restricted write permissions.
-**It is important that the folder contents cannot be modified by users, hence recommending Sysvol folder!**
+A centralised network folder accessible by all machines that are going to be running Sysmon is needed. We suggest inside the sysvol directory as a suitable place since this is configured by default to have very restricted write permissions.
+**It is extremely important that the folder contents cannot be modified by users, hence recommending Sysvol folder.**
 
 
 You will need to download the below files and copy them to an appropriate location such as sysvol located at ``` \\%YourDomainName%\sysvol\%YourDomainName%\Sysmon ```
 * Sysmon64.exe - https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon
 * sigcheck64.exe  - https://docs.microsoft.com/en-us/sysinternals/downloads/sigcheck
-* sysmon.xml - [SwiftOnSecurity ALPHA is the recommended Sysmon config](https://github.com/SwiftOnSecurity/sysmon-config/blob/master/sysmonconfig-export.xml).
-	* **Using the SwiftOnSecurity XML will ensure the best compatibility with the pre-made dashboards.**
-	* The SwiftOnSecurity configuration is a good starting point, and more advanced users will benefit from customisation to include/exclude events.
-	* You will need to rename the downloaded file to sysmon.xml!
+* sysmon.xml - 
+	* Either [Olaf Hartong's Modular Sysmon](https://github.com/olafhartong/sysmon-modular/blob/master/sysmonconfig.xml) or [SwiftOnSecurity's Sysmon](https://github.com/SwiftOnSecurity/sysmon-config/blob/master/sysmonconfig-export.xml) config are the recommended Sysmon configuration (pick one).
+	* **Using the SwiftOnSecurity XML will ensure the best compatibility with the pre-made dashboards, while Olaf Hartong's modular XML will collect additional data and may be suitable when more robust monitoring is required.**
+	* These configuration options are a good starting point, but more advanced users will benefit from customisation to include/exclude events.
+	* **You will need to rename the downloaded file to sysmon.xml.**
 * update.bat  - From [Our GIT](/Chapter%202%20Files/GPO%20Deployment/update.bat) (Based on work by Ryan Watson & Syspanda.com)
 
 
@@ -77,6 +78,6 @@ File exists - C:\Windows\sysmon64.exe
 # Chapter 2 - Checklist
 1. Do you have the Sysmon service running on a sample of the clients?
 2. Is the Sysmon Eventlog showing data? (It’s located in Applications and Services Logs/Microsoft/Windows/Sysmon/Operational)
-3. Are you seeing Sysmon logs in the forwarded events folder on the Windows event forwarder box?
+3. Are you seeing Sysmon logs in the Forwarded Events folder on the Windows Event Collector box?
 
-## Now move onto [Chapter 3 - Database Easy Install](chapter3-easy.md)
+## Now move onto [Chapter 3 - Database Install](chapter3.md)

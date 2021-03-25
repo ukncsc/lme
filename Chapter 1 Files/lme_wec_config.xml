@@ -2,7 +2,7 @@
 
 <!-- ########################## -->
 <!-- # LME WEC Config         # -->
-<!-- # Version 0.3 - 13/06/19 # -->
+<!-- # Version 0.4 - 24/03/21 # -->
 <!-- ########################## -->
 
 
@@ -50,7 +50,7 @@
     <Select Path="System">*[System[Provider[@Name='Microsoft-Windows-Kernel-General'] and (EventID=12 or EventID=13)]]</Select>
   </Query>
   <Query Id="5" Path="System">
-    <!-- Service start failure (7000), service install (7045), new service (4697) -->
+    <!-- Service start failure (7000), service Install (7045), new service (4697) -->
     <Select Path="System">*[System[Provider[@Name='Service Control Manager'] and (EventID = 7000 or EventID=7045)]]</Select>
 <Select Path="Security">*[System[(EventID=4697)]]</Select>
   </Query>
@@ -246,9 +246,17 @@
     <!-- Unexpected Shutdown/Bluescreen--> 
     <Select Path="System">*[System[(EventID=41)]]</Select>
   </Query>
-  <Query Id="56" Path="System">
+  <Query Id="57" Path="System">
     <!-- Windows update install failed--> 
     <Select Path="System">*[System[(EventID=20)]]</Select>
+  </Query>
+  <Query Id="58" Path="Security">
+    <!-- A logon was attempted using explicit credentials--> 
+    <Select Path="Security">*[System[(EventID=4648)]]</Select>
+  </Query>
+  <Query Id="59" Path="Security">
+    <!-- A user account was changed--> 
+    <Select Path="Security">*[System[(EventID=4738)]]</Select>
   </Query>
 </QueryList>
 
@@ -258,7 +266,7 @@
   </Query>
   <ReadExistingEvents>false</ReadExistingEvents>
   <TransportName>HTTP</TransportName>
-  <ContentFormat>Events</ContentFormat>
+  <ContentFormat>RenderedText</ContentFormat>
   <Locale Language="en-US"/>
   <LogFile>ForwardedEvents</LogFile>
   <PublisherName>Microsoft-Windows-EventCollector</PublisherName>

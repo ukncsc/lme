@@ -1,7 +1,7 @@
 #!/bin/bash
 ##########################
 # LME Deploy Script      #
-# Version 0.4 - 15/07/19 #
+# Version 0.4 - 24/03/21 #
 ##########################
 # This script configures a host for LME including generating certificates and populating configuration files.
 
@@ -41,13 +41,13 @@ done
 echo -e "\e[32m[x]\e[0m Setting elastic user password"
 curl --cacert certs/root-ca.crt --user elastic:temp -X POST "https://127.0.0.1:9200/_security/user/elastic/_password" -H 'Content-Type: application/json' -d' { "password" : "'"$elastic_user_pass"'"} '
 
-echo -e "\e[32m[x]\e[0m Setting kibana system password"
+echo -e "\n\e[32m[x]\e[0m Setting kibana system password"
 curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/kibana/_password" -H 'Content-Type: application/json' -d' { "password" : "'"$kibana_system_pass"'"} '
 
-echo -e "\e[32m[x]\e[0m Setting logstash system password"
+echo -e "\n\e[32m[x]\e[0m Setting logstash system password"
 curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/logstash_system/_password" -H 'Content-Type: application/json' -d' { "password" : "'"$logstash_system_pass"'"} '
 
-echo -e "\e[32m[x]\e[0m creating logstash writer role"
+echo -e "\n\e[32m[x]\e[0m Creating logstash writer role"
 
 curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/role/logstash_writer" -H 'Content-Type: application/json' -d'
 {
@@ -61,7 +61,7 @@ curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https
 }
 '
 
-echo -e "\e[32m[x]\e[0m creating logstash writer user"
+echo -e "\n\e[32m[x]\e[0m Creating logstash writer user"
 
 
 curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/logstash_writer" -H 'Content-Type: application/json' -d'
@@ -72,13 +72,13 @@ curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https
   }
 '
 
-echo -e "\e[32m[x]\e[0m setting logstash writer password"
+echo -e "\n\e[32m[x]\e[0m Setting logstash writer password"
 curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/logstash_writer/_password" -H 'Content-Type: application/json' -d' { "password" : "'"$logstash_writer"'"} '
 
 
 
 #create role, Only needs kibana perms so the other data is just falsified. 
-echo -e "\e[32m[x]\e[0m creating update role (dashboards)"
+echo -e "\n\e[32m[x]\e[0m Creating update role (dashboards)"
 curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/role/dashboard_update" -H 'Content-Type: application/json' -d'
 {
   "cluster":[],
@@ -98,7 +98,7 @@ curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https
 '
 
 
-echo -e "\e[32m[x]\e[0m creating update user (dashboards)"
+echo -e "\n\e[32m[x]\e[0m Creating update user (dashboards)"
 curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/dashboard_update" -H 'Content-Type: application/json' -d'
 {
   "password" : "dashboard_update",
@@ -107,7 +107,7 @@ curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https
   }
 '
 
-echo -e "\e[32m[x]\e[0m setting update user password (dashboards)"
+echo -e "\n\e[32m[x]\e[0m Setting update user password (dashboards)"
 curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/dashboard_update/_password" -H 'Content-Type: application/json' -d' { "password" : "'"$update_user_pass"'"} '
 
 
@@ -118,8 +118,9 @@ curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https
 function zipfiles(){
 #zip the files to allow the user to download them for the WLB install.
 #copy them to home to start with
+echo -e "\n\e[32m[x]\e[0m Generating files_for_windows zip"
 apt-get install zip -y -q
-mkdir /tmp/lme
+mkdir -p /tmp/lme
 cp /opt/lme/Chapter\ 3\ Files/winlogbeat.yml /tmp/lme/
 cp /opt/lme/Chapter\ 3\ Files/certs/wlbclient.crt /tmp/lme/
 cp /opt/lme/Chapter\ 3\ Files/certs/wlbclient.key /tmp/lme/
@@ -130,11 +131,14 @@ zip -r /opt/lme/files_for_windows.zip /tmp/lme
 
 
 function generatecerts() {
+
+echo -e "\e[33m[!]\e[0m Note: Depending on your OpenSSL configuration you may see an error opening a .rnd file into RNG, this will not block the installation"
+
 #configure certificate authority
 mkdir certs
 
 #make a new key for the root ca
-echo -e "\e[32m[x]\e[0m making root CA"
+echo -e "\e[32m[x]\e[0m Making root CA"
 openssl genrsa -out certs/root-ca.key 4096
 
 #make a cert signing request for this key
@@ -271,14 +275,12 @@ docker config create logstash.conf logstash.edited.conf
 customlogstashconf
 docker config create logstash_custom.conf logstash_custom.conf
 
-#add os mapping to config
-docker config create osmap.csv osmap.csv
 }
 
 function configuredocker() {
 sysctl -w vm.max_map_count=262144
 SYSCTL_STATUS=$( grep vm.max_map_count /etc/sysctl.conf )
-if [ SYSCTL_STATUS == "vm.max_map_count=262144" ]; then
+if [ "$SYSCTL_STATUS" == "vm.max_map_count=262144" ]; then
         echo "SYSCTL already configured"
 else
         echo "vm.max_map_count=262144" >> /etc/sysctl.conf
@@ -341,10 +343,16 @@ get_distribution() {
 }
 
 function dashboard_update(){
+
+if [ -z "$update_user_pass" ]; then
+  # $update_user_pass is not set - so this function is not called from an initial install
+  read -s -e -p "Enter the password for the existing dashboard_update user: " update_user_pass
+fi
+
 cp dashboard_update.sh /opt/lme/
 chmod 700 /opt/lme/dashboard_update.sh
 
-echo -e "\e[32m[x]\e[0m Updating logstash configuration with logstash writer"
+echo -e "\e[32m[x]\e[0m Updating dashboard update configuration with dashboard update user credentials"
 sed -i "s/dashboardupdatepassword/$update_user_pass/g" /opt/lme/dashboard_update.sh
 
 echo -e "\e[32m[x]\e[0m Creating dashboard update crontab"
@@ -360,33 +368,27 @@ crontab -l | { cat; echo "30 1 * * * /opt/lme/lme_update.sh"; } | crontab -
 
 }
 
-function pipelineupdate(){
-  #ask user for password
-read -e -p "Enter the password for the existing elastic user: " pipeline_elastic_user
+function indexmappingupdate(){
 
-curl --cacert certs/root-ca.crt --user elastic:$pipeline_elastic_user -X PUT "https://127.0.0.1:9200/_ingest/pipeline/syslog" -H 'Content-Type: application/json' -d'
-{
-  "processors": [
-    {
-      "rename": {
-        "field": "host",
-        "target_field": "old.provider"
-      }
-    }
-  ]
+echo -e "\n\e[32m[x]\e[0m Uploading the LME index template"
+
+if [ -z "$elastic_user_pass" ]; then
+  # $elastic_user_pass is not set - so this function is not called from an initial install
+  read -s -e -p "Enter the password for the existing elastic user: " elastic_user_pass
+fi
+curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https://127.0.0.1:9200/_template/lme_template" -H 'Content-Type: application/json' --data "@winlog-index-mapping.json"
 }
-'
+
+function pipelineupdate(){
+
+echo -e "\n\e[32m[x]\e[0m Creating Elastic pipelines"
+
+if [ -z "$elastic_user_pass" ]; then
+  # $elastic_user_pass is not set - so this function is not called from an initial install
+  read -s -e -p "Enter the password for the existing elastic user: " elastic_user_pass
+fi
 
 #create syslog pipeline
-curl --cacert certs/root-ca.crt --user elastic:$pipeline_elastic_user -X PUT "https://127.0.0.1:9200/_ingest/pipeline/winlogbeat" -H 'Content-Type: application/json' -d'
-{
-  "processors": []
-}
-'
-}
-
-function pipelines(){
-#create beats pipeline
 curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https://127.0.0.1:9200/_ingest/pipeline/syslog" -H 'Content-Type: application/json' -d'
 {
   "processors": [
@@ -400,15 +402,49 @@ curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https:
 }
 '
 
-#create syslog pipeline
+#create beats pipeline
 curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https://127.0.0.1:9200/_ingest/pipeline/winlogbeat" -H 'Content-Type: application/json' -d'
 {
-  "processors": []
+  "description": "Add geoip info",
+  "processors": [
+    {
+      "geoip": {
+        "field": "client.ip",
+        "target_field": "client.geo",
+        "ignore_missing": true
+      }
+    },
+    {
+      "geoip": {
+        "field": "source.ip",
+        "target_field": "source.geo",
+        "ignore_missing": true
+      }
+    },
+    {
+      "geoip": {
+        "field": "destination.ip",
+        "target_field": "destination.geo",
+        "ignore_missing": true
+      }
+    },
+    {
+      "geoip": {
+        "field": "server.ip",
+        "target_field": "server.geo",
+        "ignore_missing": true
+      }
+    },
+    {
+      "geoip": {
+        "field": "host.ip",
+        "target_field": "host.geo",
+        "ignore_missing": true
+      }
+    }
+  ]
 }
 '
-
-
-
 }
 
 function data_retention(){
@@ -450,19 +486,6 @@ curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https:
     }
 }
 '
-
-
-
-curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https://127.0.0.1:9200/_template/lme_template?pretty" -H 'Content-Type: application/json' -d'
-{
-  "index_patterns": ["winlogbeat-*"],                 
-  "settings": {
-    "number_of_shards": 4,
-    "number_of_replicas": 0,
-    "index.lifecycle.name": "lme_ilm_policy"    
-  }
-}
-'
 }
 
 
@@ -489,14 +512,14 @@ apt_DUP_1='APT::Periodic::Download-Upgradeable-Packages "1";'
 
 
 #check if package list is set to 1 or 0 and then make sure its 1 if its not set then set it
-if [ ! -z $( grep "$apt_UPL_0" "$auto_os_updatesfile" -o grep "$apt_UPL_1" "$auto_os_updatesfile" ) ]; then
+if [[ ! -z $( grep "$apt_UPL_0" "$auto_os_updatesfile" ) || ! -z $( grep "$apt_UPL_1" "$auto_os_updatesfile" ) ]]; then
 sed -i "s#$apt_UPL_0#$apt_UPL_1#g" $auto_os_updatesfile
 else
 echo $apt_UPL_1 >> $auto_os_updatesfile
 fi
 
 #check unattended upgrade is set to 1 or 0 and then make sure its 1 if its not set then set it
-if [ ! -z $( grep "$apt_UU_0" "$auto_os_updatesfile" -o grep "$apt_UU_1" "$auto_os_updatesfile" ) ]; then
+if [[ ! -z $( grep "$apt_UU_0" "$auto_os_updatesfile" ) || ! -z $( grep "$apt_UU_1" "$auto_os_updatesfile" ) ]]; then
 sed -i "s#$apt_UU_0#$apt_UU_1#g" $auto_os_updatesfile
 else
 echo $apt_UU_1 >> $auto_os_updatesfile
@@ -504,7 +527,7 @@ fi
 
 
 #check download packages is set to 1 or 0 and then make sure its 1 if its not set then set it
-if [ ! -z $( grep "$apt_DUP_0" "$auto_os_updatesfile" -o grep "$apt_DUP_1" "$auto_os_updatesfile" ) ]; then
+if [[ ! -z $( grep "$apt_DUP_0" "$auto_os_updatesfile" ) ||  ! -z $( grep "$apt_DUP_1" "$auto_os_updatesfile" ) ]]; then
 sed -i "s#$apt_DUP_0#$apt_DUP_1#g" $auto_os_updatesfile
 else
 echo $apt_DUP_1 >> $auto_os_updatesfile
@@ -519,7 +542,7 @@ fi
 }
 
 function configelasticsearch(){
-echo -e "\e[32m[x]\e[0m Configuring elasticsearch Replica settings"
+echo -e "\n\e[32m[x]\e[0m Configuring elasticsearch Replica settings"
 
 #set future index to always have no replicas
 curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass  -X PUT "https://127.0.0.1:9200/_template/number_of_replicas" -H 'Content-Type: application/json' -d' {  "template": "*",  "settings": {    "number_of_replicas": 0  }}'
@@ -527,7 +550,43 @@ curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass  -X PUT "https
 curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass  -X PUT "https://127.0.0.1:9200/_all/_settings" -H 'Content-Type: application/json' -d '{"index" : {"number_of_replicas" : 0}}'
 }
 
+function writeconfig() {
 
+echo -e "\n\e[32m[x]\e[0m Writing LME Config"
+
+#write LME version
+echo "version=0.4" > /opt/lme/lme.conf
+if [ -z "$logstashcn" ]; then
+  # $logstashcn is not not set - so this function is not called from an initial install
+  read -e -p "Enter the Fully Qualified Domain Name (FQDN) of this Linux server: " logstashcn
+fi
+#write elastic hostname
+echo "hostname=$logstashcn" >> /opt/lme/lme.conf
+}
+
+function uploaddashboards(){
+
+echo -e "\e[32m[x]\e[0m Uploading Kibana dashboards"
+
+cp /opt/lme/Chapter\ 4\ Files/dashboards.ndjson /opt/lme/Chapter\ 4\ Files/dashboards-live.ndjson
+
+if [ -z "$logstashcn" ]; then
+  # $logstashcn is not not set - so this function is not called from an initial install
+  read -e -p "Enter the Fully Qualified Domain Name (FQDN) of this Linux server: " logstashcn
+fi
+
+sed -i "s/ChangeThisDomain/https:\/\/$logstashcn\\\/g" /opt/lme/Chapter\ 4\ Files/dashboards-live.ndjson
+
+if [ -z "$update_user_pass" ]; then
+  # $update_user_pass is not set - so this function is not called from an initial install
+  read -s -e -p "Enter the password for the existing dashboard_update user: " update_user_pass
+fi
+
+sleep 30 #sleep to make sure port is responsive, it seems to not immediately be available sometimes
+
+curl -X POST -k --user dashboard_update:$update_user_pass -H 'kbn-xsrf: true' --form file="@/opt/lme/Chapter 4 Files/dashboards-live.ndjson" "https://127.0.0.1/api/saved_objects/_import?overwrite=true"
+
+}
 
 function install(){
 echo -e "\e[32m[x]\e[0m Installing prerequisites"
@@ -544,10 +603,10 @@ DEFAULT_IF="$(route | grep '^default' | grep -o '[^ ]*$')"
 #get ip of the interface
 EXT_IP="$(/sbin/ifconfig $DEFAULT_IF| awk -F ' *|:' '/inet /{print $3}')"
 
-read -e -p "Enter the IP of this linux server: " -i "$EXT_IP" logstaship
+read -e -p "Enter the IP of this Linux server: " -i "$EXT_IP" logstaship
 
-read -e -p "Enter the DNS name of this linux server, This needs to be resolvable from the Windows Event Collector: " logstashcn
-echo "[x] Configuring winlogbeat config and certificates to use $logstaship as the IP and $logstashcn as the DNS"
+read -e -p "Enter the Fully Qualified Domain Name (FQDN) of this Linux server. This needs to be resolvable from the Windows Event Collector: " logstashcn
+echo -e "\e[32m[x]\e[0m Configuring winlogbeat config and certificates to use $logstaship as the IP and $logstashcn as the DNS"
 
 #enable auto updates if ubuntu
 auto_os_updates
@@ -606,7 +665,6 @@ installdocker
 initdockerswarm
 populatecerts
 generatepasswords
-customlogstashconf
 populatelogstashconfig
 configuredocker
 deploylme
@@ -633,42 +691,73 @@ fi
 #ILM
 data_retention
 
-#pipelines
-pipelines
+#index mapping
+indexmappingupdate
 
+#pipelines
+pipelineupdate
+
+#create config file
+writeconfig
+
+#dashboard upload
+uploaddashboards
+
+echo ""
 echo "##################################################################################"
-echo "## KIBANA/Elasticsearch Credentials are (these will not be accesible again!!!!) ##"
+echo "## Kibana/Elasticsearch Credentials are (these will not be accesible again!!!!) ##"
 echo "##"
 echo "## Web Interface login:"
 echo "## elastic:$elastic_user_pass"
 echo "##"
 echo "## System Credentials"
-echo "## kibana_system_pass:$kibana_system_pass"
+echo "## kibana:$kibana_system_pass"
 echo "## logstash_system:$logstash_system_pass"
 echo "## logstash_writer:$logstash_writer"
-echo "## update_user:$update_user_pass"
+echo "## dashboard_update:$update_user_pass"
 echo "##################################################################################"
 }
 
 function uninstall(){
-        docker stack rm lme
-        docker secret rm winlogbeat.crt winlogbeat.key ca.crt logstash.crt logstash.key elasticsearch.key elasticsearch.crt nginx.crt nginx.key
-        docker secret rm kibana.crt kibana.key
-        docker config rm logstash.conf osmap.csv
-        rm -r certs
-	crontab -l | sed -E '/lme_update.sh|dashboard_update.sh/d' | crontab -
-        echo -e "\e[31m[X]\e[0m NOTICE!"
-        echo -e "\e[31m[X]\e[0m No data has been deleted, Run 'sudo docker volume rm lme_esdata' to delete the elasticsearch database"
+  echo -e "\e[32m[x]\e[0m Removing docker stack and configuration"
+  docker stack rm lme
+  docker secret rm ca.crt logstash.crt logstash.key elasticsearch.key elasticsearch.crt
+  docker secret rm kibana.crt kibana.key
+  docker config rm logstash.conf logstash_custom.conf
+  echo -e "\e[32m[x]\e[0m Attempting to remove legacy LME files (this will cause expected errors if these no longer exist)"
+  docker secret rm winlogbeat.crt winlogbeat.key nginx.crt nginx.key
+  docker config rm osmap.csv
+  echo -e "\e[32m[x]\e[0m Leaving docker swarm"
+  docker swarm leave --force
+  echo -e "\e[32m[x]\e[0m Removing LME config files and configured auto-updates"
+  rm -r certs
+  crontab -l | sed -E '/lme_update.sh|dashboard_update.sh/d' | crontab -
+  echo -e "\e[31m[X]\e[0m NOTICE!"
+  echo -e "\e[31m[X]\e[0m No data has been deleted, Run 'sudo docker volume rm lme_esdata' to delete the elasticsearch database"
 }
 
 function update(){
+#check if the config file we're now creating on new installs exists
+if [ -r /opt/lme/lme.conf ]; then
+  #reference this file as a source
+  . /opt/lme/lme.conf
+  #check if the version number is equal to the one we want
+  if [ "$version" == "0.4" ]; then
 
+        echo -e "\e[32m[x]\e[0m Updating from git repo"
         git -C /opt/lme/ pull
+
+        echo -e "\e[32m[x]\e[0m Removing existing docker stack"
         docker stack rm lme
-        docker config rm logstash.conf nginx.conf osmap.csv logstash_custom.conf
+        docker config rm logstash.conf logstash_custom.conf
+        echo -e "\e[32m[x]\e[0m Attempting to remove legacy LME files (this will cause expected errors if these no longer exist)"
+        docker config rm osmap.csv
+
+        echo -e "\e[32m[x]\e[0m Sleeping for one minute to allow docker actions to complete..."
         sleep 1m
 
         #Update Logstash Config
+        echo -e "\e[32m[x]\e[0m Updating current configuration files"
 
         # mv old config to .old
         mv /opt/lme/Chapter\ 3\ Files/logstash.edited.conf /opt/lme/Chapter\ 3\ Files/logstash.edited.conf.old
@@ -677,7 +766,7 @@ function update(){
         cp /opt/lme/Chapter\ 3\ Files/logstash.conf /opt/lme/Chapter\ 3\ Files/logstash.edited.conf
 
         # copy pass from old config into var
-        Logstash_Config_Pass="$(awk '{if(/password/) print $3}' < /opt/lme/Chapter\ 3\ Files/logstash.edited.conf.old | head -1)"
+        Logstash_Config_Pass="$(awk '{if(/password/) print $3}' < /opt/lme/Chapter\ 3\ Files/logstash.edited.conf.old | head -1 | tr -d \")"
 
         # Insert var into new config
         sed -i "s/insertlogstashwriterpasswordhere/$Logstash_Config_Pass/g" /opt/lme/Chapter\ 3\ Files/logstash.edited.conf
@@ -715,11 +804,57 @@ function update(){
 
         customlogstashconf
 
+        echo -e "\e[32m[x]\e[0m Recreating docker stack"
 
         docker config create logstash.conf /opt/lme/Chapter\ 3\ Files/logstash.edited.conf
-        docker config create osmap.csv /opt/lme/Chapter\ 3\ Files/osmap.csv
         docker config create logstash_custom.conf /opt/lme/Chapter\ 3\ Files/logstash_custom.conf
         deploylme
+
+  fi
+
+fi
+
+}
+
+
+function upgrade(){
+
+#prompt user for passwords and check that they are correct
+read -s -e -p "Enter the password for the existing elastic user: " elastic_user_pass
+if [[ "$(curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -s -o /dev/null -w ''%{http_code}'' https://127.0.0.1:9200)" != "200" ]]; then
+  echo -e "\n\e[31m[!]\e[0m The password you have entered was invalid or the elastic service did not respond, please try again."
+  exit
+fi
+echo ""
+read -s -e -p "Enter the password for the existing dashboard_update user: " update_user_pass
+if [[ "$(curl -k --user dashboard_update:$update_user_pass -s -o /dev/null -w ''%{http_code}'' https://127.0.0.1/status)" != "200" ]]; then
+  echo -e "\n\e[31m[!]\e[0m The password you have entered was invalid or the elastic service did not respond, please try again."
+  exit
+fi
+
+#update the index mapping
+indexmappingupdate
+#updated the winlogbeat and syslog pipelines
+pipelineupdate
+#write the LME config file
+writeconfig
+
+#upload the Kibana dashboards
+uploaddashboards
+
+#remove existing legacy dashboard update calls
+crontab -l | sed -E '/dashboard_update.sh/d' | crontab - 
+
+#Re-prompt the user to enable the new automatic dashboard update script
+echo ""
+read -e -p "Do you want to automatically update Dashboards ([y]es/[n]o): " -i "y" dashboardupdate_enabled
+
+if [ "$dashboardupdate_enabled" == "y" ]; then
+echo -e "\e[32m[x]\e[0m Enabling Dashboard Automatic Update"
+#cron dash update
+dashboard_update
+fi
+
 }
 
 ############
@@ -731,9 +866,20 @@ function update(){
 #Uninstall
 #Update
 
+
+#Check the install location
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+if [[ "$DIR" != "/opt/lme/Chapter 3 Files" ]]; then
+  echo "The deploy script is not currently within the correct path, please ensure that LME is located in /opt/lme for installation"
+  exit
+fi
+
+#Change current working directory so relative filepaths work
+cd "$DIR"
+
 if [ "$1" == "" ]; then
         echo "No operation specified"
-        echo "Usage:            ./deploy.sh (install/uninstall/update/pipelineupdate)"
+        echo "Usage:            ./deploy.sh (install/uninstall/update/upgrade)"
         echo "Example:  ./deploy.sh install"
         exit
 elif [ "$1" == "install" ]; then
@@ -742,11 +888,11 @@ elif [ "$1" == "uninstall" ]; then
         uninstall
 elif [ "$1" == "update" ]; then
         update
-elif [ "$1" == "pipelineupdate" ]; then
-        pipelineupdate     
+elif [ "$1" == "upgrade" ]; then
+        upgrade  
 else
         echo "Invalid operation specified"
-        echo "Usage:            ./deploy.sh (install/uninstall/update/pipelineupdate)"
+        echo "Usage:            ./deploy.sh (install/uninstall/update/upgrade)"
         echo "Example:  ./deploy.sh install"
         exit
 fi
