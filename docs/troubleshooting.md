@@ -27,10 +27,6 @@ Check the following:
 ### Events not forwarding from Domain Controllers
 Please be aware that Logging Made Easy does not currently support logging Domain Controllers, and the log volumes may be significant from servers with this role.  If you wish to proceed forwarding logs from your Domain Controllers please be aware you do this at your own risk!  Monitoring such servers has not been tested or endorsed by the NCSC and may have unintended side effects.
 
-If you wish to monitor Domain Controllers then the contents of [this blog post](https://rockyprogress.wordpress.com/2011/12/04/security-event-log-collection-from-a-domain-controller/) may be helpful.  Note the NCSC is not responsible for the content of external sites.
-
-> Remember, Domain Controller logging is not currently supported.
-
 ### Importing the Kibana dashboard hangs
 Importing the dashboard is described in [section 4.1.1](https://github.com/ukncsc/lme/blob/master/docs/chapter4.md#411-import-initial-dashboards).  First, ensure you have modified the latest dashboards file from Github to replace `ChangeThisDomain` with your Kibana server’s DNS name.  Note that it’s imperative that you keep the trailing backslash (e.g. `https://kibanahostname.example.com\`) otherwise importing the file to Kibana will hang.  This is discussed more in [issue #74](https://github.com/ukncsc/lme/issues/74).
 
