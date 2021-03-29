@@ -12,7 +12,16 @@ As the project has grown, and as Elastic has enhanced the components that we use
 
 Additionally, as part of this release we have migrated the GeoIP enrichment feature from Logstash to the Elastic pipeline, and are now making use of a configuration file to store version specific information. 
 
-Applying these changes is automated for any new installations. But, if you have an existing installation, you need to conduct some extra steps.
+Applying these changes is automated for any new installations. But, if you have an existing installation, you need to conduct some extra steps. Before performing any of these steps it is advised to take a backup of the current installation using the method described [here](/docs/backups.md).
+
+*NOTE: If testing on the pre-release branch please ensure you have checked out into the correct branch using the following commands:*
+
+```
+sudo git -C /opt/lme/ pull
+cd /opt/lme
+sudo git checkout 0.4-pre-release
+```
+
 
 Ensure you have the latest version of LME from the GitHub repository and you can begin the process as follows. Make sure you have your LME server's hostname, and the password for both the "elastic" and "dashboard_update" users to hand before you begin [**Note: the dashboard update user may have been previously displayed as "update_user"**]:
 

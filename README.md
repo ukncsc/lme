@@ -9,7 +9,6 @@ http://www.apache.org/licenses/LICENSE-2.0
  
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-
 ## What is Logging Made Easy (LME)?
 
 Logging Made Easy is a self-install tutorial for small organisations to gain a basic level of centralised security logging for Windows clients and provide functionality to detect attacks. It's the coming together of multiple free and open-source software (some which is covered under licences other than Apache V2), where LME helps the reader integrate them together to produce an end-to-end logging capability. We also provide some pre-made configuration files and scripts, although there is the option to do it on your own. 
@@ -21,6 +20,8 @@ Logging Made Easy can:
 - In conjunction with threat reports, it is possible to query for the presence of an attacker in the form of Tools, Techniques and Procedures (TTPs)
 
 ## Disclaimer
+
+*This is a pre-release branch of version 0.4, and as such users may encounter unexpected issues with this version. If testing this release in a production environment it is recommended to take backups of any existing data using the methodology described [here](/docs/backups.md). In the future this branch will be merged into the main release and you will have to change to the master branch to continue receiving automatic updates.* 
 
 **LME is currently still early in development, and as such we are marking it as [Alpha](https://www.gov.uk/service-manual/agile-delivery). The current release is version 0.4.**
 

@@ -64,11 +64,13 @@ SSH into your Linux server and run the following commands:
 # Install Git client to be able to clone the LME repository
 sudo apt update
 sudo apt install git -y
-# download a copy of the LME files
+# Download a copy of the LME files
 sudo git clone https://github.com/ukncsc/lme.git /opt/lme/
+# Change to the pre-release branch for testing
+sudo git checkout 0.4-pre-release
 # Change to the lme directory for the Linux server files
 cd /opt/lme/Chapter\ 3\ Files/
-# execute script with root privileges
+# Execute script with root privileges
 sudo ./deploy.sh install
 ```
 
