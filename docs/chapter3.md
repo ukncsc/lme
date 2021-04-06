@@ -35,7 +35,7 @@ You will need a linux box for this portion, **The deploy script is only tested o
 You will need port 5044 open for the event collector to send data into the database (on the Linux server). To be able to access the web interface you will need to have firewall rules in place to allow access to port 443 (HTTPS) on the Linux server.
 
 ### 3.1.2 Web Proxy Settings
-If the ELK stack is being deployed behind a web proxy, and Docker isn't configured to use the proxy, the deploy script can hang without completing due to docker being unable to pull the required images. To configure Docker to use the web proxy in your environment, do the following before running the deployment script.
+If the ELK stack is being deployed behind a web proxy, and Docker isn't configured to use the proxy, the deploy script can hang without completing due to docker being unable to pull the required images. The deployment script will prompt for the details of a proxy server and perform the necessary configuration. Alternatively to configure Docker to use the web proxy in your environment manually, do the following before running the deployment script.
 
 1) Create a systemd drop-in directory for the Docker service:
 ```

@@ -589,6 +589,24 @@ curl -X POST -k --user dashboard_update:$update_user_pass -H 'kbn-xsrf: true' --
 }
 
 function install(){
+
+#Set Proxy Server
+read -e -p "Do you want to configure a proxy server ([y]es/[n]o): " -i "y" set_proxy
+if [ "$set_proxy" == "y" ]; then
+   read -e -p "Enter proxy server IP address: " proxy_ip
+   read -e -p "Enter proxy server port: "  proxy_port
+   echo -e "\e[32m[x]\e[0m Setting proxy details http://$proxy_ip:$proxy_port in file /etc/systemd/system/docker.service.d2/http-proxy.conf"
+   sudo mkdir -p /etc/systemd/system/docker.service.d
+   sudo cat > /etc/systemd/system/docker.service.d/http-proxy.conf <<PROXY_EOF
+[Service]
+Environment="HTTP_PROXY=http://$proxy_ip:$proxy_port"
+Environment="HTTPS_PROXY=http://$proxy_ip:$proxy_port"
+Environment="no-proxy=elasticsearch,localhost,127.0.0.1"
+PROXY_EOF
+
+sudo systemctl daemon-reload
+fi
+
 echo -e "\e[32m[x]\e[0m Installing prerequisites"
 #install net-tools to allow backwards compatibility
 sudo apt-get install net-tools -y -q
