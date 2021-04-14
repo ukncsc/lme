@@ -66,9 +66,11 @@ sudo apt update
 sudo apt install git -y
 # Download a copy of the LME files
 sudo git clone https://github.com/ukncsc/lme.git /opt/lme/
+# Change to the LME directory
+cd /opt/lme/
 # Change to the pre-release branch for testing
 sudo git checkout 0.4-pre-release
-# Change to the lme directory for the Linux server files
+# Change to the directory for the Linux server files
 cd /opt/lme/Chapter\ 3\ Files/
 # Execute script with root privileges
 sudo ./deploy.sh install
