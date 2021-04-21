@@ -6,7 +6,6 @@
 <!-- ########################## -->
 
 
-
 <Subscription xmlns="http://schemas.microsoft.com/2006/03/windows/events/subscription">
   <SubscriptionId>lme</SubscriptionId>
   <SubscriptionType>SourceInitiated</SubscriptionType>
@@ -19,7 +18,7 @@
       <MaxLatencyTime>900000</MaxLatencyTime>
     </Batching>
     <PushSettings>
-      <Heartbeat Interval="900000"/>
+      <Heartbeat Interval="900000" />
     </PushSettings>
   </Delivery>
   <Query>
@@ -267,14 +266,11 @@
   <ReadExistingEvents>false</ReadExistingEvents>
   <TransportName>HTTP</TransportName>
   <ContentFormat>RenderedText</ContentFormat>
-  <Locale Language="en-US"/>
+  <Locale Language="en-US" />
   <LogFile>ForwardedEvents</LogFile>
   <PublisherName>Microsoft-Windows-EventCollector</PublisherName>
   <AllowedSourceNonDomainComputers>
-    <AllowedIssuerCAList>
-    </AllowedIssuerCAList>
+    <AllowedIssuerCAList></AllowedIssuerCAList>
   </AllowedSourceNonDomainComputers>
   <AllowedSourceDomainComputers>O:NSG:BAD:P(A;;GA;;;DC)(A;;GA;;;DD)S:</AllowedSourceDomainComputers>
 </Subscription>
-
-

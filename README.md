@@ -84,6 +84,8 @@ Although in it’s infancy, we are hoping that LME will help organisations to ma
 
 [Upgrading](/docs/upgrading.md)
 
+[Certificates](/docs/certificates.md)
+
 ## Credits
 ### Core Team
 * Richard W, NCSC Project Lead.

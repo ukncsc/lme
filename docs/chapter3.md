@@ -78,13 +78,16 @@ sudo ./deploy.sh install
 
 Running the above commands will:
 1) Enable auto security updates (Ubuntu Only)
-2) Generate TLS certificates.
+2) Generate TLS certificates. (Optional)
 3) Install Docker Community Edition.
 4) Configure Docker to run ELK.
 5) Change Elasticsearch configuration, including retention based upon disk size.
 
+The deploy script will currently present the option of automatically generating self-signed TLS certificates or importing pre-generated certificates. By default self-signed certificates will be used, which will have a validity of two years from the date of install, after which they will need to be renewed. 
 
-The deploy script will output a number of usernames and passwords for use when accessing the dashboard and for the internal systems.
+For details on how to regenerate these certificates, or for instructions in generating and importing certificates from an existing root Certificate Authority (CA) please see the full [certificates documentation](/docs/certificates.md). 
+
+The script will output a number of usernames and passwords for use when accessing the dashboard and for the internal systems.
 
 The usernames and passwords will be provided in a message similar to below.
 
@@ -180,7 +183,7 @@ Lastly, open ```services.msc``` as an administrator, and make sure the winlogbea
 
 ![Winlogbeat Service Running](winlogbeat-running.png)
 <p align="center">
-Figure 4: Winlogbeat Service Running
+Figure 5: Winlogbeat Service Running
 
 # Chapter 3 - Checklist
 

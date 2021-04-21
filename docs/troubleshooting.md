@@ -63,3 +63,6 @@ If this Index pattern is not selected as the default, this can be re-done by cli
 
 ### Re-Indexing Errors
 For errors encountered when re-indexing existing data as part of an an LME version upgrade please review the Elastic re-indexing documentation for help, available [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html).
+
+### TLS Certificates Expired
+For security the self-signed certificates generated for use by LME at install time will only remain valid for a period of two years, which will cause LME to stop functioning once these certificates expire. In this case the certificates can be recreated by following the instructions detailed [here](/docs/certificates.md#regenerating-self-signed-certificates).
