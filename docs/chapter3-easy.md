@@ -111,7 +111,7 @@ Once these have been edited you can update the system with the following command
 
 The deploy.sh script has created files on the Linux server that need to be copied across and used on the Windows Event Collector server.
 
-The files have been zipped for convenience, with the filename ``` files_for_windows.zip ```.
+The files have been zipped for convenience, with the filename ``` files_for_windows.zip ```. These are located in: ./opt/lme/
 
 There are many ways you can copy files to and from Linux servers, WinSCP is used in the example below.
 
