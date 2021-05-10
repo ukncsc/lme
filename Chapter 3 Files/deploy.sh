@@ -662,7 +662,12 @@ function uninstall(){
 }
 
 function update(){
-
+  #check if the config file we're now creating on new installs exists
+  if [ -r /opt/lme/lme.conf ]; then
+    #reference this file as a source
+    . /opt/lme/lme.conf
+    #check if the version number is equal to the one we want
+    if [ "$version" == "0.4" ]; then
         git -C /opt/lme/ pull
         docker stack rm lme
         docker config rm logstash.conf nginx.conf osmap.csv logstash_custom.conf
@@ -720,6 +725,8 @@ function update(){
         docker config create osmap.csv /opt/lme/Chapter\ 3\ Files/osmap.csv
         docker config create logstash_custom.conf /opt/lme/Chapter\ 3\ Files/logstash_custom.conf
         deploylme
+    fi
+  fi
 }
 
 ############
