@@ -36,7 +36,6 @@ If applicable, add screenshots to help explain your problem.
  - Docker compose stack file version: [e.g. version 0.1]
  - Linux: [e.g. PRETTY_NAME="Ubuntu 18.04.2 LTS"]
  - Logstash Version [e.g. #LME logstash config V0.1]
- - Nginx config [e.g. #LME nginx config V0.1]
 
 **Additional context**
 Add any other context about the problem here.

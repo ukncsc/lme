@@ -1,14 +1,13 @@
 ![N|Solid](https://www.ncsc.gov.uk/static-assets/images/ncsc_larger_strap.png)
 # Logging Made Easy
 
-Copyright 2018-2019 Crown Copyright
+Copyright 2018-2021 Crown Copyright
  
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  
 http://www.apache.org/licenses/LICENSE-2.0
  
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-
 
 ## What is Logging Made Easy (LME)?
 
@@ -22,7 +21,9 @@ Logging Made Easy can:
 
 ## Disclaimer
 
-**LME is currently in early development, and as such we are marking it as [Alpha](https://www.gov.uk/service-manual/agile-delivery)**.
+**LME is currently still early in development, and as such we are marking it as [Alpha](https://www.gov.uk/service-manual/agile-delivery). The current release is version 0.4.**
+
+***If you have an existing install of the LME Alpha (v0.3 or older) some manual intervention will be required in order to upgrade to the latest version, please see [Upgrading](/docs/upgrading.md) for further information.*** 
 
 **This is not a professional tool, and should not be used as a [SIEM](https://en.wikipedia.org/wiki/Security_information_and_event_management).**
 
@@ -32,32 +33,32 @@ We have done the hard work to make things simple. We will tell you what to downl
 
 The current architecture is based upon Windows Clients, Microsoft Sysmon, Windows Event Forwarding and the ELK stack.
 
-We are **not** able to comment on or troubleshoot individual installations, If you believe you have have found an issue with the LME code or documentation please submit a [GitHub issue](https://github.com/ukncsc/lme/issues).
+We are **not** able to comment on or troubleshoot individual installations. If you believe you have have found an issue with the LME code or documentation please submit a [GitHub issue](https://github.com/ukncsc/lme/issues).
 
 ## Who is Logging Made Easy for?
 
-From one man bands with a handful devices to look after, through to larger organisations.
+From single IT administrators with a handful devices to look after, through to larger organisations.
 
 LME is for you if:
 
 
-*	You don’t have a [SOC](https://en.wikipedia.org/wiki/Information_security_operations_center), SIEM or any monitoring in place at the moment
-*	You lack the budget, time or understanding to set up your own logging system
+*	You don’t have a [SOC](https://en.wikipedia.org/wiki/Information_security_operations_center), SIEM or any monitoring in place at the moment.
+*	You lack the budget, time or understanding to set up your own logging system.
 *	You recognise the need to begin gathering logs and monitoring your IT.
-*	You understand the LME has limitations, and is better than nothing - but no match for a professional tool.
+*	You understand that LME has limitations, and is better than nothing - but no match for a professional tool.
 
-If any, or all, of these criteria fit, then LME is a step in the right direction for you
+If any, or all, of these criteria fit, then LME is a step in the right direction for you.
 
 LME could also be useful for:
 
-*	Small isolated networks where corporate monitoring doesn’t reach
+*	Small isolated networks where corporate monitoring doesn’t reach.
 
 ## Who is the NCSC and why did they create LME?
 The National Cyber Security Centre (NCSC) is a UK Government department with the mission of:
 
   **"Helping to make the UK the safest place to live and work online."**
 
-..more can be found on www.ncsc.gov.uk.
+...more can be found on www.ncsc.gov.uk.
 
 We recognise the importance of gathering the right logs for security monitoring and post incident purposes, but we also recognise the pressures that face organisations. Budgets, deadlines and expertise. By producing LME we are attempting to reduce the barrier to entry for small organisations who don’t know where to start. LME may not be a fully-featured professional offering, but a step in the right direction that will make a difference in a cyber incident scenario.
 
@@ -71,7 +72,7 @@ Although in it’s infancy, we are hoping that LME will help organisations to ma
 
 [Chapter 2 – Sysmon Install](/docs/chapter2.md)
 
-[Chapter 3 – Database (Easy Install)](/docs/chapter3-easy.md)
+[Chapter 3 – Database Install](/docs/chapter3.md)
 
 [Chapter 4 - Post Install Actions ](/docs/chapter4.md)
 
@@ -80,6 +81,8 @@ Although in it’s infancy, we are hoping that LME will help organisations to ma
 [Troubleshooting](/docs/troubleshooting.md)
 
 [Upgrading](/docs/upgrading.md)
+
+[Certificates](/docs/certificates.md)
 
 ## Credits
 ### Core Team
@@ -92,6 +95,7 @@ Although in it’s infancy, we are hoping that LME will help organisations to ma
 * Shane M, Previous NCSC Technical Lead.
 * Lucy A, David L and Oli T, Cabinet Office Government Security Group, funding and project management.
 * Duncan A, NCC Group, Lead Developer.
+* Adam B, NCC Group, Developer.
 * Harry G and Alfie T, NCSC, creating visualisations.
 
 ### Our development partners
@@ -108,8 +112,8 @@ These organisations spent time trialing earlier versions of LME which was critic
 ### The Community
 * Roberto Rodriguez ([@Cyb3rWard0g](https://twitter.com/Cyb3rWard0g) and [@THE_HELK](https://twitter.com/THE_HELK)) provided guidance and authored HELK (similar to LME but more featured) [HELK on Github](https://github.com/Cyb3rWard0g/HELK)
 * Carl Morris sharing experiences behind his [44Con presentation](https://github.com/SecureDataLabs/44Con-2018-Sysmon)
-* [SwiftOnSecurity](https://twitter.com/swiftonsecurity) for creating an open-source Sysmon configuration which we refer to.
-* [Jessica Payne](https://twitter.com/jepaynemsft) acknowledging her [WEFFLES](https://blogs.technet.microsoft.com/jepayne/2017/12/08/weffles/) blog highlighting what's possible with in-built Windows functionality.
+* [SwiftOnSecurity](https://twitter.com/swiftonsecurity) and [Olaf Harton](https://twitter.com/olafhartong) for creating the open-source Sysmon configurations which we refer to.
+* [Jessica Payne](https://twitter.com/jepaynemsft) acknowledging her "WEFFLES" blog highlighting what's possible with in-built Windows functionality.
 * [Ryan Watson](https://twitter.com/gentlemanwatson) and [Syspanda](http://www.syspanda.com/) from which the Sysmon install script was adapted from.
 
 ### Technology Used

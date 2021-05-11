@@ -20,7 +20,6 @@ When reporting an issue or suggesting improvements, it is important to include t
 * Docker: on the Linux server type ```docker --version```
 * Linux: on the Linux server type ```cat /etc/os-release```
 * Logstash config: on the Linux server type ```sudo docker config inspect logstash.conf --pretty```
-* Nginx config: on the Linux server type ```sudo docker config inspect nginx.conf --pretty```
 
 
 
@@ -64,7 +63,6 @@ If applicable, add screenshots to help explain your problem.
  - Docker: [e.g. Docker version 18.09.3]
  - Linux: [e.g. PRETTY_NAME="Ubuntu 18.04.2 LTS"]
  - Logstash Version [e.g. #LME logstash config V0.1]
- - Nginx config [e.g. #LME nginx config V0.1]
 
 **Additional context**
 Add any other context about the problem here.

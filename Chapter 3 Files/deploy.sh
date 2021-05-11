@@ -637,7 +637,7 @@ data_retention
 pipelines
 
 echo "##################################################################################"
-echo "## KIBANA/Elasticsearch Credentials are (these will not be accesible again!!!!) ##"
+echo "## KIBANA/Elasticsearch Credentials are (these will not be accessible again!!!!) ##"
 echo "##"
 echo "## Web Interface login:"
 echo "## elastic:$elastic_user_pass"
