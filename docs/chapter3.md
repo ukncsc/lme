@@ -68,8 +68,6 @@ sudo apt install git -y
 sudo git clone https://github.com/ukncsc/lme.git /opt/lme/
 # Change to the LME directory
 cd /opt/lme/
-# Change to the pre-release branch for testing
-sudo git checkout 0.4-pre-release
 # Change to the directory for the Linux server files
 cd /opt/lme/Chapter\ 3\ Files/
 # Execute script with root privileges

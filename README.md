@@ -21,8 +21,6 @@ Logging Made Easy can:
 
 ## Disclaimer
 
-*This is a pre-release branch of version 0.4, and as such users may encounter unexpected issues with this version. If testing this release in a production environment it is recommended to take backups of any existing data using the methodology described [here](/docs/backups.md). In the future this branch will be merged into the main release and you will have to change to the master branch to continue receiving automatic updates.* 
-
 **LME is currently still early in development, and as such we are marking it as [Alpha](https://www.gov.uk/service-manual/agile-delivery). The current release is version 0.4.**
 
 ***If you have an existing install of the LME Alpha (v0.3 or older) some manual intervention will be required in order to upgrade to the latest version, please see [Upgrading](/docs/upgrading.md) for further information.*** 
@@ -60,7 +58,7 @@ The National Cyber Security Centre (NCSC) is a UK Government department with the
 
   **"Helping to make the UK the safest place to live and work online."**
 
-..more can be found on www.ncsc.gov.uk.
+...more can be found on www.ncsc.gov.uk.
 
 We recognise the importance of gathering the right logs for security monitoring and post incident purposes, but we also recognise the pressures that face organisations. Budgets, deadlines and expertise. By producing LME we are attempting to reduce the barrier to entry for small organisations who don’t know where to start. LME may not be a fully-featured professional offering, but a step in the right direction that will make a difference in a cyber incident scenario.
 
