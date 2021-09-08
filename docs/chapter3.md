@@ -148,7 +148,7 @@ In 'files_for_windows.zip', copied in [step 3.2.3](#323-download-files-for-windo
 * wlbclient.crt
 * winlogbeat.yml
 
-You will also require the latest supported version of the [Winlogbeat zip](https://www.elastic.co/downloads/past-releases/winlogbeat-7-11-2) downloaded from the Elastic site. **The current version officially supported by LME is 7.11.2.**
+You will also require the latest supported version of the [Winlogbeat zip](https://www.elastic.co/downloads/past-releases/winlogbeat-7-13-4) downloaded from the Elastic site. **The current version officially supported by LME is 7.13.4.**
 
 ### 3.3.2 Install Winlogbeat
 On the Windows Event Collector server extract the 'files_for_windows.zip' archive and copy the 'lme' folder (contained within 'tmp' inside the extracted files) to the following location: 

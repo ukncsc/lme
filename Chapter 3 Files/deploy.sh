@@ -355,12 +355,6 @@ get_distribution() {
 }
 
 function dashboard_update() {
-  cp dashboard_update.sh /opt/lme/
-  chmod 700 /opt/lme/dashboard_update.sh
-
-  echo -e "\e[32m[X]\e[0m Updating dashboard update configuration with dashboard update user credentials"
-  sed -i "s/dashboardupdatepassword/$update_user_pass/g" /opt/lme/dashboard_update.sh
-
   echo -e "\e[32m[X]\e[0m Creating dashboard update crontab"
   crontab -l | {
     cat
@@ -369,9 +363,6 @@ function dashboard_update() {
 }
 
 function auto_lme_update() {
-  cp lme_update.sh /opt/lme/
-  chmod 700 /opt/lme/lme_update.sh
-
   echo -e "\e[32m[X]\e[0m Creating LME update crontab"
   crontab -l | {
     cat
@@ -404,7 +395,7 @@ function pipelineupdate() {
   #create beats pipeline
   curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https://127.0.0.1:9200/_ingest/pipeline/winlogbeat" -H 'Content-Type: application/json' -d'
 {
-  "description": "Add geoip info",
+  "description": "Add geoip info and ingest timestamp",
   "processors": [
     {
       "geoip": {
@@ -440,6 +431,13 @@ function pipelineupdate() {
         "target_field": "host.geo",
         "ignore_missing": true
       }
+    },
+    { 
+      "set": { 
+        "field": "event.ingested", 
+        "value": "{{_ingest.timestamp}}",
+        "ignore_failure": true 
+      } 
     }
   ]
 }
@@ -547,6 +545,14 @@ function writeconfig() {
   fi
   #write elastic hostname
   echo "hostname=$logstashcn" >>/opt/lme/lme.conf
+
+  cp dashboard_update.sh /opt/lme/
+  chmod 700 /opt/lme/dashboard_update.sh
+  echo -e "\e[32m[X]\e[0m Updating dashboard update configuration with dashboard update user credentials"
+  sed -i "s/dashboardupdatepassword/$update_user_pass/g" /opt/lme/dashboard_update.sh
+
+  cp lme_update.sh /opt/lme/
+  chmod 700 /opt/lme/lme_update.sh
 }
 
 function uploaddashboards() {
@@ -557,6 +563,8 @@ function uploaddashboards() {
   sleep 30 #sleep to make sure port is responsive, it seems to not immediately be available sometimes
 
   curl -X POST -k --user dashboard_update:$update_user_pass -H 'kbn-xsrf: true' --form file="@/opt/lme/Chapter 4 Files/dashboards-live.ndjson" "https://127.0.0.1/api/saved_objects/_import?overwrite=true"
+
+  echo ""
 }
 
 function zipnewcerts() {
@@ -566,6 +574,22 @@ function zipnewcerts() {
   cp /opt/lme/Chapter\ 3\ Files/certs/wlbclient.key /tmp/lme/
   cp /opt/lme/Chapter\ 3\ Files/certs/root-ca.crt /tmp/lme/
   zip -rmT /opt/lme/new_client_certificates.zip /tmp/lme
+}
+
+function promptupdate() {
+  read -e -p "Do you want to automatically update LME ([y]es/[n]o): " -i "y" autoupdate_enabled
+  if [ "$autoupdate_enabled" == "y" ]; then
+    echo -e "\e[32m[X]\e[0m Enabling LME Automatic Update"
+    #cron lme update
+    auto_lme_update
+
+    read -e -p "Do you want to automatically update Dashboards ([y]es/[n]o): " -i "y" dashboardupdate_enabled
+    if [ "$dashboardupdate_enabled" == "y" ]; then
+      echo -e "\e[32m[X]\e[0m Enabling Dashboard Automatic Update"
+      #cron dash update
+      dashboard_update
+    fi
+  fi
 }
 
 function install() {
@@ -668,22 +692,6 @@ function install() {
   configelasticsearch
   zipfiles
 
-  read -e -p "Do you want to automatically update LME ([y]es/[n]o): " -i "y" autoupdate_enabled
-
-  if [ "$autoupdate_enabled" == "y" ]; then
-    echo -e "\e[32m[X]\e[0m Enabling LME Automatic Update"
-    #cron lme update
-    auto_lme_update
-  fi
-
-  read -e -p "Do you want to automatically update Dashboards ([y]es/[n]o): " -i "y" dashboardupdate_enabled
-
-  if [ "$dashboardupdate_enabled" == "y" ]; then
-    echo -e "\e[32m[X]\e[0m Enabling Dashboard Automatic Update"
-    #cron dash update
-    dashboard_update
-  fi
-
   #ILM
   data_retention
 
@@ -699,9 +707,12 @@ function install() {
   #dashboard upload
   uploaddashboards
 
+  #prompt user to enable auto update
+  promptupdate
+
   echo ""
   echo "##################################################################################"
-  echo "## Kibana/Elasticsearch Credentials are (these will not be accesible again!!!!) ##"
+  echo "## Kibana/Elasticsearch Credentials are (these will not be accesible again!)"
   echo "##"
   echo "## Web Interface login:"
   echo "## elastic:$elastic_user_pass"
@@ -712,6 +723,7 @@ function install() {
   echo "## logstash_writer:$logstash_writer"
   echo "## dashboard_update:$update_user_pass"
   echo "##################################################################################"
+  echo ""
 }
 
 function uninstall() {
@@ -812,21 +824,11 @@ function upgrade() {
   #write the LME config file
   writeconfig
 
-  #upload the Kibana dashboards
-  uploaddashboards
+  #remove existing automatic update calls
+  crontab -l | sed -E '/lme_update.sh|dashboard_update.sh/d' | crontab -
 
-  #remove existing legacy dashboard update calls
-  crontab -l | sed -E '/dashboard_update.sh/d' | crontab -
-
-  #Re-prompt the user to enable the new automatic dashboard update script
-  echo ""
-  read -e -p "Do you want to automatically update Dashboards ([y]es/[n]o): " -i "y" dashboardupdate_enabled
-
-  if [ "$dashboardupdate_enabled" == "y" ]; then
-    echo -e "\e[32m[X]\e[0m Enabling Dashboard Automatic Update"
-    #cron dash update
-    dashboard_update
-  fi
+  #Re-prompt the user to enable the new automatic updates
+  promptupdate
 }
 
 function renew() {
