@@ -49,9 +49,9 @@ goto checkversion
 IF Not EXIST %SYSMONDIR% (
 mkdir %SYSMONDIR%
 )
-xcopy %GLBSYSMONBIN% %SYSMONDIR% /y
-xcopy %GLBSYSMONCONFIG% %SYSMONDIR% /y
-xcopy %GLBSIGCHECK% %SYSMONDIR% /y
+copy %GLBSYSMONBIN% %SYSMONDIR% /y
+copy %GLBSYSMONCONFIG% %SYSMONDIR% /y
+copy %GLBSIGCHECK% %SYSMONDIR% /y
 chdir %SYSMONDIR%
 %SYSMONBIN% -i %SYSMONCONF% -accepteula
 sc config Sysmon64 start= auto
@@ -63,7 +63,7 @@ goto :checkversion
 :checkversion
 chdir %SYSMONDIR%
 IF EXIST *.txt DEL /F *.txt
-IF NOT EXIST %SIGCHECK% (xcopy %GLBSIGCHECK% %SYSMONDIR% /y)
+IF NOT EXIST %SIGCHECK% (copy %GLBSIGCHECK% %SYSMONDIR% /y)
 (sigcheck64.exe -n -nobanner /accepteula Sysmon64.exe) > %SYSMONDIR%\runningver.txt
 (sigcheck64.exe -n -nobanner /accepteula %GLBSYSMONBIN%) > %SYSMONDIR%\latestver.txt
 set /p runningver=<%SYSMONDIR%\runningver.txt
@@ -81,7 +81,7 @@ chdir %SYSMONDIR%
 IF EXIST runningconfver.txt DEL /F runningconfver.txt
 IF EXIST latestconfver.txt DEL /F latestconfver.txt
 if NOT EXIST %SIGCHECK% (
-xcopy %GLBSIGCHECK% %SYSMONDIR% /y)
+copy %GLBSIGCHECK% %SYSMONDIR% /y)
 ::Added -c for the comparison, enables us to compare hashes
 (sigcheck64.exe -h -c -nobanner /accepteula %SYSMONCONF%) > %SYSMONDIR%\runningconfver.txt
 (sigcheck64.exe -h -c -nobanner /accepteula %GLBSYSMONCONFIG%) > %SYSMONDIR%\latestconfver.txt
@@ -92,7 +92,7 @@ for /F "delims=, tokens=11" %%h in (latestconfver.txt) DO (set latestconfver=%%h
 ::set /p runningconfver=<%SYSMONDIR%\runningconfver.txt
 ::set /p latestconfver=<%SYSMONDIR%\latestconfver.txt
 If "%runningconfver%" NEQ "%latestconfver%" (
-xcopy %GLBSYSMONCONFIG% %SYSMONCONF% /y
+copy %GLBSYSMONCONFIG% %SYSMONCONF% /y
 chdir %SYSMONDIR%
 (%SYSMONBIN% -c %SYSMONCONF%)
 )

@@ -38,13 +38,22 @@ wecutil cs lme_wec_config.xml
 
 You can confirm the LME WEC subscription has been succesfully updated by running the command ```wecutil es``` and ensuring the LME subscription is present, or  by following the [checklist](chapter1.md#chapter-1---checklist) from Chapter 1.
 
-We recommend that you take this opportunity to ensure that you are running the latest version of Winlogbeat officially supported by LME. This is currently version 7.11.2 which can be found [here](https://www.elastic.co/downloads/past-releases/winlogbeat-7-11-2). Steps for installing Winlogbeat can be found in [section 3.3](/docs/chapter3.md#33-configuring-winlogbeat-on-windows-event-collector-server) and a walkthrough of the re-installation process can be found [below](#upgrade-from-v02).
+We recommend that you take this opportunity to ensure that you are running the latest version of Winlogbeat officially supported by LME. This is currently version 7.13.4 which can be found [here](https://www.elastic.co/downloads/past-releases/winlogbeat-7-13-4). Steps for installing Winlogbeat can be found in [section 3.3](/docs/chapter3.md#33-configuring-winlogbeat-on-windows-event-collector-server) and a walkthrough of the re-installation process can be found [below](#upgrade-from-v02).
 
 Once this has been completed it should be possible to trigger the rest of the update to complete automatically, using the standard method:
 
 ```
 cd /opt/lme/Chapter\ 3\ Files/
 sudo ./deploy.sh update
+```
+
+Once the deploy update is finished, the final step to completing the upgrade will be to update the dashboards that are provided alongside LME to the latest version. This can be done by running the below script, with more detailed instructions available [here](chapter4.md#411-import-initial-dashboards):
+
+***NOTE:*** *You may need to wait several minutes for Kibana to succesfully initialise after the update before running this script during the upgrade process. If you encounter a "Failed to connect" error or an "Entity Too Large" error wait for several minutes before trying again.*
+
+```
+cd /opt/lme/
+sudo ./dashboard_update.sh
 ```
 
 The rules built-in to the Elastic SIEM can then be updated to the latest version by following the instructions listed in [Chapter 4](chapter4.md#42-enable-the-detection-engine) and selecting the option to update the prebuilt rules when prompted, before making sure all of the rules are activated:
@@ -93,7 +102,7 @@ Upon confirming that the script has successfully completed, and that every curre
 
 ![Delete Originals](delete-originals.png)
 
-***NOTE*** This script should only be used if your LME instance has sufficient spare storage capacity to contain a duplicate version of all existing logs and their originals at the same time, as the script will effectively double the log volume stored until the original indices are deleted. 
+***NOTE:*** *This script should only be used if your LME instance has sufficient spare storage capacity to contain a duplicate version of all existing logs and their originals at the same time, as the script will effectively double the log volume stored until the original indices are deleted.* 
 
 If the script causes errors, or you do not have sufficient free storage to re-index in this manner, it may be necessary to modify the script to re-index only a small number of indices at a time. This can be done by changing the wildcard selection to match only specific dates, e.g. a month at a time, as shown below, which would re-index only those log events from October 2020:
 
@@ -134,7 +143,7 @@ If taking this approach the legacy format data should ultimately be fully replac
 ### Upgrade From v0.2
 To upgrade an existing installation of LME to v0.4 follow the steps detailed [here](#index-mapping), including resolving any issues with currently saved data.
 
-Updating from an older LME instance also requires manual changes to the winlogbeat service on the Windows Event Collector machine. We also recommend that you take this opportunity to ensure that you are running the latest version of Winlogbeat officially supported by LME. This is currently version 7.11.2 which can be found [here](https://www.elastic.co/downloads/past-releases/winlogbeat-7-11-2).
+Updating from an older LME instance also requires manual changes to the winlogbeat service on the Windows Event Collector machine. We also recommend that you take this opportunity to ensure that you are running the latest version of Winlogbeat officially supported by LME. This is currently version 7.13.4 which can be found [here](https://www.elastic.co/downloads/past-releases/winlogbeat-7-13-4).
 
 Required manual update steps:
 
@@ -143,8 +152,8 @@ Required manual update steps:
 * Enter the copied DNS name into the new winlogbeat.yml file on line 14 replacing the "logstash_dns_name" text
 * Copy winlogbeat-sysmon.js and winlogbeat-security.js file from the latest winlogbeat download and place them in the directories listed below, noting that the version numbers in the path may change:
 ```
-C:\\Program Files\\lme\\winlogbeat-7.11.2-windows-x86_64\\module\\sysmon\\config\\winlogbeat-sysmon.js
-C:\\Program Files\\lme\\winlogbeat-7.11.2-windows-x86_64\\module\\security\\config\\winlogbeat-security.js
+C:\\Program Files\\lme\\winlogbeat-7.13.4-windows-x86_64\\module\\sysmon\\config\\winlogbeat-sysmon.js
+C:\\Program Files\\lme\\winlogbeat-7.13.4-windows-x86_64\\module\\security\\config\\winlogbeat-security.js
 ``` 
 
 Finally, uninstall and reinstall winlogbeat using the following commands (run powershell as admin)

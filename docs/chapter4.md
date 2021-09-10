@@ -16,14 +16,14 @@ In a web browser, navigate to ```https://your_Linux_server``` and authenticate w
 
 As of version 0.4 of LME, the initial process of creating an index and importing the dashboards should be handled automatically as part of the install process. This means upon logging in to Kibana a number of the dashboards should automatically be visible under the ‘Dashboard’ tab on the left-hand side.
 
-If an error was encountered during the initial dashboard import and you have opted in for automatic dashboard updates the upload can be reattempted by running the dashboard update script created within the root LME directory (**NOT** the one in 'Chapter 3 Files'):
+If an error was encountered during the initial dashboard import then the upload can be reattempted by running the dashboard update script created within the root LME directory (**NOT** the one in 'Chapter 3 Files'):
 
 ```
 cd /opt/lme
 sudo ./dashboard_update.sh
 ```
 
-If this is not the case or you wish to manually import the dashboards for whatever reason, see [4.4](#44-troubleshooting---manual-dashboard-install) for the previous installation instructions.
+If this does not resolve the issue or you wish to manually import the dashboards for whatever reason, see [4.4](#44-troubleshooting---manual-dashboard-install) for the previous installation instructions.
 
 ### 4.1.2 Check you are receiving logs
 
@@ -67,6 +67,32 @@ From here, ensure that the maximum number of rows is shown so that all of the re
 Lastly, select all of the displayed rules, expand "Bulk actions" and choose "Activate selected":
 
 ![Enable siem](siem6.png)
+
+### 4.2.1 Add rule exceptions
+
+Depending on your environment it may be desirable to add exceptions to some of the built-in Elastic rules shown above to prevent false positives from occuring. These will be specific to your environment and should be tightly scoped so as to avoid excluding potentially malicious behaviour, but may be beneficial to filter out some of the benign behaviour of LME (for example to prevent the Sysmon update script creating alerts). 
+
+An example of this is shown below, with further information available [here](https://www.elastic.co/guide/en/security/current/detections-ui-exceptions.html).
+
+First, navigate to the "Manage Detection Rules" section as described above, and then search for and select the rule you wish to add an exception for:
+
+![Select Rule](select-rule.png)
+
+Then navigate to the "Exceptions" tab above the "Trend" section and then select "Add new exception":
+
+![Exceptions](exceptions.png)
+
+![Add Exceptions](add-exceptions.png)
+
+From here, configure the necessary exception, taking care to ensure that it is tightly scoped and will not inadvertently prevent detection of actual malicious behaviour:
+
+![Example Exception](example-exception.png)
+
+Note that in this instance the following command line value has been added as an exception, but the ```testme.local``` domain would need to be updated to match the location you installed the update batch script to during the LME installation, the same value used to update the scheduled task as described [here](chapter2.md#222---scheduled-task-gpo-policy).
+
+```
+C:\Windows\SYSTEM32\cmd.exe /c "\\testme.local\SYSVOL\testme.local\Sysmon\update.bat"
+```
 
 ## 4.3 Learning how to use Kibana
 

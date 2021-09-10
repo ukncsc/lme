@@ -5,7 +5,7 @@
   "mappings": {
     "_meta": {
       "beat": "winlogbeat",
-      "version": "7.11.2"
+      "version": "7.13.4"
     },
     "date_detection": false,
     "dynamic_templates": [
@@ -61,6 +61,15 @@
           },
           "match_mapping_type": "*",
           "path_match": "kubernetes.annotations.*"
+        }
+      },
+      {
+        "kubernetes.selectors.*": {
+          "mapping": {
+            "type": "keyword"
+          },
+          "match_mapping_type": "*",
+          "path_match": "kubernetes.selectors.*"
         }
       },
       {
@@ -192,6 +201,10 @@
                 "ignore_above": 1024,
                 "type": "keyword"
               },
+              "continent_code": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
               "continent_name": {
                 "ignore_above": 1024,
                 "type": "keyword"
@@ -211,11 +224,19 @@
                 "ignore_above": 1024,
                 "type": "keyword"
               },
+              "postal_code": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
               "region_iso_code": {
                 "ignore_above": 1024,
                 "type": "keyword"
               },
               "region_name": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "timezone": {
                 "ignore_above": 1024,
                 "type": "keyword"
               }
@@ -383,6 +404,14 @@
           "region": {
             "ignore_above": 1024,
             "type": "keyword"
+          },
+          "service": {
+            "properties": {
+              "name": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
           }
         }
       },
@@ -391,11 +420,19 @@
           "exists": {
             "type": "boolean"
           },
+          "signing_id": {
+            "ignore_above": 1024,
+            "type": "keyword"
+          },
           "status": {
             "ignore_above": 1024,
             "type": "keyword"
           },
           "subject_name": {
+            "ignore_above": 1024,
+            "type": "keyword"
+          },
+          "team_id": {
             "ignore_above": 1024,
             "type": "keyword"
           },
@@ -478,6 +515,10 @@
                 "ignore_above": 1024,
                 "type": "keyword"
               },
+              "continent_code": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
               "continent_name": {
                 "ignore_above": 1024,
                 "type": "keyword"
@@ -497,11 +538,19 @@
                 "ignore_above": 1024,
                 "type": "keyword"
               },
+              "postal_code": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
               "region_iso_code": {
                 "ignore_above": 1024,
                 "type": "keyword"
               },
               "region_name": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "timezone": {
                 "ignore_above": 1024,
                 "type": "keyword"
               }
@@ -611,11 +660,19 @@
               "exists": {
                 "type": "boolean"
               },
+              "signing_id": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
               "status": {
                 "ignore_above": 1024,
                 "type": "keyword"
               },
               "subject_name": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "team_id": {
                 "ignore_above": 1024,
                 "type": "keyword"
               },
@@ -642,6 +699,10 @@
                 "type": "keyword"
               },
               "sha512": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "ssdeep": {
                 "ignore_above": 1024,
                 "type": "keyword"
               }
@@ -930,11 +991,19 @@
               "exists": {
                 "type": "boolean"
               },
+              "signing_id": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
               "status": {
                 "ignore_above": 1024,
                 "type": "keyword"
               },
               "subject_name": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "team_id": {
                 "ignore_above": 1024,
                 "type": "keyword"
               },
@@ -991,6 +1060,10 @@
                 "type": "keyword"
               },
               "sha512": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "ssdeep": {
                 "ignore_above": 1024,
                 "type": "keyword"
               }
@@ -1195,6 +1268,10 @@
             "ignore_above": 1024,
             "type": "keyword"
           },
+          "continent_code": {
+            "ignore_above": 1024,
+            "type": "keyword"
+          },
           "continent_name": {
             "ignore_above": 1024,
             "type": "keyword"
@@ -1214,11 +1291,19 @@
             "ignore_above": 1024,
             "type": "keyword"
           },
+          "postal_code": {
+            "ignore_above": 1024,
+            "type": "keyword"
+          },
           "region_iso_code": {
             "ignore_above": 1024,
             "type": "keyword"
           },
           "region_name": {
+            "ignore_above": 1024,
+            "type": "keyword"
+          },
+          "timezone": {
             "ignore_above": 1024,
             "type": "keyword"
           }
@@ -1257,6 +1342,10 @@
           "sha512": {
             "ignore_above": 1024,
             "type": "keyword"
+          },
+          "ssdeep": {
+            "ignore_above": 1024,
+            "type": "keyword"
           }
         }
       },
@@ -1269,6 +1358,32 @@
           "containerized": {
             "type": "boolean"
           },
+          "cpu": {
+            "properties": {
+              "usage": {
+                "scaling_factor": 1000,
+                "type": "scaled_float"
+              }
+            }
+          },
+          "disk": {
+            "properties": {
+              "read": {
+                "properties": {
+                  "bytes": {
+                    "type": "long"
+                  }
+                }
+              },
+              "write": {
+                "properties": {
+                  "bytes": {
+                    "type": "long"
+                  }
+                }
+              }
+            }
+          },
           "domain": {
             "ignore_above": 1024,
             "type": "keyword"
@@ -1276,6 +1391,10 @@
           "geo": {
             "properties": {
               "city_name": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "continent_code": {
                 "ignore_above": 1024,
                 "type": "keyword"
               },
@@ -1298,11 +1417,19 @@
                 "ignore_above": 1024,
                 "type": "keyword"
               },
+              "postal_code": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
               "region_iso_code": {
                 "ignore_above": 1024,
                 "type": "keyword"
               },
               "region_name": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "timezone": {
                 "ignore_above": 1024,
                 "type": "keyword"
               }
@@ -1326,6 +1453,30 @@
           "name": {
             "ignore_above": 1024,
             "type": "keyword"
+          },
+          "network": {
+            "properties": {
+              "egress": {
+                "properties": {
+                  "bytes": {
+                    "type": "long"
+                  },
+                  "packets": {
+                    "type": "long"
+                  }
+                }
+              },
+              "ingress": {
+                "properties": {
+                  "bytes": {
+                    "type": "long"
+                  },
+                  "packets": {
+                    "type": "long"
+                  }
+                }
+              }
+            }
           },
           "os": {
             "properties": {
@@ -1366,6 +1517,10 @@
                 "type": "keyword"
               },
               "platform": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "type": {
                 "ignore_above": 1024,
                 "type": "keyword"
               },
@@ -1467,6 +1622,10 @@
               },
               "bytes": {
                 "type": "long"
+              },
+              "id": {
+                "ignore_above": 1024,
+                "type": "keyword"
               },
               "method": {
                 "ignore_above": 1024,
@@ -1586,8 +1745,8 @@
           "container": {
             "properties": {
               "image": {
-                "ignore_above": 1024,
-                "type": "keyword"
+                "path": "container.image.name",
+                "type": "alias"
               },
               "name": {
                 "ignore_above": 1024,
@@ -1628,6 +1787,9 @@
           },
           "pod": {
             "properties": {
+              "ip": {
+                "type": "ip"
+              },
               "name": {
                 "ignore_above": 1024,
                 "type": "keyword"
@@ -1643,6 +1805,13 @@
               "name": {
                 "ignore_above": 1024,
                 "type": "keyword"
+              }
+            }
+          },
+          "selectors": {
+            "properties": {
+              "*": {
+                "type": "object"
               }
             }
           },
@@ -1856,6 +2025,10 @@
                 "ignore_above": 1024,
                 "type": "keyword"
               },
+              "continent_code": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
               "continent_name": {
                 "ignore_above": 1024,
                 "type": "keyword"
@@ -1875,11 +2048,19 @@
                 "ignore_above": 1024,
                 "type": "keyword"
               },
+              "postal_code": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
               "region_iso_code": {
                 "ignore_above": 1024,
                 "type": "keyword"
               },
               "region_name": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "timezone": {
                 "ignore_above": 1024,
                 "type": "keyword"
               }
@@ -1971,6 +2152,10 @@
                 "ignore_above": 1024,
                 "type": "keyword"
               },
+              "type": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
               "version": {
                 "ignore_above": 1024,
                 "type": "keyword"
@@ -2048,6 +2233,10 @@
             "type": "keyword"
           },
           "platform": {
+            "ignore_above": 1024,
+            "type": "keyword"
+          },
+          "type": {
             "ignore_above": 1024,
             "type": "keyword"
           },
@@ -2157,11 +2346,19 @@
               "exists": {
                 "type": "boolean"
               },
+              "signing_id": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
               "status": {
                 "ignore_above": 1024,
                 "type": "keyword"
               },
               "subject_name": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "team_id": {
                 "ignore_above": 1024,
                 "type": "keyword"
               },
@@ -2217,6 +2414,10 @@
               "sha512": {
                 "ignore_above": 1024,
                 "type": "keyword"
+              },
+              "ssdeep": {
+                "ignore_above": 1024,
+                "type": "keyword"
               }
             }
           },
@@ -2244,11 +2445,19 @@
                   "exists": {
                     "type": "boolean"
                   },
+                  "signing_id": {
+                    "ignore_above": 1024,
+                    "type": "keyword"
+                  },
                   "status": {
                     "ignore_above": 1024,
                     "type": "keyword"
                   },
                   "subject_name": {
+                    "ignore_above": 1024,
+                    "type": "keyword"
+                  },
+                  "team_id": {
                     "ignore_above": 1024,
                     "type": "keyword"
                   },
@@ -2302,6 +2511,10 @@
                     "type": "keyword"
                   },
                   "sha512": {
+                    "ignore_above": 1024,
+                    "type": "keyword"
+                  },
+                  "ssdeep": {
                     "ignore_above": 1024,
                     "type": "keyword"
                   }
@@ -2616,6 +2829,10 @@
                 "ignore_above": 1024,
                 "type": "keyword"
               },
+              "continent_code": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
               "continent_name": {
                 "ignore_above": 1024,
                 "type": "keyword"
@@ -2635,11 +2852,19 @@
                 "ignore_above": 1024,
                 "type": "keyword"
               },
+              "postal_code": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
               "region_iso_code": {
                 "ignore_above": 1024,
                 "type": "keyword"
               },
               "region_name": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "timezone": {
                 "ignore_above": 1024,
                 "type": "keyword"
               }
@@ -2818,6 +3043,10 @@
                 "ignore_above": 1024,
                 "type": "keyword"
               },
+              "continent_code": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
               "continent_name": {
                 "ignore_above": 1024,
                 "type": "keyword"
@@ -2837,11 +3066,19 @@
                 "ignore_above": 1024,
                 "type": "keyword"
               },
+              "postal_code": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
               "region_iso_code": {
                 "ignore_above": 1024,
                 "type": "keyword"
               },
               "region_name": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "timezone": {
                 "ignore_above": 1024,
                 "type": "keyword"
               }
@@ -3372,23 +3609,21 @@
           }
         }
       },
-
-          "trace": {
-            "properties": {
-              "id": {
-                "ignore_above": 1024,
-                "type": "keyword"
-              }
-            }
-          },
-          "transaction": {
-            "properties": {
-              "id": {
-                "ignore_above": 1024,
-                "type": "keyword"
-              }
-            }
-
+      "trace": {
+        "properties": {
+          "id": {
+            "ignore_above": 1024,
+            "type": "keyword"
+          }
+        }
+      },
+      "transaction": {
+        "properties": {
+          "id": {
+            "ignore_above": 1024,
+            "type": "keyword"
+          }
+        }
       },
       "url": {
         "properties": {
@@ -3463,9 +3698,129 @@
       },
       "user": {
         "properties": {
+          "changes": {
+            "properties": {
+              "domain": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "email": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "full_name": {
+                "fields": {
+                  "text": {
+                    "norms": false,
+                    "type": "text"
+                  }
+                },
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "group": {
+                "properties": {
+                  "domain": {
+                    "ignore_above": 1024,
+                    "type": "keyword"
+                  },
+                  "id": {
+                    "ignore_above": 1024,
+                    "type": "keyword"
+                  },
+                  "name": {
+                    "ignore_above": 1024,
+                    "type": "keyword"
+                  }
+                }
+              },
+              "hash": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "id": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "name": {
+                "fields": {
+                  "text": {
+                    "norms": false,
+                    "type": "text"
+                  }
+                },
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "roles": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
+          },
           "domain": {
             "ignore_above": 1024,
             "type": "keyword"
+          },
+          "effective": {
+            "properties": {
+              "domain": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "email": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "full_name": {
+                "fields": {
+                  "text": {
+                    "norms": false,
+                    "type": "text"
+                  }
+                },
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "group": {
+                "properties": {
+                  "domain": {
+                    "ignore_above": 1024,
+                    "type": "keyword"
+                  },
+                  "id": {
+                    "ignore_above": 1024,
+                    "type": "keyword"
+                  },
+                  "name": {
+                    "ignore_above": 1024,
+                    "type": "keyword"
+                  }
+                }
+              },
+              "hash": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "id": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "name": {
+                "fields": {
+                  "text": {
+                    "norms": false,
+                    "type": "text"
+                  }
+                },
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "roles": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
           },
           "email": {
             "ignore_above": 1024,
@@ -3518,6 +3873,66 @@
           "roles": {
             "ignore_above": 1024,
             "type": "keyword"
+          },
+          "target": {
+            "properties": {
+              "domain": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "email": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "full_name": {
+                "fields": {
+                  "text": {
+                    "norms": false,
+                    "type": "text"
+                  }
+                },
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "group": {
+                "properties": {
+                  "domain": {
+                    "ignore_above": 1024,
+                    "type": "keyword"
+                  },
+                  "id": {
+                    "ignore_above": 1024,
+                    "type": "keyword"
+                  },
+                  "name": {
+                    "ignore_above": 1024,
+                    "type": "keyword"
+                  }
+                }
+              },
+              "hash": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "id": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "name": {
+                "fields": {
+                  "text": {
+                    "norms": false,
+                    "type": "text"
+                  }
+                },
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "roles": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              }
+            }
           }
         }
       },
@@ -3576,6 +3991,10 @@
                 "type": "keyword"
               },
               "platform": {
+                "ignore_above": 1024,
+                "type": "keyword"
+              },
+              "type": {
                 "ignore_above": 1024,
                 "type": "keyword"
               },
@@ -4182,6 +4601,9 @@
             "ignore_above": 1024,
             "type": "keyword"
           },
+          "time_created": {
+            "type": "date"
+          },
           "user": {
             "properties": {
               "domain": {
@@ -4319,7 +4741,6 @@
   },
   "order": 1,
   "settings": {
-
     "index": {
       "lifecycle": {
         "name": "lme_ilm_policy"
@@ -4635,7 +5056,11 @@
           "url.scheme",
           "url.top_level_domain",
           "url.username",
+          "text",
+          "text",
           "user.domain",
+          "text",
+          "text",
           "user.email",
           "user.full_name",
           "user.group.domain",
@@ -4644,6 +5069,8 @@
           "user.hash",
           "user.id",
           "user.name",
+          "text",
+          "text",
           "user_agent.device.name",
           "user_agent.name",
           "text",
@@ -4670,7 +5097,6 @@
           "kubernetes.deployment.name",
           "kubernetes.statefulset.name",
           "kubernetes.container.name",
-          "kubernetes.container.image",
           "jolokia.agent.version",
           "jolokia.agent.id",
           "jolokia.server.product",

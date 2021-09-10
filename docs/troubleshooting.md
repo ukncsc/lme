@@ -64,5 +64,34 @@ If this Index pattern is not selected as the default, this can be re-done by cli
 ### Re-Indexing Errors
 For errors encountered when re-indexing existing data as part of an an LME version upgrade please review the Elastic re-indexing documentation for help, available [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html).
 
+### Illegal Argument Exception Whilst Re-Indexing 
+With the correct mapping in place it is not possible to store a string value in any of the fields which represent IP addresses, for example ```source.ip``` or ```destination.ip```. If any of these values are represented in your current data as strings, such as ```LOCAL``` it will not be possible to succesfully re-index with the correct mapping. In this instance the simplest fix is to modify your existing data to store the relevant fields as valid IP representations using the update_by_query method, documented [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html).
+
+An example of this is shown below, which may need to be modified for the particular field that is causing problems:
+
+```
+POST winlogbeat-11.06.2021/_update_by_query
+{
+  "script": {
+    "source": "ctx._source.source.ip = '127.0.0.1'",
+    "lang": "painless"
+  },
+  "query": {
+    "match": {
+      "source.ip": "LOCAL"
+    }
+  }
+}
+```
+Note that this will need to be run for each index that contains problematic data before re-indexing can be completed.
+
 ### TLS Certificates Expired
 For security the self-signed certificates generated for use by LME at install time will only remain valid for a period of two years, which will cause LME to stop functioning once these certificates expire. In this case the certificates can be recreated by following the instructions detailed [here](/docs/certificates.md#regenerating-self-signed-certificates).
+
+### Dashboard Update Script Failing
+If you encounter an error when the dashboards are updated using the dashboard update script, either manually or as part of automatic updates, this may mean that your current version of Elastic is too old to support the minimum functionality required for the new dashboard versions. Ensure that the latest supported version of the Elastic stack is in use with the following command:
+```
+cd /opt/lme/Chapter\ 3\ Files/
+sudo ./deploy.sh update
+```
+Then upload the latest dashboards by following one of the methods described [here](chapter4.md#411-import-initial-dashboards).
