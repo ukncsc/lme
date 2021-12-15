@@ -324,6 +324,8 @@ function configuredocker() {
   sed -i "s/insertkibanapasswordhere/$kibana_system_pass/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
 
   sed -i "s/kibanakey/$kibanakey/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
+
+  sed -i "s/insertpublicurlhere/https:\/\/$logstashcn/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
 }
 
 function installdocker() {
@@ -793,6 +795,15 @@ function update() {
       kibanakey="$(grep -P -o "(?<=XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY: ).*" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old)"
       #update config with kibana key
       sed -i "s/kibanakey/$kibanakey/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
+      # copy publicbaseurl
+      baseurl_from_conf="$(grep -P -o "(?<=SERVER_PUBLICBASEURL: ).*" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old)"
+      #update config with publicbaseurl
+      if [ -n "$baseurl_from_conf" ]; then
+        sed -i "s,insertpublicurlhere,$baseurl_from_conf,g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
+      elif [ -n "$hostname" ]; then
+        sed -i "s/insertpublicurlhere/https:\/\/$hostname/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
+      fi
+
       customlogstashconf
 
       echo -e "\e[32m[X]\e[0m Recreating Docker stack"
