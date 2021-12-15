@@ -29,7 +29,7 @@ sudo ./deploy.sh upgrade
 
 You will be promted to enter your elastic and dashboard_update users' passwords and the server's current hostname, and this will update the relevant settings/files that are now included as part of this project and will be used/supported from now on. 
 
-***NOTE:*** *If an error is encountered during the "Uploading the LME index template" phase of the upgrade, this may mean that the version of Elasticsearch you are currently using is too old to support the latest field mappings. If this occurs, proceed with the instructions below to bring Elastic up-to-date with the latest supported version, stopping **before** re-indexing any data, and then repeat the upgrade command shown above in order to re-attempt the mapping template update. If the command now completes succesfully you may proceed to re-indexing your data as described [here](/docs/upgrading.md#so-how-do-i-fix-my-current-data).*
+***NOTE:*** *If an error is encountered during the "Uploading the LME index template" phase of the upgrade, this may mean that the version of Elasticsearch you are currently using is too old to support the latest field mappings. If this occurs, proceed with the instructions below to bring Elastic up-to-date with the latest supported version, stopping **before** re-indexing any data, and then repeat the upgrade command shown above in order to re-attempt the mapping template update. If the command now completes successfully you may proceed to re-indexing your data as described [here](/docs/upgrading.md#so-how-do-i-fix-my-current-data).*
 
 The WEC configuration file has been updated in this release to include collection for several additional events, and this config change must be manually applied by copying over the [lme_wec_config.xml](/Chapter%201%20Files/lme_wec_config.xml) to the Event Collector server and then updating the event collection settings. This can be done by deleting and then re-creating the event subscription with the following commands from an Administrative command prompt, as discussed in [Chapter 1](chapter1.md#132-windows-collector-box-steps):
 
@@ -38,7 +38,7 @@ wecutil ds lme
 wecutil cs lme_wec_config.xml
 ```
 
-You can confirm the LME WEC subscription has been succesfully updated by running the command ```wecutil es``` and ensuring the LME subscription is present, or  by following the [checklist](chapter1.md#chapter-1---checklist) from Chapter 1.
+You can confirm the LME WEC subscription has been successfully updated by running the command ```wecutil es``` and ensuring the LME subscription is present, or  by following the [checklist](chapter1.md#chapter-1---checklist) from Chapter 1.
 
 We recommend that you take this opportunity to ensure that you are running the latest version of Winlogbeat officially supported by LME. This is currently version 7.16.1 which can be found [here](https://www.elastic.co/downloads/past-releases/winlogbeat-7-16-1). Steps for installing Winlogbeat can be found in [section 3.3](/docs/chapter3.md#33-configuring-winlogbeat-on-windows-event-collector-server) and a walkthrough of the re-installation process can be found [below](#upgrade-from-v02).
 
@@ -51,7 +51,7 @@ sudo ./deploy.sh update
 
 Once the deploy update is finished, the final step to completing the upgrade will be to update the dashboards that are provided alongside LME to the latest version. This can be done by running the below script, with more detailed instructions available [here](chapter4.md#411-import-initial-dashboards):
 
-***NOTE:*** *You may need to wait several minutes for Kibana to succesfully initialise after the update before running this script during the upgrade process. If you encounter a "Failed to connect" error or an "Entity Too Large" error wait for several minutes before trying again.*
+***NOTE:*** *You may need to wait several minutes for Kibana to successfully initialise after the update before running this script during the upgrade process. If you encounter a "Failed to connect" error or an "Entity Too Large" error wait for several minutes before trying again.*
 
 ```
 cd /opt/lme/
@@ -84,7 +84,7 @@ This will output a task ID which can then be used to check the progress of the r
 
 ![Task Response](task.png)
 
-This ID can then be used to monitor the status of the task, and ensure it has completed succesfully before moving on to the next step. This can be done by making the below request, substituting in the task ID which you recieved in response to the previous step:
+This ID can then be used to monitor the status of the task, and ensure it has completed successfully before moving on to the next step. This can be done by making the below request, substituting in the task ID which you recieved in response to the previous step:
 
 ![Task Status](task-status.png)
 

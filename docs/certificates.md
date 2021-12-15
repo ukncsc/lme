@@ -67,7 +67,7 @@ It is possible to use certificates signed by an existing root CA as part of the 
 
 ### Certificate Creation
 
-The exact method for generating and configuring these certificates will vary dependant upon the method you have used to create your root CA and currently manage certificates in your enterprise. However you choose to generate these, you will need the following certificates to succesfully deploy LME (further information on the exact requirements can be found by inspecting the certificate generation methods within the [deploy script](/Chapter%203%20Files/deploy.sh) in Chapter 3 if required):
+The exact method for generating and configuring these certificates will vary dependant upon the method you have used to create your root CA and currently manage certificates in your enterprise. However you choose to generate these, you will need the following certificates to successfully deploy LME (further information on the exact requirements can be found by inspecting the certificate generation methods within the [deploy script](/Chapter%203%20Files/deploy.sh) in Chapter 3 if required):
 
 ***Elasticsearch***
 
@@ -87,7 +87,7 @@ This certificate must only be created to perform client authentication and not s
 
 ### Certificate Locations
 
-Once you have succesfully created the required certificates they must be placed in the following locations:
+Once you have successfully created the required certificates they must be placed in the following locations:
 
 ***CA Certificate***
 

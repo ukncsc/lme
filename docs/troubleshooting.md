@@ -65,7 +65,7 @@ If this Index pattern is not selected as the default, this can be re-done by cli
 For errors encountered when re-indexing existing data as part of an an LME version upgrade please review the Elastic re-indexing documentation for help, available [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html).
 
 ### Illegal Argument Exception Whilst Re-Indexing 
-With the correct mapping in place it is not possible to store a string value in any of the fields which represent IP addresses, for example ```source.ip``` or ```destination.ip```. If any of these values are represented in your current data as strings, such as ```LOCAL``` it will not be possible to succesfully re-index with the correct mapping. In this instance the simplest fix is to modify your existing data to store the relevant fields as valid IP representations using the update_by_query method, documented [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html).
+With the correct mapping in place it is not possible to store a string value in any of the fields which represent IP addresses, for example ```source.ip``` or ```destination.ip```. If any of these values are represented in your current data as strings, such as ```LOCAL``` it will not be possible to successfully re-index with the correct mapping. In this instance the simplest fix is to modify your existing data to store the relevant fields as valid IP representations using the update_by_query method, documented [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html).
 
 An example of this is shown below, which may need to be modified for the particular field that is causing problems:
 
