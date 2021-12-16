@@ -798,7 +798,7 @@ function update() {
       # copy publicbaseurl
       baseurl_from_conf="$(grep -P -o "(?<=SERVER_PUBLICBASEURL: ).*" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml.old)"
       #update config with publicbaseurl
-      if [ -n "$baseurl_from_conf" ]; then
+      if [ -n "$baseurl_from_conf" ] && [ "$baseurl_from_conf" != "insertpublicurlhere" ]; then
         sed -i "s,insertpublicurlhere,$baseurl_from_conf,g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
       elif [ -n "$hostname" ]; then
         sed -i "s/insertpublicurlhere/https:\/\/$hostname/g" /opt/lme/Chapter\ 3\ Files/docker-compose-stack-live.yml
