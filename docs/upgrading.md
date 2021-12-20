@@ -40,7 +40,7 @@ wecutil cs lme_wec_config.xml
 
 You can confirm the LME WEC subscription has been successfully updated by running the command ```wecutil es``` and ensuring the LME subscription is present, or  by following the [checklist](chapter1.md#chapter-1---checklist) from Chapter 1.
 
-We recommend that you take this opportunity to ensure that you are running the latest version of Winlogbeat officially supported by LME. This is currently version 7.16.1 which can be found [here](https://www.elastic.co/downloads/past-releases/winlogbeat-7-16-1). Steps for installing Winlogbeat can be found in [section 3.3](/docs/chapter3.md#33-configuring-winlogbeat-on-windows-event-collector-server) and a walkthrough of the re-installation process can be found [below](#upgrade-from-v02).
+We recommend that you take this opportunity to ensure that you are running the latest version of Winlogbeat officially supported by LME. This is currently version 7.16.2 which can be found [here](https://www.elastic.co/downloads/past-releases/winlogbeat-7-16-2). Steps for installing Winlogbeat can be found in [section 3.3](/docs/chapter3.md#33-configuring-winlogbeat-on-windows-event-collector-server) and a walkthrough of the re-installation process can be found [below](#upgrade-from-v02).
 
 Once this has been completed it should be possible to trigger the rest of the update to complete automatically, using the standard method:
 
@@ -145,7 +145,7 @@ If taking this approach the legacy format data should ultimately be fully replac
 ### Upgrade From v0.2
 To upgrade an existing installation of LME to v0.4 follow the steps detailed [here](#index-mapping), including resolving any issues with currently saved data.
 
-Updating from an older LME instance also requires manual changes to the winlogbeat service on the Windows Event Collector machine. We also recommend that you take this opportunity to ensure that you are running the latest version of Winlogbeat officially supported by LME. This is currently version 7.16.1 which can be found [here](https://www.elastic.co/downloads/past-releases/winlogbeat-7-16-1).
+Updating from an older LME instance also requires manual changes to the winlogbeat service on the Windows Event Collector machine. We also recommend that you take this opportunity to ensure that you are running the latest version of Winlogbeat officially supported by LME. This is currently version 7.16.2 which can be found [here](https://www.elastic.co/downloads/past-releases/winlogbeat-7-16-2).
 
 Required manual update steps:
 
@@ -154,8 +154,8 @@ Required manual update steps:
 * Enter the copied DNS name into the new winlogbeat.yml file on line 14 replacing the "logstash_dns_name" text
 * Copy winlogbeat-sysmon.js and winlogbeat-security.js file from the latest winlogbeat download and place them in the directories listed below, noting that the version numbers in the path may change:
 ```
-C:\\Program Files\\lme\\winlogbeat-7.16.1-windows-x86_64\\module\\sysmon\\config\\winlogbeat-sysmon.js
-C:\\Program Files\\lme\\winlogbeat-7.16.1-windows-x86_64\\module\\security\\config\\winlogbeat-security.js
+C:\\Program Files\\lme\\winlogbeat-7.16.2-windows-x86_64\\module\\sysmon\\config\\winlogbeat-sysmon.js
+C:\\Program Files\\lme\\winlogbeat-7.16.2-windows-x86_64\\module\\security\\config\\winlogbeat-security.js
 ``` 
 
 Finally, uninstall and reinstall winlogbeat using the following commands (run powershell as admin)
