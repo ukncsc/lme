@@ -78,6 +78,8 @@ Although in it’s infancy, we are hoping that LME will help organisations to ma
 
 [FAQ](/docs/faq.md)
 
+[Backups](/docs/backups.md)
+
 [Troubleshooting](/docs/troubleshooting.md)
 
 [Upgrading](/docs/upgrading.md)
