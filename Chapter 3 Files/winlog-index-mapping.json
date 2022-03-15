@@ -6,7 +6,7 @@
   "mappings": {
     "_meta": {
       "beat": "winlogbeat",
-        "version": "7.16.3"
+        "version": "7.17.1"
     },
     "date_detection": false,
     "dynamic_templates": [
@@ -6838,7 +6838,7 @@
 
       "query": {
         "default_field": [
-
+          "message",
           "tags",
           "agent.ephemeral_id",
           "agent.id",
@@ -6920,7 +6920,8 @@
           "ecs.version",
           "error.code",
           "error.id",
-
+          "error.message",
+          "error.stack_trace",
           "error.type",
           "event.action",
           "event.category",
@@ -6993,10 +6994,10 @@
           "host.user.hash",
           "host.user.id",
           "host.user.name",
-
+          "http.request.body.content",
           "http.request.method",
           "http.request.referrer",
-
+          "http.response.body.content",
           "http.version",
           "log.level",
           "log.logger",
@@ -7050,14 +7051,12 @@
           "package.path",
           "package.version",
           "process.args",
-
           "process.executable",
           "process.hash.md5",
           "process.hash.sha1",
           "process.hash.sha256",
           "process.hash.sha512",
           "process.name",
-
           "process.thread.name",
           "process.title",
           "process.working_directory",
@@ -7112,32 +7111,28 @@
           "source.user.hash",
           "source.user.id",
           "source.user.name",
-
           "threat.framework",
-
           "threat.tactic.id",
           "threat.tactic.name",
           "threat.tactic.reference",
           "threat.technique.id",
           "threat.technique.name",
           "threat.technique.reference",
-
           "trace.id",
           "transaction.id",
           "url.domain",
           "url.extension",
           "url.fragment",
-
+          "url.full",
+          "url.original",
           "url.password",
-
+          "url.path",
           "url.query",
           "url.registered_domain",
           "url.scheme",
           "url.top_level_domain",
           "url.username",
-
           "user.domain",
-
           "user.email",
           "user.full_name",
           "user.group.domain",
@@ -7146,10 +7141,9 @@
           "user.hash",
           "user.id",
           "user.name",
-
           "user_agent.device.name",
           "user_agent.name",
-
+          "user_agent.original.text",
           "user_agent.original",
           "user_agent.os.family",
           "user_agent.os.full",
@@ -7158,7 +7152,6 @@
           "user_agent.os.platform",
           "user_agent.os.version",
           "user_agent.version",
-
           "agent.hostname",
           "timeseries.instance",
           "cloud.image.id",
