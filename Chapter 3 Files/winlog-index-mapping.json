@@ -6,7 +6,7 @@
   "mappings": {
     "_meta": {
       "beat": "winlogbeat",
-        "version": "7.17.1"
+        "version": "7.17.4"
     },
     "date_detection": false,
     "dynamic_templates": [
