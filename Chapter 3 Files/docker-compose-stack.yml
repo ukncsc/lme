@@ -6,7 +6,7 @@ version: '3.3'
 services:
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.4
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.5
     environment:
       - node.name=es01
       - discovery.seed_hosts=es01
@@ -17,11 +17,13 @@ services:
       - xpack.security.http.ssl.key=/usr/share/elasticsearch/config/certificates/elasticsearch.key
       - xpack.security.http.ssl.certificate_authorities=/usr/share/elasticsearch/config/certificates/ca.crt
       - xpack.security.http.ssl.certificate=/usr/share/elasticsearch/config/certificates/elasticsearch.crt
+      - xpack.security.http.ssl.supported_protocols=TLSv1.3,TLSv1.2
       - xpack.security.transport.ssl.enabled=true
       - xpack.security.transport.ssl.verification_mode=certificate
       - xpack.security.transport.ssl.certificate_authorities=/usr/share/elasticsearch/config/certificates/ca.crt
       - xpack.security.transport.ssl.certificate=/usr/share/elasticsearch/config/certificates/elasticsearch.crt
       - xpack.security.transport.ssl.key=/usr/share/elasticsearch/config/certificates/elasticsearch.key
+      - xpack.security.transport.ssl.supported_protocols=TLSv1.3,TLSv1.2
       #- xpack.monitoring.enabled=false
       - xpack.security.authc.api_key.enabled=true
       - cluster.name=loggingmadeeasy-es
@@ -52,7 +54,7 @@ services:
 
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.17.4
+    image: docker.elastic.co/kibana/kibana:7.17.5
     environment:
       SERVER_NAME: kibana
       ELASTICSEARCH_HOSTS: https://elasticsearch:9200
@@ -61,6 +63,7 @@ services:
       SERVER_SSL_KEY: /usr/share/kibana/certificates/kibana.key
       SERVER_SSL_CERTIFICATE: /usr/share/kibana/certificates/kibana.crt
       SERVER_PUBLICBASEURL: insertpublicurlhere
+      SERVER_SSL_SUPPORTEDPROTOCOLS: '["TLSv1.3","TLSv1.2"]'
       ELASTICSEARCH_USERNAME: kibana
       ELASTICSEARCH_PASSWORD: insertkibanapasswordhere
       XPACK_SECURITY_ENABLED: "true"
@@ -76,7 +79,7 @@ services:
       - 443:5601
 
   logstash:
-    image: docker.elastic.co/logstash/logstash:7.17.4
+    image: docker.elastic.co/logstash/logstash:7.17.5
     environment:
       XPACK_MONITORING_ENABLED: "false"
     ports:
