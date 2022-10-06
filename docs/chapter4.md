@@ -43,7 +43,7 @@ Figure 3 - Time range filter
 
 ## 4.2 Enable the Detection Engine
 
-In the left hand options, under Security, navigate to "Detections":
+In the left hand options, under Security, navigate to "Detections" (renamed to "Alerts" in later versions):
 
 
 ![Enable siem](siem.png)
