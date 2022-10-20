@@ -3,16 +3,12 @@
 ## Upgrade Paths
 Below you can find the upgrade paths that are currently supported and what steps are required for these upgrades. Note that major version upgrades tend to include significant changes, and so will require manual intervention and will not be automatically applied, even if auto-updates are enabled.
 
-### Upgrade From v0.3
-#### Index Mapping
-
-When LME was first launched, the index mapping (for Winlogbeat) that was used was predictable. This meant that we did not need to provide the index map, as it was automatically generated when the first bits of data was ingested via Logstash. The map links data fields to data types, so we can search and perform functions on them properly. For example, 'event.provider' is a text field etc. 
-
-As the project has grown, and as Elastic has enhanced the components that we use, it has become necessary to provide this map. 
-
-Additionally, as part of this release we have migrated the GeoIP enrichment feature from Logstash to the Elastic pipeline, and are now making use of a configuration file to store version specific information. 
-
 Applying these changes is automated for any new installations. But, if you have an existing installation, you need to conduct some extra steps. **Before performing any of these steps it is advised to take a backup of the current installation using the method described [here](/docs/backups.md).**
+
+### Upgrade From v0.4
+With the release of LME v0.5 there is a need to move to a more sustainable long-term shard configuration within Elasticsearch, which will be suitable for storing larger volumes of data for the longer timeframes that LME is increasingly being used for. In order to facilitate this LME is moving from a daily time-based index methodology to an alias based methodology, managed by Index Lifecycle Management (ILM). 
+
+Additionally, this release brings LME in-line with current Elastic standards to prepare for a future update to Elastic 8.0. As a result of this, several changes have been made that deprecate or otherwise impact existing LME features, specifically the ability to ingest Syslog data in to the winlogbeat index. This has been removed, and additional configuration is now required if you want to ingest data beyond the default gathered by Winlogbeat. For further information on this change visit [here](/docs/other-logging.md). 
 
 Ensure you have the latest version of LME from the GitHub repository by using the following command:
 
@@ -20,27 +16,16 @@ Ensure you have the latest version of LME from the GitHub repository by using th
 sudo git -C /opt/lme/ pull
 ```
 
-Then you can begin the process as follows. Make sure you have your LME server's hostname, and the password for both the "elastic" and "dashboard_update" users to hand before you begin [**Note: the dashboard update user may have been previously displayed as "update_user"**]:
+Then you can begin the process as follows. Make sure you have your LME server's hostname, and the password for the "elastic", "kibana" and "dashboard_update" users to hand before you begin [**Note: the dashboard update user may have been previously displayed as "update_user"**]:
 
 ```
 cd /opt/lme/Chapter\ 3\ Files/
 sudo ./deploy.sh upgrade
 ```
 
-You will be promted to enter your elastic and dashboard_update users' passwords and the server's current hostname, and this will update the relevant settings/files that are now included as part of this project and will be used/supported from now on. 
+You will be promted to enter the relevant passwords and the server's current hostname, and this will update the relevant settings/files that are now included as part of this project and will be used/supported from now on. 
 
-***NOTE:*** *If an error is encountered during the "Uploading the LME index template" phase of the upgrade, this may mean that the version of Elasticsearch you are currently using is too old to support the latest field mappings. If this occurs, proceed with the instructions below to bring Elastic up-to-date with the latest supported version, stopping **before** re-indexing any data, and then repeat the upgrade command shown above in order to re-attempt the mapping template update. If the command now completes successfully you may proceed to re-indexing your data as described [here](/docs/upgrading.md#so-how-do-i-fix-my-current-data).*
-
-The WEC configuration file has been updated in this release to include collection for several additional events, and this config change must be manually applied by copying over the [lme_wec_config.xml](/Chapter%201%20Files/lme_wec_config.xml) to the Event Collector server and then updating the event collection settings. This can be done by deleting and then re-creating the event subscription with the following commands from an Administrative command prompt, as discussed in [Chapter 1](chapter1.md#132-windows-collector-box-steps):
-
-```
-wecutil ds lme
-wecutil cs lme_wec_config.xml
-```
-
-You can confirm the LME WEC subscription has been successfully updated by running the command ```wecutil es``` and ensuring the LME subscription is present, or  by following the [checklist](chapter1.md#chapter-1---checklist) from Chapter 1.
-
-We recommend that you take this opportunity to ensure that you are running the latest version of Winlogbeat officially supported by LME. This is currently version 7.17.5 which can be found [here](https://www.elastic.co/downloads/past-releases/winlogbeat-7-17-5). Steps for installing Winlogbeat can be found in [section 3.3](/docs/chapter3.md#33-configuring-winlogbeat-on-windows-event-collector-server) and a walkthrough of the re-installation process can be found [below](#upgrade-from-v02).
+We recommend that you take this opportunity to ensure that you are running the latest version of Winlogbeat officially supported by LME. This is currently version 7.17.6 which can be found [here](https://www.elastic.co/downloads/past-releases/winlogbeat-7-17-6). Steps for installing Winlogbeat can be found in [section 3.3](/docs/chapter3.md#33-configuring-winlogbeat-on-windows-event-collector-server) and a walkthrough of the re-installation process can be found [below](#upgrade-from-v02).
 
 Once this has been completed it should be possible to trigger the rest of the update to complete automatically, using the standard method:
 
@@ -62,7 +47,29 @@ The rules built-in to the Elastic SIEM can then be updated to the latest version
 
 ![Update Rules](update-rules.png)
 
-It is worth noting that this will only fix data coming into LME after this is run, so something needs to be done to be fix existing data.
+### Upgrade From v0.3
+To upgrade an existing v0.3 installation of LME to v0.5 follow the steps detailed [here](#upgrade-from-v0.4), and then proceed to follow the rest of the below instructions to re-ingest your data as required.
+
+#### Index Mapping
+
+When LME was first launched, the index mapping (for Winlogbeat) that was used was predictable. This meant that we did not need to provide the index map, as it was automatically generated when the first bits of data was ingested via Logstash. The map links data fields to data types, so we can search and perform functions on them properly. For example, 'event.provider' is a text field etc. 
+
+As the project has grown, and as Elastic has enhanced the components that we use, it has become necessary to provide this map. 
+
+Additionally, as part of this release we have migrated the GeoIP enrichment feature from Logstash to the Elastic pipeline, and are now making use of a configuration file to store version specific information. 
+
+***NOTE:*** *If an error is encountered during the "Uploading the LME index template" phase of the upgrade, this may mean that the version of Elasticsearch you are currently using is too old to support the latest field mappings. If this occurs, proceed with the instructions below to bring Elastic up-to-date with the latest supported version, stopping **before** re-indexing any data, and then repeat the upgrade command shown above in order to re-attempt the mapping template update. If the command now completes successfully you may proceed to re-indexing your data as described [here](/docs/upgrading.md#so-how-do-i-fix-my-current-data).*
+
+The WEC configuration file has been updated in this release to include collection for several additional events, and this config change must be manually applied by copying over the [lme_wec_config.xml](/Chapter%201%20Files/lme_wec_config.xml) to the Event Collector server and then updating the event collection settings. This can be done by deleting and then re-creating the event subscription with the following commands from an Administrative command prompt, as discussed in [Chapter 1](chapter1.md#132-windows-collector-box-steps):
+
+```
+wecutil ds lme
+wecutil cs lme_wec_config.xml
+```
+
+You can confirm the LME WEC subscription has been successfully updated by running the command ```wecutil es``` and ensuring the LME subscription is present, or  by following the [checklist](chapter1.md#chapter-1---checklist) from Chapter 1.
+
+It is worth noting that the upgrade will only fix data coming into LME after it is run, so something needs to be done to be fix existing data.
 
 #### So, how do I fix my current data?
 
@@ -143,9 +150,9 @@ This option is not recommended, and is liable to cause issues when conducting se
 If taking this approach the legacy format data should ultimately be fully replaced by newly created logs which will eventually resolve the issue, but not until the number of days configured within the LME retention policy have passed.
 
 ### Upgrade From v0.2
-To upgrade an existing installation of LME to v0.4 follow the steps detailed [here](#index-mapping), including resolving any issues with currently saved data.
+To upgrade an existing installation of LME to v0.5 follow the steps detailed [here](#index-mapping), including resolving any issues with currently saved data.
 
-Updating from an older LME instance also requires manual changes to the winlogbeat service on the Windows Event Collector machine. We also recommend that you take this opportunity to ensure that you are running the latest version of Winlogbeat officially supported by LME. This is currently version 7.17.5 which can be found [here](https://www.elastic.co/downloads/past-releases/winlogbeat-7-17-5).
+Updating from an older LME instance also requires manual changes to the winlogbeat service on the Windows Event Collector machine. We also recommend that you take this opportunity to ensure that you are running the latest version of Winlogbeat officially supported by LME. This is currently version 6 which can be found [here](https://www.elastic.co/downloads/past-releases/winlogbeat-7-17-6).
 
 Required manual update steps:
 
@@ -154,8 +161,8 @@ Required manual update steps:
 * Enter the copied DNS name into the new winlogbeat.yml file on line 14 replacing the "logstash_dns_name" text
 * Copy winlogbeat-sysmon.js and winlogbeat-security.js file from the latest winlogbeat download and place them in the directories listed below, noting that the version numbers in the path may change:
 ```
-C:\\Program Files\\lme\\winlogbeat-7.17.5-windows-x86_64\\module\\sysmon\\config\\winlogbeat-sysmon.js
-C:\\Program Files\\lme\\winlogbeat-7.17.5-windows-x86_64\\module\\security\\config\\winlogbeat-security.js
+C:\\Program Files\\lme\\winlogbeat-7.17.6-windows-x86_64\\module\\sysmon\\config\\winlogbeat-sysmon.js
+C:\\Program Files\\lme\\winlogbeat-7.17.6-windows-x86_64\\module\\security\\config\\winlogbeat-security.js
 ``` 
 
 Finally, uninstall and reinstall winlogbeat using the following commands (run powershell as admin)

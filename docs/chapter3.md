@@ -24,7 +24,9 @@ What is the ELK Stack?
 Figure 1: Elastic Stack components
 </p>
 
+Elasticserach, Logstash, Kibana, and Winlogbeat are developed by [Elastic](https://www.elastic.co/). Before following this guide and running our install script, you should review and ensure that you agree with the licence terms associated with these products. Elastic’s licence terms can be found on their GitHub page [here](https://github.com/elastic). By running our install script you are agreeing to Elastic’s terms.
 
+This script also makes use of use of Docker Community Edition (CE). By following this guide and using our install script you are agreeing to the Docker CE license, which can be found [here](https://github.com/docker/docker-ce/blob/master/LICENSE).
 
 ## 3.1 Getting Started
 During the installation guide below you will see that the majority of steps are carried out automatically. Commands or file paths are highlighted in grey boxes.
@@ -148,7 +150,7 @@ In 'files_for_windows.zip', copied in [step 3.2.3](#323-download-files-for-windo
 * wlbclient.crt
 * winlogbeat.yml
 
-You will also require the latest supported version of the [Winlogbeat zip](https://www.elastic.co/downloads/past-releases/winlogbeat-7-17-4) downloaded from the Elastic site. **The current version officially supported by LME is 7.17.4.**
+You will also require the latest supported version of the [Winlogbeat zip](https://www.elastic.co/downloads/past-releases/winlogbeat-7-17-6) downloaded from the Elastic site. **The current version officially supported by LME is 7.17.6.**
 
 ### 3.3.2 Install Winlogbeat
 On the Windows Event Collector server extract the 'files_for_windows.zip' archive and copy the 'lme' folder (contained within 'tmp' inside the extracted files) to the following location: 
