@@ -1,7 +1,7 @@
 ![N|Solid](https://www.ncsc.gov.uk/static-assets/images/ncsc_larger_strap.png)
 # Logging Made Easy
 
-Copyright 2018-2021 Crown Copyright
+Copyright 2018-2022 Crown Copyright
  
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  
@@ -21,9 +21,9 @@ Logging Made Easy can:
 
 ## Disclaimer
 
-**LME is currently still early in development, and as such we are marking it as [Alpha](https://www.gov.uk/service-manual/agile-delivery). The current release is version 0.4.**
+**LME is currently still early in development, and as such we are marking it as [Alpha](https://www.gov.uk/service-manual/agile-delivery). The current release is version 0.5.**
 
-***If you have an existing install of the LME Alpha (v0.3 or older) some manual intervention will be required in order to upgrade to the latest version, please see [Upgrading](/docs/upgrading.md) for further information.*** 
+***If you have an existing install of the LME Alpha (v0.4 or older) some manual intervention will be required in order to upgrade to the latest version, please see [Upgrading](/docs/upgrading.md) for further information.*** 
 
 **This is not a professional tool, and should not be used as a [SIEM](https://en.wikipedia.org/wiki/Security_information_and_event_management).**
 
@@ -40,7 +40,6 @@ We are **not** able to comment on or troubleshoot individual installations. If y
 From single IT administrators with a handful devices to look after, through to larger organisations.
 
 LME is for you if:
-
 
 *	You don’t have a [SOC](https://en.wikipedia.org/wiki/Information_security_operations_center), SIEM or any monitoring in place at the moment.
 *	You lack the budget, time or understanding to set up your own logging system.
@@ -85,6 +84,10 @@ Although in it’s infancy, we are hoping that LME will help organisations to ma
 [Upgrading](/docs/upgrading.md)
 
 [Certificates](/docs/certificates.md)
+
+[Log Retention](/docs/retention.md)
+
+[Additional Log Types](/docs/other-logging.md)
 
 ## Credits
 ### Core Team
