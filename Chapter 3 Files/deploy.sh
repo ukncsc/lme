@@ -1,7 +1,7 @@
 #!/bin/bash
 ##########################
 # LME Deploy Script      #
-# Version 0.4 - 24/03/21 #
+# Version 0.5 - 12/10/22 #
 ##########################
 # This script configures a host for LME including generating certificates and populating configuration files.
 
@@ -29,50 +29,22 @@ function generatepasswords() {
   sed -i "s/insertlogstashwriterpasswordhere/$logstash_writer/g" /opt/lme/Chapter\ 3\ Files/logstash.edited.conf
 }
 
-function setpasswords() {
-  echo -e "\e[32m[X]\e[0m Waiting for elasticsearch to be ready"
-  while [[ "$(curl --cacert certs/root-ca.crt --user elastic:temp -s -o /dev/null -w ''%{http_code}'' https://127.0.0.1:9200)" != "200" ]]; do
-    sleep 1
-  done
-
-  echo -e "\e[32m[X]\e[0m Setting elastic user password"
-  curl --cacert certs/root-ca.crt --user elastic:temp -X POST "https://127.0.0.1:9200/_security/user/elastic/_password" -H 'Content-Type: application/json' -d' { "password" : "'"$elastic_user_pass"'"} '
-
-  echo -e "\n\e[32m[X]\e[0m Setting kibana system password"
-  curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/kibana/_password" -H 'Content-Type: application/json' -d' { "password" : "'"$kibana_system_pass"'"} '
-
-  echo -e "\n\e[32m[X]\e[0m Setting logstash system password"
-  curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/logstash_system/_password" -H 'Content-Type: application/json' -d' { "password" : "'"$logstash_system_pass"'"} '
-
-  echo -e "\n\e[32m[X]\e[0m Creating logstash writer role"
-
+function setroles() {
+  echo -e "\n\e[32m[X]\e[0m Setting logstash writer role"
   curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/role/logstash_writer" -H 'Content-Type: application/json' -d'
 {
-  "cluster": ["manage_index_templates", "monitor", "manage_ilm"], 
+  "cluster": ["manage_index_templates", "monitor", "manage_ilm", "manage_pipeline"], 
   "indices": [
     {
-      "names": [ "logstash-*","winlogbeat-*" ], 
-      "privileges": ["write","delete","create_index","manage","manage_ilm"]  
+      "names": [ "logstash-*, ecs-logstash-*","winlogbeat-*" ], 
+      "privileges": ["write","create","create_index","manage","manage_ilm"]  
     }
   ]
 }
 '
 
-  echo -e "\n\e[32m[X]\e[0m Creating logstash writer user"
-
-  curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/logstash_writer" -H 'Content-Type: application/json' -d'
-{
-  "password" : "logstash_writer",
-  "roles" : [ "logstash_writer"],
-  "full_name" : "Internal Logstash User"
-  }
-'
-
-  echo -e "\n\e[32m[X]\e[0m Setting logstash writer password"
-  curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/logstash_writer/_password" -H 'Content-Type: application/json' -d' { "password" : "'"$logstash_writer"'"} '
-
   #create role, Only needs kibana perms so the other data is just falsified.
-  echo -e "\n\e[32m[X]\e[0m Creating update role (dashboards)"
+  echo -e "\n\e[32m[X]\e[0m Setting dashboard update role"
   curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/role/dashboard_update" -H 'Content-Type: application/json' -d'
 {
   "cluster":[],
@@ -90,8 +62,38 @@ function setpasswords() {
   "metadata":{},
   "transient_metadata":{"enabled":true}}
 '
+}
 
-  echo -e "\n\e[32m[X]\e[0m Creating update user (dashboards)"
+function setpasswords() {
+  echo -e "\e[32m[X]\e[0m Waiting for elasticsearch to be ready"
+  while [[ "$(curl --cacert certs/root-ca.crt --user elastic:temp -s -o /dev/null -w ''%{http_code}'' https://127.0.0.1:9200)" != "200" ]]; do
+    sleep 1
+  done
+
+  echo -e "\e[32m[X]\e[0m Setting elastic user password"
+  curl --cacert certs/root-ca.crt --user elastic:temp -X POST "https://127.0.0.1:9200/_security/user/elastic/_password" -H 'Content-Type: application/json' -d' { "password" : "'"$elastic_user_pass"'"} '
+
+  echo -e "\n\e[32m[X]\e[0m Setting kibana system password"
+  curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/kibana_system/_password" -H 'Content-Type: application/json' -d' { "password" : "'"$kibana_system_pass"'"} '
+
+  echo -e "\n\e[32m[X]\e[0m Setting logstash system password"
+  curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/logstash_system/_password" -H 'Content-Type: application/json' -d' { "password" : "'"$logstash_system_pass"'"} '
+
+  setroles
+
+  echo -e "\n\e[32m[X]\e[0m Creating logstash writer user"
+  curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/logstash_writer" -H 'Content-Type: application/json' -d'
+{
+  "password" : "logstash_writer",
+  "roles" : [ "logstash_writer"],
+  "full_name" : "Internal Logstash User"
+  }
+'
+
+  echo -e "\n\e[32m[X]\e[0m Setting logstash writer password"
+  curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/logstash_writer/_password" -H 'Content-Type: application/json' -d' { "password" : "'"$logstash_writer"'"} '
+
+  echo -e "\n\e[32m[X]\e[0m Creating dashboard update user"
   curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/dashboard_update" -H 'Content-Type: application/json' -d'
 {
   "password" : "dashboard_update",
@@ -100,7 +102,7 @@ function setpasswords() {
   }
 '
 
-  echo -e "\n\e[32m[X]\e[0m Setting update user password (dashboards)"
+  echo -e "\n\e[32m[X]\e[0m Setting dashboard update user password"
   curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/dashboard_update/_password" -H 'Content-Type: application/json' -d' { "password" : "'"$update_user_pass"'"} '
 }
 
@@ -338,7 +340,11 @@ function installdocker() {
 
 function initdockerswarm() {
   echo -e "\e[32m[X]\e[0m Configuring Docker swarm"
-  docker swarm init
+  docker swarm init --advertise-addr $logstaship
+  if [ "$?" == 1 ]; then
+    echo -e "\e[31m[!]\e[0m Failed to initialise docker swarm (Is $logstaship the correct IP address?) - exiting"
+    exit 1
+  fi
 }
 
 function deploylme() {
@@ -374,25 +380,11 @@ function auto_lme_update() {
 
 function indexmappingupdate() {
   echo -e "\n\e[32m[X]\e[0m Uploading the LME index template"
-  curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https://127.0.0.1:9200/_template/lme_template" -H 'Content-Type: application/json' --data "@winlog-index-mapping.json"
+  curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https://127.0.0.1:9200/_index_template/lme_template" -H 'Content-Type: application/json' --data "@winlog-index-mapping.json"
 }
 
 function pipelineupdate() {
-  echo -e "\n\e[32m[X]\e[0m Creating Elastic pipelines"
-
-  #create syslog pipeline
-  curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https://127.0.0.1:9200/_ingest/pipeline/syslog" -H 'Content-Type: application/json' -d'
-{
-  "processors": [
-    {
-      "rename": {
-        "field": "host",
-        "target_field": "old.provider"
-      }
-    }
-  ]
-}
-'
+  echo -e "\n\e[32m[X]\e[0m Setting Elastic pipelines"
 
   #create beats pipeline
   curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https://127.0.0.1:9200/_ingest/pipeline/winlogbeat" -H 'Content-Type: application/json' -d'
@@ -448,7 +440,7 @@ function pipelineupdate() {
 
 function data_retention() {
   #show ext4 disk
-  DF_OUTPUT="$(df -h -l -t ext4 --output=source,size)"
+  DF_OUTPUT="$(df -h -l -t ext4 --output=source,size /var/lib/docker)"
 
   #pull dev name
   DISK_DEV="$(echo $DF_OUTPUT | cut -d ' ' -f 3)"
@@ -463,23 +455,62 @@ function data_retention() {
   DISK_80="$(($DISK_SIZE_ROUND * 80 / 100))"
 
   echo -e "\e[32m[X]\e[0m We think your main disk is $DISK_SIZE on $DISK_DEV"
-  echo -e "\e[32m[X]\e[0m We are assigning $DISK_80 G for log storage"
+
+  if [ "$DISK_80" -lt 30 ]; then
+    echo -e "\e[31m[!]\e[0m LME Requires 90GB of space usable for log retention - exiting"
+    exit 1
+
+  elif [ "$DISK_80" -ge 90 -a "$DISK_80" -le 179 ]; then
+    RETENTION="30"
+  elif [ "$DISK_80" -ge 180 -a "$DISK_80" -le 359 ]; then
+    RETENTION="90"
+  elif [ "$DISK_80" -ge 360 -a "$DISK_80" -le 539 ]; then
+    RETENTION="180"
+  elif [ "$DISK_80" -ge 540 -a "$DISK_80" -le 719 ]; then
+    RETENTION="270"
+  elif [ "$DISK_80" -ge 720 ]; then
+    RETENTION="365"
+  else
+    echo -e "\e[31m[!]\e[0m Unable to determine retention policy - exiting"
+    exit 1
+  fi
+
+  echo -e "\e[32m[X]\e[0m We are assigning $RETENTION days as your retention period for log storage"
 
   curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https://127.0.0.1:9200/_ilm/policy/lme_ilm_policy" -H 'Content-Type: application/json' -d'
 {
-    "policy": {
-        "phases": {
-            "hot": {
-                "actions": {}
-            },
-            "delete": {
-                "min_age": "'$DISK_80'd",
-                "actions": {
-                    "delete": {}
-                }
-            }
+  "policy": {
+    "phases": {
+      "hot": {
+        "min_age": "0ms",
+        "actions": {
+          "rollover": {
+            "max_age": "30d",
+            "max_primary_shard_size": "50gb"
+          }
         }
+      },
+      "warm": {
+        "min_age": "2d",
+        "actions": {
+          "shrink": {
+            "number_of_shards": 1
+          }
+        }
+      },
+      "delete": {
+        "min_age": "'$RETENTION'd",
+        "actions": {
+          "delete": {
+            "delete_searchable_snapshot": true
+          }
+        }
+      }
+    },
+    "_meta": {
+      "description": "LME ILM policy using the hot and warm phases with a retention of '$RETENTION' days"
     }
+  }
 }
 '
 }
@@ -540,7 +571,7 @@ function configelasticsearch() {
 function writeconfig() {
   echo -e "\n\e[32m[X]\e[0m Writing LME Config"
   #write LME version
-  echo "version=0.4" >/opt/lme/lme.conf
+  echo "version=0.5" >/opt/lme/lme.conf
   if [ -z "$logstashcn" ]; then
     # $logstashcn is not set - so this function is not called from an initial install
     read -e -p "Enter the Fully Qualified Domain Name (FQDN) of this Linux server: " logstashcn
@@ -591,6 +622,23 @@ function promptupdate() {
       #cron dash update
       dashboard_update
     fi
+  fi
+}
+
+function bootstrapindex() {
+  if [[ "$(curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -s -o /dev/null -w ''%{http_code}'' https://127.0.0.1:9200/winlogbeat-000001)" != "200" ]]; then
+    echo -e "\n\e[32m[X]\e[0m Bootstrapping index alias"
+    curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X PUT "https://127.0.0.1:9200/winlogbeat-000001" -H 'Content-Type: application/json' -d'
+{
+  "aliases": {
+    "winlogbeat-alias": {
+      "is_write_index": true
+    }
+  }
+}
+'
+  else
+    echo -e "\n\e[33m[!]\e[0m Initial index already exists, no need to bootstrap"
   fi
 }
 
@@ -694,14 +742,17 @@ function install() {
   configelasticsearch
   zipfiles
 
+  #pipelines
+  pipelineupdate
+
   #ILM
   data_retention
 
   #index mapping
   indexmappingupdate
 
-  #pipelines
-  pipelineupdate
+  #bootstrap
+  bootstrapindex
 
   #create config file
   writeconfig
@@ -743,7 +794,9 @@ function uninstall() {
   rm -r certs
   crontab -l | sed -E '/lme_update.sh|dashboard_update.sh/d' | crontab -
   echo -e "\e[33m[!]\e[0m NOTICE!"
-  echo -e "\e[33m[!]\e[0m No data has been deleted, Run 'sudo docker volume rm lme_esdata' to delete the elasticsearch database"
+  echo -e "\e[33m[!]\e[0m No data has been deleted:"
+  echo -e "\e[33m[!]\e[0m - Run 'sudo docker volume rm lme_esdata' to delete the elasticsearch database"
+  echo -e "\e[33m[!]\e[0m - Run 'sudo docker volume rm lme_logstashdata' to delete the logstash data directory"
 }
 
 function update() {
@@ -814,6 +867,32 @@ function update() {
   fi
 }
 
+function updgrade_05() {
+  echo ""
+  read -s -e -p "Enter the password for the existing kibana user: " kibana_user_pass
+  if [[ "$(curl -k --user kibana:$kibana_user_pass -s -o /dev/null -w ''%{http_code}'' https://127.0.0.1/status)" != "200" ]]; then
+    echo -e "\n\e[31m[!]\e[0m The password you have entered was invalid or the kibana service did not respond, please try again."
+    exit 1
+  fi
+  echo -e "\n\e[32m[X]\e[0m Setting the kibana system password, note the username will now be 'kibana_system' rather than 'kibana'"
+  curl --cacert certs/root-ca.crt --user elastic:$elastic_user_pass -X POST "https://127.0.0.1:9200/_security/user/kibana_system/_password" -H 'Content-Type: application/json' -d' { "password" : "'"$kibana_user_pass"'"} '
+
+  #update user roles
+  setroles
+
+  #updated the winlogbeat pipelines
+  pipelineupdate
+
+  #update retention settings
+  data_retention
+
+  #update the index mapping
+  indexmappingupdate
+
+  #bootstrap the initial rollover index alias if it doesn't exist
+  bootstrapindex
+}
+
 function upgrade() {
   #prompt user for passwords and check that they are correct
   read -s -e -p "Enter the password for the existing elastic user: " elastic_user_pass
@@ -824,14 +903,28 @@ function upgrade() {
   echo ""
   read -s -e -p "Enter the password for the existing dashboard_update user: " update_user_pass
   if [[ "$(curl -k --user dashboard_update:$update_user_pass -s -o /dev/null -w ''%{http_code}'' https://127.0.0.1/status)" != "200" ]]; then
-    echo -e "\n\e[31m[!]\e[0m The password you have entered was invalid or the elastic service did not respond, please try again."
+    echo -e "\n\e[31m[!]\e[0m The password you have entered was invalid or the kibana service did not respond, please try again."
     exit 1
   fi
 
-  #update the index mapping
-  indexmappingupdate
-  #updated the winlogbeat and syslog pipelines
-  pipelineupdate
+  #check if the config file we're now creating on new installs exists
+  if [ -r /opt/lme/lme.conf ]; then
+    #reference this file as a source
+    . /opt/lme/lme.conf
+    #check if the version number is equal to the one we want
+    if [ "$version" == "0.5" ]; then
+      #updated the winlogbeat pipelines
+      pipelineupdate
+
+      #update the index mapping
+      indexmappingupdate
+    else
+      updgrade_05
+    fi
+  else
+    updgrade_05
+  fi
+
   #write the LME config file
   writeconfig
 

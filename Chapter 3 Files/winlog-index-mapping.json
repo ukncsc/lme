@@ -3,10 +3,12 @@
     "winlogbeat-*"
   ],
 
+  "priority": 150,
+  "template": {
   "mappings": {
     "_meta": {
       "beat": "winlogbeat",
-        "version": "7.17.5"
+        "version": "7.17.6"
     },
     "date_detection": false,
     "dynamic_templates": [
@@ -6820,12 +6822,13 @@
       }
     }
   },
-  "order": 1,
+
 
   "settings": {
     "index": {
       "lifecycle": {
-        "name": "lme_ilm_policy"
+        "name": "lme_ilm_policy",
+        "rollover_alias": "winlogbeat-alias"
       },
       "mapping": {
         "total_fields": {
@@ -6833,9 +6836,8 @@
         }
       },
       "max_docvalue_fields_search": 200,
-      "number_of_shards": 4,
-      "number_of_replicas": 0,
-
+        "number_of_shards": 1,
+        "number_of_replicas": 0,
       "query": {
         "default_field": [
           "message",
@@ -7332,6 +7334,7 @@
       },
       "refresh_interval": "5s"
 
+      }
     }
   }
 }
