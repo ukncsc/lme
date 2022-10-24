@@ -43,12 +43,12 @@ Figure 3 - Time range filter
 
 ## 4.2 Enable the Detection Engine
 
-In the left hand options, under Security, navigate to "Detections":
+In the left hand options, under Security, navigate to "Detections" (In recent versions, this may be titled "Alerts"):
 
 
 ![Enable siem](siem.png)
 
-From here navigate to "Manage Detection Rules":
+From here navigate to "Manage Detection Rules" (In recent versions, this may be titled "Manage Rules"):
 
 ![Enable siem](siem2.png)
 
@@ -60,13 +60,19 @@ Once the prebuilt Elastic rules are installed, filter from the "Tags" option and
 
 ![Enable siem](siem4.png)
 
-From here, ensure that the maximum number of rows is shown so that all of the relevant rules can be selected at once:
+From here, ensure that the maximum number of rows is shown so that all of the relevant rules can be selected at once (In recent versions, there is an ability to "Select All" rows):
 
 ![Enable siem](siem5.png)
 
 Lastly, select all of the displayed rules, expand "Bulk actions" and choose "Activate selected":
 
 ![Enable siem](siem6.png)
+
+In recent versions of Elastic that include Machine Learning rules (rules with the "ML" tag), you may receive errors when performing bulk actions: 
+
+![Rules_Error](rules_error.png)
+
+Rules without the "ML" tag should still be activated through this bulk action, regardless of this error message. Use of "ML" rules require Machine Learning to be enabled, which is part of Enterprise and Platinum Elastic subscriptions.
 
 ### 4.2.1 Add rule exceptions
 
