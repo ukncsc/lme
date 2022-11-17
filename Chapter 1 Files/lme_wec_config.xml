@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 
-<!-- ########################## -->
-<!-- # LME WEC Config         # -->
-<!-- # Version 0.5 - 12/10/22 # -->
-<!-- ########################## -->
+<!-- ############################ -->
+<!-- # LME WEC Config           # -->
+<!-- # Version 0.5.1 - 12/10/22 # -->
+<!-- ############################ -->
 
 
 <Subscription xmlns="http://schemas.microsoft.com/2006/03/windows/events/subscription">
