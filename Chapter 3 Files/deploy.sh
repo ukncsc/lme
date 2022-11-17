@@ -1,7 +1,7 @@
 #!/bin/bash
 ##########################
 # LME Deploy Script      #
-# Version 0.5 - 12/10/22 #
+# Version 0.5.1 - 16/11/22 #
 ##########################
 # This script configures a host for LME including generating certificates and populating configuration files.
 
@@ -571,7 +571,7 @@ function configelasticsearch() {
 function writeconfig() {
   echo -e "\n\e[32m[X]\e[0m Writing LME Config"
   #write LME version
-  echo "version=0.5" >/opt/lme/lme.conf
+  echo "version=0.5.1" >/opt/lme/lme.conf
   if [ -z "$logstashcn" ]; then
     # $logstashcn is not set - so this function is not called from an initial install
     read -e -p "Enter the Fully Qualified Domain Name (FQDN) of this Linux server: " logstashcn
@@ -867,10 +867,10 @@ function update() {
   fi
 }
 
-function updgrade_05() {
+function upgrade_0_5_1() {
   echo ""
   read -s -e -p "Enter the password for the existing kibana user: " kibana_user_pass
-  if [[ "$(curl -k --user kibana:$kibana_user_pass -s -o /dev/null -w ''%{http_code}'' https://127.0.0.1/status)" != "200" ]]; then
+  if [[ "$(curl -k --user kibana_system:$kibana_user_pass -s -o /dev/null -w ''%{http_code}'' https://127.0.0.1/status)" != "200" ]]; then
     echo -e "\n\e[31m[!]\e[0m The password you have entered was invalid or the kibana service did not respond, please try again."
     exit 1
   fi
@@ -912,17 +912,17 @@ function upgrade() {
     #reference this file as a source
     . /opt/lme/lme.conf
     #check if the version number is equal to the one we want
-    if [ "$version" == "0.5" ]; then
+    if [ "$version" == "0.5.1" ]; then
       #updated the winlogbeat pipelines
       pipelineupdate
 
       #update the index mapping
       indexmappingupdate
     else
-      updgrade_05
+      upgrade_0_5_1
     fi
   else
-    updgrade_05
+    upgrade_0_5_1
   fi
 
   #write the LME config file
