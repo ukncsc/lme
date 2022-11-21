@@ -150,7 +150,7 @@ In 'files_for_windows.zip', copied in [step 3.2.3](#323-download-files-for-windo
 * wlbclient.crt
 * winlogbeat.yml
 
-You will also require the latest supported version of the [Winlogbeat zip](https://www.elastic.co/downloads/past-releases/winlogbeat-7-17-6) downloaded from the Elastic site. **The current version officially supported by LME is 7.17.6.**
+You will also require the latest supported version of the [Winlogbeat zip](https://artifacts.elastic.co/downloads/beats/winlogbeat/winlogbeat-8.5.0-windows-x86_64.zip) downloaded from the Elastic site. **The current version officially supported by LME is 8.5.0.**
 
 ### 3.3.2 Install Winlogbeat
 On the Windows Event Collector server extract the 'files_for_windows.zip' archive and copy the 'lme' folder (contained within 'tmp' inside the extracted files) to the following location: 
@@ -165,7 +165,7 @@ Next, unzip the downloaded winlogbeat zip file and copy its contents into the ``
 Figure 3: Winlogbeat Install Location
 </p>
 
-Then, move the 'winlogbeat.yml' file located at ```C:\Program Files\lme\winlogbeat.yml``` into the winlogbeat folder ```C:\Program Files\lme\winlogbeat-7.[x].[y]-windows-x86_64```, overwriting the existing file when prompted to do so.
+Then, move the 'winlogbeat.yml' file located at ```C:\Program Files\lme\winlogbeat.yml``` into the winlogbeat folder ```C:\Program Files\lme\winlogbeat-8.[x].[y]-windows-x86_64```, overwriting the existing file when prompted to do so.
 
 Now, open PowerShell as an administrator and run the following command from the winlogbeat directory, allowing the script to run if prompted to do so: ```./install-service-winlogbeat.ps1```
 

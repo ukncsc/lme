@@ -21,7 +21,7 @@ Logging Made Easy can:
 
 ## Disclaimer
 
-**LME is currently still early in development, and as such we are marking it as [Alpha](https://www.gov.uk/service-manual/agile-delivery). The current release is version 0.5.**
+**LME is currently still early in development, and as such we are marking it as [Alpha](https://www.gov.uk/service-manual/agile-delivery). The current release is version 0.5.1**
 
 ***If you have an existing install of the LME Alpha (v0.4 or older) some manual intervention will be required in order to upgrade to the latest version, please see [Upgrading](/docs/upgrading.md) for further information.*** 
 
