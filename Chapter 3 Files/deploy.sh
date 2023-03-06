@@ -800,6 +800,8 @@ function uninstall() {
 }
 
 function update() {
+  #remove auto updates
+  crontab -l | sed -E '/lme_update.sh|dashboard_update.sh/d' | crontab -
   #check if the config file we're now creating on new installs exists
   if [ -r /opt/lme/lme.conf ]; then
     #reference this file as a source
